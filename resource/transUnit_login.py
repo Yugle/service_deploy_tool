@@ -365,15 +365,18 @@ class Ui_MainWindow(object):
 
     def tabChanged(self, preTab):
         preInputList = getattr(self, self.tabs[preTab]).findChildren(QtWidgets.QLineEdit)
-        for lineEdit in preInputList:
-            lineEdit.setText("")
-            self.resetStyle(lineEdit)
+        preLabelList = getattr(self, self.tabs[preTab]).findChildren(QtWidgets.QLabel)
+        for i in range(len(preInputList)):
+            preInputList[i].setText("")
+            self.resetStyle(preInputList[i], preLabelList[i])
+        # for lineEdit in preInputList:
+        #     lineEdit.setText("")
+        #     self.resetStyle(lineEdit, )
 
         self.currentTabIndex = self.connectMethod.currentIndex()
         self.currentTab = getattr(self, self.tabs[self.currentTabIndex])
         self.inputList = self.currentTab.findChildren(QtWidgets.QLineEdit)
         self.labelList = self.currentTab.findChildren(QtWidgets.QLabel)
-        print(labelList)
 
     def checkInput(self):
 
@@ -384,15 +387,17 @@ class Ui_MainWindow(object):
         self.inputList[2].textChanged.connect(lambda :self.resetStyle(self.inputList[2], self.labelList[2]))
 
         if(re.findall(r"^((2((5[0-5])|([0-4]\d)))|([0-1]?\d{1,2}))(\.((2((5[0-5])|([0-4]\d)))|([0-1]?\d{1,2}))){3}$", self.inputList[0].text()) == []):
-                self.inputList[0].setStyleSheet("QLineEdit{border:3px ridge #CD5C5C;} QToolTip{border:1px solid white}")
+                self.inputList[0].setStyleSheet("QLineEdit{border:1px ridge red;border-left:0px solid white;} QToolTip{border:1px solid white}")
+                self.labelList[0].setStyleSheet("border:1px ridge red;border-right:0px solid white;")
                 self.inputList[0].setToolTip("IP地址格式错误！")
 
                 flag = False
 
-        for lineEdit in self.inputList:
-            if(lineEdit.text() == ""):
-                lineEdit.setStyleSheet("QLineEdit{border:3px ridge #CD5C5C;border-radius:5px;} QToolTip{border:1px solid white}")
-                lineEdit.setToolTip("不能为空！")
+        for i in range(len(self.inputList)):
+            if(self.inputList[i].text() == ""):
+                self.inputList[i].setStyleSheet("QLineEdit{border:1px ridge red;border-left:0px solid white;} QToolTip{border:1px solid white}")
+                self.labelList[i].setStyleSheet("border:1px ridge red;border-right:0px solid white;")
+                self.inputList[i].setToolTip("不能为空！")
 
                 flag = False
 
