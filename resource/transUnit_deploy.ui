@@ -221,10 +221,8 @@ QPushButton:hover{
      subcontrol-origin: padding;
      subcontrol- position :  top  right ;
      width :  20px ;
- 
-     border-left-width :  1px ;
-     border-left-color : darkgray;
-     border-left-style :  solid ;  /* just a single line */
+      border-left-width :  0px ;
+
 }
  
 QComboBox::down-arrow {

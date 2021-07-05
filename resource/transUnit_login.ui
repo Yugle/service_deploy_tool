@@ -41,7 +41,7 @@
    <widget class="QTabWidget" name="connectMethod">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>10</x>
       <y>90</y>
       <width>551</width>
       <height>291</height>
@@ -474,11 +474,30 @@ border-left:0px solid white;</string>
      <widget class="QComboBox" name="device_id">
       <property name="geometry">
        <rect>
-        <x>221</x>
-        <y>30</y>
-        <width>141</width>
-        <height>25</height>
+        <x>120</x>
+        <y>20</y>
+        <width>201</width>
+        <height>40</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QComboBox::drop-down {
+     subcontrol-origin: padding;
+     subcontrol- position :  top  right ;
+     width :  20px ;
+      border-left-width :  0px ;
+
+}
+ 
+QComboBox::down-arrow {
+     image:url(arrow.png);
+}</string>
       </property>
       <property name="editable">
        <bool>true</bool>
@@ -487,26 +506,26 @@ border-left:0px solid white;</string>
      <widget class="QPushButton" name="open_port">
       <property name="geometry">
        <rect>
-        <x>336</x>
-        <y>79</y>
+        <x>330</x>
+        <y>85</y>
         <width>101</width>
-        <height>25</height>
+        <height>38</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>13</pointsize>
+        <family>微软雅黑</family>
+        <pointsize>10</pointsize>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">QPushButton{
         text-align:center;
         color:white;
-        background-color:rgb(0, 144, 250);
-        border-radius:7px;
+        background-color:rgb(0, 91, 171);
 }
 QPushButton:hover{
-        background-color:rgb(24, 169, 251);
+        background-color:rgb(24, 91, 171);
 }</string>
       </property>
       <property name="text">
@@ -516,11 +535,30 @@ QPushButton:hover{
      <widget class="QComboBox" name="device_ip">
       <property name="geometry">
        <rect>
-        <x>221</x>
-        <y>128</y>
-        <width>216</width>
-        <height>25</height>
+        <x>120</x>
+        <y>150</y>
+        <width>311</width>
+        <height>40</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QComboBox::drop-down {
+     subcontrol-origin: padding;
+     subcontrol- position :  top  right ;
+     width :  20px ;
+      border-left-width :  0px ;
+
+}
+ 
+QComboBox::down-arrow {
+     image:url(arrow.png);
+}</string>
       </property>
       <property name="editable">
        <bool>true</bool>
@@ -529,26 +567,26 @@ QPushButton:hover{
      <widget class="QPushButton" name="read_devices">
       <property name="geometry">
        <rect>
-        <x>366</x>
-        <y>29</y>
-        <width>71</width>
-        <height>25</height>
+        <x>330</x>
+        <y>20</y>
+        <width>101</width>
+        <height>38</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>13</pointsize>
+        <family>微软雅黑</family>
+        <pointsize>10</pointsize>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">QPushButton{
         text-align:center;
         color:white;
-        background-color:rgb(0, 144, 250);
-        border-radius:7px;
+        background-color:rgb(0, 91, 171);
 }
 QPushButton:hover{
-        background-color:rgb(24, 169, 251);
+        background-color:rgb(24, 91, 171);
 }</string>
       </property>
       <property name="text">
@@ -558,14 +596,23 @@ QPushButton:hover{
      <widget class="QSpinBox" name="adb_port">
       <property name="geometry">
        <rect>
-        <x>221</x>
-        <y>79</y>
-        <width>91</width>
-        <height>25</height>
+        <x>180</x>
+        <y>85</y>
+        <width>141</width>
+        <height>40</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>10</pointsize>
+       </font>
       </property>
       <property name="toolTip">
        <string extracomment="端口范围:1024-65535"/>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
       </property>
       <property name="minimum">
        <number>1024</number>
@@ -577,12 +624,47 @@ QPushButton:hover{
        <number>5555</number>
       </property>
      </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>100</y>
+        <width>13</width>
+        <height>13</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background:url(port.png);</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>90</y>
+        <width>31</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>端口</string>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="QPushButton" name="loginBtn">
     <property name="geometry">
      <rect>
-      <x>149</x>
+      <x>160</x>
       <y>356</y>
       <width>252</width>
       <height>40</height>
@@ -614,7 +696,7 @@ QPushButton:hover{A
     </property>
     <property name="geometry">
      <rect>
-      <x>220</x>
+      <x>280</x>
       <y>10</y>
       <width>21</width>
       <height>16</height>
