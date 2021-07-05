@@ -24,7 +24,7 @@
   </property>
   <property name="font">
    <font>
-    <family>.萍方-简</family>
+    <family>微软雅黑</family>
    </font>
   </property>
   <property name="windowTitle">
@@ -94,11 +94,14 @@ QPushButton:hover{A
   <widget class="QLabel" name="message">
    <property name="geometry">
     <rect>
-     <x>210</x>
-     <y>10</y>
-     <width>60</width>
-     <height>16</height>
+     <x>260</x>
+     <y>20</y>
+     <width>31</width>
+     <height>30</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
    </property>
    <property name="text">
     <string/>
@@ -137,7 +140,8 @@ QPushButton:hover{A
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <family>微软雅黑</family>
+     <pointsize>10</pointsize>
     </font>
    </property>
   </widget>
@@ -182,7 +186,7 @@ QPushButton:hover{A
    <property name="font">
     <font>
      <family>微软雅黑</family>
-     <pointsize>12</pointsize>
+     <pointsize>11</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -205,7 +209,7 @@ QPushButton:hover{
    <property name="geometry">
     <rect>
      <x>84</x>
-     <y>161</y>
+     <y>160</y>
      <width>378</width>
      <height>40</height>
     </rect>
@@ -269,7 +273,7 @@ QComboBox::down-arrow {
    <property name="font">
     <font>
      <family>微软雅黑</family>
-     <pointsize>10</pointsize>
+     <pointsize>8</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -280,6 +284,22 @@ QComboBox::down-arrow {
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_11">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>20</y>
+     <width>104</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background:url(logo.png);</string>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>

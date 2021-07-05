@@ -62,7 +62,7 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.connectMethod = QtWidgets.QTabWidget(self.centralwidget)
-        self.connectMethod.setGeometry(QtCore.QRect(10, 90, 551, 291))
+        self.connectMethod.setGeometry(QtCore.QRect(0, 80, 551, 301))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -123,19 +123,19 @@ class Ui_MainWindow(object):
         self.ssh_username.setObjectName("ssh_username")
         self.label_4 = QtWidgets.QLabel(self.SSH)
         self.label_4.setGeometry(QtCore.QRect(150, 20, 32, 40))
-        self.label_4.setStyleSheet("border:1px solid rgb(122, 122, 122);\n"
+        self.label_4.setStyleSheet("border:1px solid black;\n"
 "border-right:0px solid white;")
         self.label_4.setText("")
         self.label_4.setObjectName("label_4")
         self.label_5 = QtWidgets.QLabel(self.SSH)
         self.label_5.setGeometry(QtCore.QRect(150, 85, 32, 40))
-        self.label_5.setStyleSheet("border:1px solid rgb(122, 122, 122);\n"
+        self.label_5.setStyleSheet("border:1px solid black;\n"
 "border-right:0px solid white;")
         self.label_5.setText("")
         self.label_5.setObjectName("label_5")
         self.label_6 = QtWidgets.QLabel(self.SSH)
         self.label_6.setGeometry(QtCore.QRect(150, 150, 32, 40))
-        self.label_6.setStyleSheet("border:1px solid rgb(122, 122, 122);\n"
+        self.label_6.setStyleSheet("border:1px solid black;\n"
 "border-right:0px solid white;")
         self.label_6.setText("")
         self.label_6.setObjectName("label_6")
@@ -165,36 +165,46 @@ class Ui_MainWindow(object):
         self.ssh_password.setText("")
         self.ssh_password.setEchoMode(QtWidgets.QLineEdit.Password)
         self.ssh_password.setObjectName("ssh_password")
+        self.ssh_ip_label = QtWidgets.QLabel(self.SSH)
+        self.ssh_ip_label.setGeometry(QtCore.QRect(150, 60, 251, 21))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        self.ssh_ip_label.setFont(font)
+        self.ssh_ip_label.setStyleSheet("color:red;")
+        self.ssh_ip_label.setObjectName("ssh_ip_label")
+        self.ssh_username_label = QtWidgets.QLabel(self.SSH)
+        self.ssh_username_label.setGeometry(QtCore.QRect(150, 125, 251, 21))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        self.ssh_username_label.setFont(font)
+        self.ssh_username_label.setStyleSheet("color:red;")
+        self.ssh_username_label.setObjectName("ssh_username_label")
+        self.ssh_password_label = QtWidgets.QLabel(self.SSH)
+        self.ssh_password_label.setGeometry(QtCore.QRect(150, 190, 251, 21))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        self.ssh_password_label.setFont(font)
+        self.ssh_password_label.setStyleSheet("color:red;")
+        self.ssh_password_label.setObjectName("ssh_password_label")
         self.connectMethod.addTab(self.SSH, "")
         self.Telnet = QtWidgets.QWidget()
         self.Telnet.setToolTipDuration(-1)
         self.Telnet.setObjectName("Telnet")
-        self.telnet_password = QtWidgets.QLineEdit(self.Telnet)
-        self.telnet_password.setGeometry(QtCore.QRect(180, 150, 221, 40))
-        font = QtGui.QFont()
-        font.setFamily("微软雅黑")
-        font.setPointSize(10)
-        self.telnet_password.setFont(font)
-        self.telnet_password.setStyleSheet("border:1px solid black;\n"
-"border-left:0px solid white;")
-        self.telnet_password.setText("")
-        self.telnet_password.setEchoMode(QtWidgets.QLineEdit.Password)
-        self.telnet_password.setObjectName("telnet_password")
         self.label_23 = QtWidgets.QLabel(self.Telnet)
         self.label_23.setGeometry(QtCore.QRect(150, 20, 32, 40))
-        self.label_23.setStyleSheet("border:1px solid rgb(122, 122, 122);\n"
+        self.label_23.setStyleSheet("border:1px solid black;\n"
 "border-right:0px solid white;")
         self.label_23.setText("")
         self.label_23.setObjectName("label_23")
         self.label_24 = QtWidgets.QLabel(self.Telnet)
         self.label_24.setGeometry(QtCore.QRect(150, 85, 32, 40))
-        self.label_24.setStyleSheet("border:1px solid rgb(122, 122, 122);\n"
+        self.label_24.setStyleSheet("border:1px solid black;\n"
 "border-right:0px solid white;")
         self.label_24.setText("")
         self.label_24.setObjectName("label_24")
         self.label_25 = QtWidgets.QLabel(self.Telnet)
         self.label_25.setGeometry(QtCore.QRect(150, 150, 32, 40))
-        self.label_25.setStyleSheet("border:1px solid rgb(122, 122, 122);\n"
+        self.label_25.setStyleSheet("border:1px solid black;\n"
 "border-right:0px solid white;")
         self.label_25.setText("")
         self.label_25.setObjectName("label_25")
@@ -213,15 +223,6 @@ class Ui_MainWindow(object):
         self.label_40.setStyleSheet("background:url(username.png);")
         self.label_40.setText("")
         self.label_40.setObjectName("label_40")
-        self.telnet_username = QtWidgets.QLineEdit(self.Telnet)
-        self.telnet_username.setGeometry(QtCore.QRect(180, 85, 221, 40))
-        font = QtGui.QFont()
-        font.setFamily("微软雅黑")
-        font.setPointSize(10)
-        self.telnet_username.setFont(font)
-        self.telnet_username.setStyleSheet("border:1px solid black;\n"
-"border-left:0px solid white;")
-        self.telnet_username.setObjectName("telnet_username")
         self.telnet_host = QtWidgets.QLineEdit(self.Telnet)
         self.telnet_host.setGeometry(QtCore.QRect(180, 20, 221, 40))
         font = QtGui.QFont()
@@ -232,6 +233,47 @@ class Ui_MainWindow(object):
 "border-left:0px solid white;")
         self.telnet_host.setText("")
         self.telnet_host.setObjectName("telnet_host")
+        self.telnet_username = QtWidgets.QLineEdit(self.Telnet)
+        self.telnet_username.setGeometry(QtCore.QRect(180, 85, 221, 40))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(10)
+        self.telnet_username.setFont(font)
+        self.telnet_username.setStyleSheet("border:1px solid black;\n"
+"border-left:0px solid white;")
+        self.telnet_username.setObjectName("telnet_username")
+        self.telnet_password = QtWidgets.QLineEdit(self.Telnet)
+        self.telnet_password.setGeometry(QtCore.QRect(180, 150, 221, 40))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(10)
+        self.telnet_password.setFont(font)
+        self.telnet_password.setStyleSheet("border:1px solid black;\n"
+"border-left:0px solid white;")
+        self.telnet_password.setText("")
+        self.telnet_password.setEchoMode(QtWidgets.QLineEdit.Password)
+        self.telnet_password.setObjectName("telnet_password")
+        self.telnet_ip_label = QtWidgets.QLabel(self.Telnet)
+        self.telnet_ip_label.setGeometry(QtCore.QRect(150, 60, 251, 21))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        self.telnet_ip_label.setFont(font)
+        self.telnet_ip_label.setStyleSheet("color:red;")
+        self.telnet_ip_label.setObjectName("telnet_ip_label")
+        self.telnet_username_label = QtWidgets.QLabel(self.Telnet)
+        self.telnet_username_label.setGeometry(QtCore.QRect(150, 125, 251, 21))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        self.telnet_username_label.setFont(font)
+        self.telnet_username_label.setStyleSheet("color:red;")
+        self.telnet_username_label.setObjectName("telnet_username_label")
+        self.telnet_password_label = QtWidgets.QLabel(self.Telnet)
+        self.telnet_password_label.setGeometry(QtCore.QRect(150, 190, 251, 21))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        self.telnet_password_label.setFont(font)
+        self.telnet_password_label.setStyleSheet("color:red;")
+        self.telnet_password_label.setObjectName("telnet_password_label")
         self.connectMethod.addTab(self.Telnet, "")
         self.ADB = QtWidgets.QWidget()
         self.ADB.setObjectName("ADB")
@@ -329,7 +371,7 @@ class Ui_MainWindow(object):
         self.label_2.setObjectName("label_2")
         self.connectMethod.addTab(self.ADB, "")
         self.loginBtn = QtWidgets.QPushButton(self.centralwidget)
-        self.loginBtn.setGeometry(QtCore.QRect(160, 356, 252, 40))
+        self.loginBtn.setGeometry(QtCore.QRect(150, 356, 252, 40))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(12)
@@ -343,15 +385,6 @@ class Ui_MainWindow(object):
 "        background-color:rgb(24, 91, 171);\n"
 "}")
         self.loginBtn.setObjectName("loginBtn")
-        self.message = QtWidgets.QLabel(self.centralwidget)
-        self.message.setEnabled(True)
-        self.message.setGeometry(QtCore.QRect(280, 10, 21, 16))
-        self.message.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.message.setAutoFillBackground(False)
-        self.message.setText("")
-        self.message.setAlignment(QtCore.Qt.AlignCenter)
-        self.message.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse)
-        self.message.setObjectName("message")
         self.label_8 = QtWidgets.QLabel(self.centralwidget)
         self.label_8.setGeometry(QtCore.QRect(120, 418, 311, 21))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
@@ -361,11 +394,21 @@ class Ui_MainWindow(object):
         self.label_8.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
-        font.setPointSize(10)
+        font.setPointSize(8)
         self.label_8.setFont(font)
         self.label_8.setStyleSheet("color:rgb(140, 140, 140);")
         self.label_8.setAlignment(QtCore.Qt.AlignCenter)
         self.label_8.setObjectName("label_8")
+        self.label_3 = QtWidgets.QLabel(self.centralwidget)
+        self.label_3.setGeometry(QtCore.QRect(20, 20, 104, 28))
+        self.label_3.setStyleSheet("background:url(logo.png);")
+        self.label_3.setText("")
+        self.label_3.setObjectName("label_3")
+        self.message = QtWidgets.QLabel(self.centralwidget)
+        self.message.setGeometry(QtCore.QRect(260, 20, 31, 30))
+        self.message.setStyleSheet("")
+        self.message.setText("")
+        self.message.setObjectName("message")
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -382,10 +425,16 @@ class Ui_MainWindow(object):
         self.ssh_host.setPlaceholderText(_translate("MainWindow", "请输入传输单元IP地址"))
         self.ssh_username.setPlaceholderText(_translate("MainWindow", "请输入用户名"))
         self.ssh_password.setPlaceholderText(_translate("MainWindow", "请输入密码"))
+        self.ssh_ip_label.setText(_translate("MainWindow", "传输单元IP地址不能为空！"))
+        self.ssh_username_label.setText(_translate("MainWindow", "用户名不能为空！"))
+        self.ssh_password_label.setText(_translate("MainWindow", "密码不能为空！"))
         self.connectMethod.setTabText(self.connectMethod.indexOf(self.SSH), _translate("MainWindow", "SSH"))
-        self.telnet_password.setPlaceholderText(_translate("MainWindow", "请输入密码"))
-        self.telnet_username.setPlaceholderText(_translate("MainWindow", "请输入用户名"))
         self.telnet_host.setPlaceholderText(_translate("MainWindow", "请输入传输单元IP地址"))
+        self.telnet_username.setPlaceholderText(_translate("MainWindow", "请输入用户名"))
+        self.telnet_password.setPlaceholderText(_translate("MainWindow", "请输入密码"))
+        self.telnet_ip_label.setText(_translate("MainWindow", "传输单元IP地址不能为空！"))
+        self.telnet_username_label.setText(_translate("MainWindow", "用户名不能为空！"))
+        self.telnet_password_label.setText(_translate("MainWindow", "密码不能为空！"))
         self.connectMethod.setTabText(self.connectMethod.indexOf(self.Telnet), _translate("MainWindow", "Telnet"))
         self.open_port.setText(_translate("MainWindow", "开启无线连接"))
         self.read_devices.setText(_translate("MainWindow", "读取设备"))
@@ -394,23 +443,24 @@ class Ui_MainWindow(object):
         self.loginBtn.setText(_translate("MainWindow", "登录"))
         self.label_8.setText(_translate("MainWindow", "Copyright © 2021 苏州德姆斯信息技术有限公司出品"))
 
-
         for lineEdit in self.MainWindow.findChildren(QtWidgets.QLineEdit):
-                lineEdit.lower()
+            lineEdit.lower()
         self.tabs = ["SSH", "Telnet", "ADB"]
+        self.tips = ["传输单元IP地址", "用户名", "密码"]
         self.currentTabIndex = 0
         self.currentTab = getattr(self, self.tabs[self.currentTabIndex])
-        self.inputList = self.currentTab.findChildren(QtWidgets.QLineEdit)
+        self.inputList = self.currentTab.findChildren(QtWidgets.QLineEdit)[::-1]
+        self.labelList = self.currentTab.findChildren(QtWidgets.QLabel)
 
         self.loginBtn.clicked.connect(self.connectTransUnit)
         self.connectMethod.currentChanged.connect(lambda :self.tabChanged(self.connectMethod.currentIndex()))
 
         self.read_devices.clicked.connect(self.readAdbDevices)
 
-    def resetStyle(self, widget, label):
-        widget.setToolTip("")
-        widget.setStyleSheet("")
-        label.setStyleSheet("")
+    def resetStyle(self, lineEdit, label, tip):
+        lineEdit.setStyleSheet("border:1px solid black;border-left:0px solid white;")
+        label.setStyleSheet("border:1px solid rgb(122, 122, 122);border-right:0px solid white;")
+        tip.setText("")
 
     def tabChanged(self, preTab):
         if(preTab == 2):
@@ -419,28 +469,28 @@ class Ui_MainWindow(object):
         preLabelList = getattr(self, self.tabs[preTab]).findChildren(QtWidgets.QLabel)
         for i in range(len(preInputList)):
             preInputList[i].setText("")
-            self.resetStyle(preInputList[i], preLabelList[i])
+            self.resetStyle(preInputList[i], preLabelList[i], preLabelList[i+6])
         # for lineEdit in preInputList:
         #     lineEdit.setText("")
         #     self.resetStyle(lineEdit, )
 
         self.currentTabIndex = self.connectMethod.currentIndex()
         self.currentTab = getattr(self, self.tabs[self.currentTabIndex])
-        self.inputList = self.currentTab.findChildren(QtWidgets.QLineEdit)
+        self.inputList = self.currentTab.findChildren(QtWidgets.QLineEdit)[::-1]
         self.labelList = self.currentTab.findChildren(QtWidgets.QLabel)
 
     def checkInput(self):
 
         flag = True
         # 循环会出现索引问题
-        self.inputList[0].textChanged.connect(lambda :self.resetStyle(self.inputList[0], self.labelList[0]))
-        self.inputList[1].textChanged.connect(lambda :self.resetStyle(self.inputList[1], self.labelList[1]))
-        self.inputList[2].textChanged.connect(lambda :self.resetStyle(self.inputList[2], self.labelList[2]))
+        self.inputList[0].textChanged.connect(lambda :self.resetStyle(self.inputList[0], self.labelList[0], self.labelList[6]))
+        self.inputList[1].textChanged.connect(lambda :self.resetStyle(self.inputList[1], self.labelList[1], self.labelList[7]))
+        self.inputList[2].textChanged.connect(lambda :self.resetStyle(self.inputList[2], self.labelList[2], self.labelList[8]))
 
         if(re.findall(r"^((2((5[0-5])|([0-4]\d)))|([0-1]?\d{1,2}))(\.((2((5[0-5])|([0-4]\d)))|([0-1]?\d{1,2}))){3}$", self.inputList[0].text()) == []):
                 self.inputList[0].setStyleSheet("QLineEdit{border:1px ridge red;border-left:0px solid white;} QToolTip{border:1px solid white}")
                 self.labelList[0].setStyleSheet("border:1px ridge red;border-right:0px solid white;")
-                self.inputList[0].setToolTip("IP地址格式错误！")
+                self.labelList[6].setText(self.tips[0] + "格式错误！")
 
                 flag = False
 
@@ -448,8 +498,7 @@ class Ui_MainWindow(object):
             if(self.inputList[i].text() == ""):
                 self.inputList[i].setStyleSheet("QLineEdit{border:1px ridge red;border-left:0px solid white;} QToolTip{border:1px solid white}")
                 self.labelList[i].setStyleSheet("border:1px ridge red;border-right:0px solid white;")
-                self.inputList[i].setToolTip("不能为空！")
-
+                self.labelList[i+6].setText(self.tips[i] + "不能为空！")
                 flag = False
 
         return flag
@@ -479,11 +528,11 @@ class Ui_MainWindow(object):
             self.status.changeFlag(1)
         else:
             self.message.setText("⚠️ " + message)
-            self.message.setStyleSheet("color: #FF4500;background-color:white;border:3px outset whitesmoke;border-radius:5px;")
+            self.message.setStyleSheet("border:1px solid red;background-color:#FFCCC7;")
 
         self.message.adjustSize()
         x = int((self.centralwidget.width() - self.message.width()) / 2)
-        self.message.setGeometry(QtCore.QRect(x, self.message.y(), self.message.width() + 3, self.message.height() + 5))
+        self.message.setGeometry(QtCore.QRect(x, self.message.y(), self.message.width() + 3, 30))
 
         self.timer.timeout.connect(self.showPrompt)
         self.timer.start(self.timecount*1000)

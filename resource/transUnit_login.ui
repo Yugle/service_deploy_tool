@@ -31,6 +31,11 @@
     <height>460</height>
    </size>
   </property>
+  <property name="font">
+   <font>
+    <family>微软雅黑</family>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>传输单元服务部署工具</string>
   </property>
@@ -41,10 +46,10 @@
    <widget class="QTabWidget" name="connectMethod">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>90</y>
+      <x>0</x>
+      <y>80</y>
       <width>551</width>
-      <height>291</height>
+      <height>301</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -98,7 +103,7 @@ QTabBar::tab:selected{
      <enum>QTabWidget::Rounded</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="SSH">
      <attribute name="title">
@@ -163,7 +168,7 @@ border-left:0px solid white;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">border:1px solid rgb(122, 122, 122);
+       <string notr="true">border:1px solid black;
 border-right:0px solid white;</string>
       </property>
       <property name="text">
@@ -180,7 +185,7 @@ border-right:0px solid white;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">border:1px solid rgb(122, 122, 122);
+       <string notr="true">border:1px solid black;
 border-right:0px solid white;</string>
       </property>
       <property name="text">
@@ -197,7 +202,7 @@ border-right:0px solid white;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">border:1px solid rgb(122, 122, 122);
+       <string notr="true">border:1px solid black;
 border-right:0px solid white;</string>
       </property>
       <property name="text">
@@ -281,6 +286,69 @@ border-left:0px solid white;</string>
        <string>请输入密码</string>
       </property>
      </widget>
+     <widget class="QLabel" name="ssh_ip_label">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>60</y>
+        <width>251</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color:red;</string>
+      </property>
+      <property name="text">
+       <string>传输单元IP地址不能为空！</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="ssh_username_label">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>125</y>
+        <width>251</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color:red;</string>
+      </property>
+      <property name="text">
+       <string>用户名不能为空！</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="ssh_password_label">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>190</y>
+        <width>251</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color:red;</string>
+      </property>
+      <property name="text">
+       <string>密码不能为空！</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="Telnet">
      <property name="toolTipDuration">
@@ -289,35 +357,6 @@ border-left:0px solid white;</string>
      <attribute name="title">
       <string>Telnet</string>
      </attribute>
-     <widget class="QLineEdit" name="telnet_password">
-      <property name="geometry">
-       <rect>
-        <x>180</x>
-        <y>150</y>
-        <width>221</width>
-        <height>40</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>微软雅黑</family>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">border:1px solid black;
-border-left:0px solid white;</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="echoMode">
-       <enum>QLineEdit::Password</enum>
-      </property>
-      <property name="placeholderText">
-       <string>请输入密码</string>
-      </property>
-     </widget>
      <widget class="QLabel" name="label_23">
       <property name="geometry">
        <rect>
@@ -328,7 +367,7 @@ border-left:0px solid white;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">border:1px solid rgb(122, 122, 122);
+       <string notr="true">border:1px solid black;
 border-right:0px solid white;</string>
       </property>
       <property name="text">
@@ -345,7 +384,7 @@ border-right:0px solid white;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">border:1px solid rgb(122, 122, 122);
+       <string notr="true">border:1px solid black;
 border-right:0px solid white;</string>
       </property>
       <property name="text">
@@ -362,7 +401,7 @@ border-right:0px solid white;</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">border:1px solid rgb(122, 122, 122);
+       <string notr="true">border:1px solid black;
 border-right:0px solid white;</string>
       </property>
       <property name="text">
@@ -417,29 +456,6 @@ border-right:0px solid white;</string>
        <string/>
       </property>
      </widget>
-     <widget class="QLineEdit" name="telnet_username">
-      <property name="geometry">
-       <rect>
-        <x>180</x>
-        <y>85</y>
-        <width>221</width>
-        <height>40</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>微软雅黑</family>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">border:1px solid black;
-border-left:0px solid white;</string>
-      </property>
-      <property name="placeholderText">
-       <string>请输入用户名</string>
-      </property>
-     </widget>
      <widget class="QLineEdit" name="telnet_host">
       <property name="geometry">
        <rect>
@@ -464,6 +480,121 @@ border-left:0px solid white;</string>
       </property>
       <property name="placeholderText">
        <string>请输入传输单元IP地址</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="telnet_username">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>85</y>
+        <width>221</width>
+        <height>40</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border:1px solid black;
+border-left:0px solid white;</string>
+      </property>
+      <property name="placeholderText">
+       <string>请输入用户名</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="telnet_password">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>150</y>
+        <width>221</width>
+        <height>40</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border:1px solid black;
+border-left:0px solid white;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="echoMode">
+       <enum>QLineEdit::Password</enum>
+      </property>
+      <property name="placeholderText">
+       <string>请输入密码</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="telnet_ip_label">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>60</y>
+        <width>251</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color:red;</string>
+      </property>
+      <property name="text">
+       <string>传输单元IP地址不能为空！</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="telnet_username_label">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>125</y>
+        <width>251</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color:red;</string>
+      </property>
+      <property name="text">
+       <string>用户名不能为空！</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="telnet_password_label">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>190</y>
+        <width>251</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color:red;</string>
+      </property>
+      <property name="text">
+       <string>密码不能为空！</string>
       </property>
      </widget>
     </widget>
@@ -664,7 +795,7 @@ QPushButton:hover{
    <widget class="QPushButton" name="loginBtn">
     <property name="geometry">
      <rect>
-      <x>160</x>
+      <x>150</x>
       <y>356</y>
       <width>252</width>
       <height>40</height>
@@ -690,34 +821,6 @@ QPushButton:hover{A
      <string>登录</string>
     </property>
    </widget>
-   <widget class="QLabel" name="message">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>280</x>
-      <y>10</y>
-      <width>21</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="layoutDirection">
-     <enum>Qt::LeftToRight</enum>
-    </property>
-    <property name="autoFillBackground">
-     <bool>false</bool>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-    <property name="textInteractionFlags">
-     <set>Qt::LinksAccessibleByMouse</set>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_8">
     <property name="geometry">
      <rect>
@@ -736,7 +839,7 @@ QPushButton:hover{A
     <property name="font">
      <font>
       <family>微软雅黑</family>
-      <pointsize>10</pointsize>
+      <pointsize>8</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -747,6 +850,38 @@ QPushButton:hover{A
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>20</y>
+      <width>104</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background:url(logo.png);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="message">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>20</y>
+      <width>31</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string/>
     </property>
    </widget>
   </widget>

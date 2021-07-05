@@ -41,7 +41,7 @@ class Ui_Deploy(object):
         Deploy.setMinimumSize(QtCore.QSize(550, 460))
         Deploy.setMaximumSize(QtCore.QSize(550, 460))
         font = QtGui.QFont()
-        font.setFamily(".萍方-简")
+        font.setFamily("微软雅黑")
         Deploy.setFont(font)
         Deploy.setStyleSheet("background-color:white;")
         self.deploy = QtWidgets.QPushButton(Deploy)
@@ -75,7 +75,8 @@ class Ui_Deploy(object):
 "}")
         self.update.setObjectName("update")
         self.message = QtWidgets.QLabel(Deploy)
-        self.message.setGeometry(QtCore.QRect(210, 10, 60, 16))
+        self.message.setGeometry(QtCore.QRect(260, 20, 31, 30))
+        self.message.setStyleSheet("")
         self.message.setText("")
         self.message.setObjectName("message")
         self.title = QtWidgets.QLabel(Deploy)
@@ -89,7 +90,8 @@ class Ui_Deploy(object):
         self.file_path = QtWidgets.QLineEdit(Deploy)
         self.file_path.setGeometry(QtCore.QRect(84, 236, 297, 40))
         font = QtGui.QFont()
-        font.setPointSize(14)
+        font.setFamily("微软雅黑")
+        font.setPointSize(10)
         self.file_path.setFont(font)
         self.file_path.setObjectName("file_path")
         self.open_file = QtWidgets.QPushButton(Deploy)
@@ -111,7 +113,7 @@ class Ui_Deploy(object):
         self.back.setGeometry(QtCore.QRect(37, 375, 71, 21))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
-        font.setPointSize(12)
+        font.setPointSize(11)
         self.back.setFont(font)
         self.back.setStyleSheet("QPushButton{\n"
 "        text-align:center;\n"
@@ -125,7 +127,7 @@ class Ui_Deploy(object):
 "}")
         self.back.setObjectName("back")
         self.service_type = QtWidgets.QComboBox(Deploy)
-        self.service_type.setGeometry(QtCore.QRect(84, 161, 378, 40))
+        self.service_type.setGeometry(QtCore.QRect(84, 160, 378, 40))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(10)
@@ -157,11 +159,16 @@ class Ui_Deploy(object):
         self.label_8.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
-        font.setPointSize(10)
+        font.setPointSize(8)
         self.label_8.setFont(font)
         self.label_8.setStyleSheet("color:rgb(140, 140, 140);")
         self.label_8.setAlignment(QtCore.Qt.AlignCenter)
         self.label_8.setObjectName("label_8")
+        self.label_11 = QtWidgets.QLabel(Deploy)
+        self.label_11.setGeometry(QtCore.QRect(20, 20, 104, 28))
+        self.label_11.setStyleSheet("background:url(logo.png);")
+        self.label_11.setText("")
+        self.label_11.setObjectName("label_11")
 
         self.retranslateUi(Deploy)
         QtCore.QMetaObject.connectSlotsByName(Deploy)
@@ -177,29 +184,28 @@ class Ui_Deploy(object):
         self.service_type.setItemText(0, _translate("Deploy", "可视化诊断服务"))
         self.label_8.setText(_translate("Deploy", "Copyright © 2021 苏州德姆斯信息技术有限公司出品"))
 
-
-        self.openFile.clicked.connect(self.chooseFile)
+        self.open_file.clicked.connect(self.chooseFile)
         self.deploy.clicked.connect(self.deploySvc)
         self.update.clicked.connect(self.updateSvc)
         self.back.clicked.connect(self.backToMainWindow)
-        self.filePath.textChanged.connect(lambda :self.filePath.setStyleSheet(""))
+        self.file_path.textChanged.connect(lambda :self.file_path.setStyleSheet(""))
         self.showMessage({"message": "登录成功！", "type": 0})
 
     def chooseFile(self):
         self.filePathGot = QFileDialog.getOpenFileName(None, "选择文件",'', "Service File(*.*)")[0]
-        self.filePath.setText(self.filePathGot)
+        self.file_path.setText(self.filePathGot)
 
     def deploySvc(self):
         self.deploy.setText("部署中...")
         self.deploy.setEnabled(False)
-        localFilePath = self.filePath.text()
+        localFilePath = self.file_path.text()
 
         if(Path(localFilePath).is_file()):
             self.upload_thread = UploadFileAndDeployThread(localFilePath, self.client)
             self.upload_thread.result.connect(self.showMessage)
             self.upload_thread.start()
         else:
-            self.filePath.setStyleSheet("QLineEdit{border:3px ridge #CD5C5C;border-radius:5px;}")
+            self.file_path.setStyleSheet("QLineEdit{border:3px ridge #CD5C5C;border-radius:5px;}")
             message = {"message": "文件路径有误！", "type": 0}
             self.showMessage(message)
 
@@ -216,15 +222,15 @@ class Ui_Deploy(object):
 
         if(message in ["操作成功！", "登录成功！"]):
             self.message.setText("✅ " + message)
-            self.message.setStyleSheet("color: green;background-color:white;border:3px outset whitesmoke;border-radius:5px;")
+            self.message.setStyleSheet("border:1px solid green;background-color:#7FFFD4;color:black;")
             
         else:
             self.message.setText("⚠️ " + message)
-            self.message.setStyleSheet("color: #FF4500;background-color:white;border:3px outset whitesmoke;border-radius:5px;")
+            self.message.setStyleSheet("border:1px solid red;background-color:#FFCCC7;color:black;")
 
         self.message.adjustSize()
-        x = int((460 - self.message.width()) / 2)
-        self.message.setGeometry(QtCore.QRect(x, self.message.y(), self.message.width() + 3, self.message.height() + 5))
+        x = int((550 - self.message.width()) / 2)
+        self.message.setGeometry(QtCore.QRect(x, self.message.y(), self.message.width() + 3, 30))
 
         self.timer.timeout.connect(self.showPrompt)
         self.timer.start(self.timecount*1000)
