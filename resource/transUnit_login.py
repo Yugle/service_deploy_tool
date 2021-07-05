@@ -506,7 +506,9 @@ class Ui_MainWindow(object):
 
             if(self.currentTabIndex == 0):
                 self.client = ConnectTransUnitBySSH(self.ssh_host.text(), self.ssh_username.text(), self.ssh_password.text())
-            
+            elif(self.currentTabIndex == 1):
+                self.client = ConnectTransUnitByTelnet(self.telnet_host.text(), self.telnet_username.text(), self.telnet_password.text())
+
             self.connect_thread = ConnectTransUnitThread(self.currentTabIndex, self.client)
             self.connect_thread.result.connect(self.showMessage)
             self.connect_thread.start()

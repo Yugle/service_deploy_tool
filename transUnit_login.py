@@ -73,7 +73,6 @@ class Ui_MainWindow(object):
         font.setPointSize(10)
         self.connectMethod.setFont(font)
         self.connectMethod.setFocusPolicy(QtCore.Qt.TabFocus)
-        self.connectMethod.setToolTipDuration(-2)
         self.connectMethod.setStyleSheet("QTabWidget{\n"
 "    background-color:transparent;\n"
 "}\n"
@@ -188,7 +187,6 @@ class Ui_MainWindow(object):
         self.ssh_password_label.setObjectName("ssh_password_label")
         self.connectMethod.addTab(self.SSH, "")
         self.Telnet = QtWidgets.QWidget()
-        self.Telnet.setToolTipDuration(-1)
         self.Telnet.setObjectName("Telnet")
         self.label_23 = QtWidgets.QLabel(self.Telnet)
         self.label_23.setGeometry(QtCore.QRect(150, 20, 32, 40))
@@ -351,7 +349,6 @@ class Ui_MainWindow(object):
         font.setFamily("微软雅黑")
         font.setPointSize(10)
         self.adb_port.setFont(font)
-        self.adb_port.setToolTip("")
         self.adb_port.setStyleSheet("")
         self.adb_port.setMinimum(1024)
         self.adb_port.setMaximum(65535)
@@ -421,20 +418,19 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "传输单元服务部署工具"))
-        self.connectMethod.setToolTip(_translate("MainWindow", "<html><head/><body><p><br/></p></body></html>"))
         self.ssh_host.setPlaceholderText(_translate("MainWindow", "请输入传输单元IP地址"))
         self.ssh_username.setPlaceholderText(_translate("MainWindow", "请输入用户名"))
         self.ssh_password.setPlaceholderText(_translate("MainWindow", "请输入密码"))
-        self.ssh_ip_label.setText(_translate("MainWindow", "传输单元IP地址不能为空！"))
-        self.ssh_username_label.setText(_translate("MainWindow", "用户名不能为空！"))
-        self.ssh_password_label.setText(_translate("MainWindow", "密码不能为空！"))
+        # self.ssh_ip_label.setText(_translate("MainWindow", "传输单元IP地址不能为空！"))
+        # self.ssh_username_label.setText(_translate("MainWindow", "用户名不能为空！"))
+        # self.ssh_password_label.setText(_translate("MainWindow", "密码不能为空！"))
         self.connectMethod.setTabText(self.connectMethod.indexOf(self.SSH), _translate("MainWindow", "SSH"))
         self.telnet_host.setPlaceholderText(_translate("MainWindow", "请输入传输单元IP地址"))
         self.telnet_username.setPlaceholderText(_translate("MainWindow", "请输入用户名"))
         self.telnet_password.setPlaceholderText(_translate("MainWindow", "请输入密码"))
-        self.telnet_ip_label.setText(_translate("MainWindow", "传输单元IP地址不能为空！"))
-        self.telnet_username_label.setText(_translate("MainWindow", "用户名不能为空！"))
-        self.telnet_password_label.setText(_translate("MainWindow", "密码不能为空！"))
+        # self.telnet_ip_label.setText(_translate("MainWindow", "传输单元IP地址不能为空！"))
+        # self.telnet_username_label.setText(_translate("MainWindow", "用户名不能为空！"))
+        # self.telnet_password_label.setText(_translate("MainWindow", "密码不能为空！"))
         self.connectMethod.setTabText(self.connectMethod.indexOf(self.Telnet), _translate("MainWindow", "Telnet"))
         self.open_port.setText(_translate("MainWindow", "开启无线连接"))
         self.read_devices.setText(_translate("MainWindow", "读取设备"))
@@ -488,7 +484,7 @@ class Ui_MainWindow(object):
         self.inputList[2].textChanged.connect(lambda :self.resetStyle(self.inputList[2], self.labelList[2], self.labelList[8]))
 
         if(re.findall(r"^((2((5[0-5])|([0-4]\d)))|([0-1]?\d{1,2}))(\.((2((5[0-5])|([0-4]\d)))|([0-1]?\d{1,2}))){3}$", self.inputList[0].text()) == []):
-                self.inputList[0].setStyleSheet("QLineEdit{border:1px ridge red;border-left:0px solid white;} QToolTip{border:1px solid white}")
+                self.inputList[0].setStyleSheet("QLineEdit{border:1px ridge red;border-left:0px solid white;}")
                 self.labelList[0].setStyleSheet("border:1px ridge red;border-right:0px solid white;")
                 self.labelList[6].setText(self.tips[0] + "格式错误！")
 
@@ -496,7 +492,7 @@ class Ui_MainWindow(object):
 
         for i in range(len(self.inputList)):
             if(self.inputList[i].text() == ""):
-                self.inputList[i].setStyleSheet("QLineEdit{border:1px ridge red;border-left:0px solid white;} QToolTip{border:1px solid white}")
+                self.inputList[i].setStyleSheet("QLineEdit{border:1px ridge red;border-left:0px solid white;}")
                 self.labelList[i].setStyleSheet("border:1px ridge red;border-right:0px solid white;")
                 self.labelList[i+6].setText(self.tips[i] + "不能为空！")
                 flag = False
@@ -510,7 +506,9 @@ class Ui_MainWindow(object):
 
             if(self.currentTabIndex == 0):
                 self.client = ConnectTransUnitBySSH(self.ssh_host.text(), self.ssh_username.text(), self.ssh_password.text())
-            
+            elif(self.currentTabIndex == 1):
+                self.client = ConnectTransUnitByTelnet(self.telnet_host.text(), self.telnet_username.text(), self.telnet_password.text())
+
             self.connect_thread = ConnectTransUnitThread(self.currentTabIndex, self.client)
             self.connect_thread.result.connect(self.showMessage)
             self.connect_thread.start()
