@@ -6,21 +6,26 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>460</width>
-    <height>420</height>
+    <width>550</width>
+    <height>460</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>460</width>
-    <height>420</height>
+    <width>550</width>
+    <height>460</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>460</width>
-    <height>420</height>
+    <width>550</width>
+    <height>460</height>
    </size>
+  </property>
+  <property name="font">
+   <font>
+    <family>微软雅黑</family>
+   </font>
   </property>
   <property name="windowTitle">
    <string>传输单元服务部署工具</string>
@@ -31,21 +36,26 @@
   <widget class="QPushButton" name="deploy">
    <property name="geometry">
     <rect>
-     <x>100</x>
-     <y>300</y>
-     <width>101</width>
-     <height>41</height>
+     <x>138</x>
+     <y>312</y>
+     <width>117</width>
+     <height>40</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+     <pointsize>11</pointsize>
+    </font>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton{
         text-align:center;
         color:white;
-        background-color:rgb(0, 144, 250);
-        border-radius:10px;
+        background-color:rgb(0, 91, 171);
 }
-QPushButton:hover{
-        background-color:rgb(24, 169, 251);
+QPushButton:hover{A
+        background-color:rgb(24, 91, 171);
 }</string>
    </property>
    <property name="text">
@@ -55,21 +65,26 @@ QPushButton:hover{
   <widget class="QPushButton" name="update">
    <property name="geometry">
     <rect>
-     <x>260</x>
-     <y>300</y>
-     <width>91</width>
-     <height>41</height>
+     <x>295</x>
+     <y>312</y>
+     <width>117</width>
+     <height>40</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+     <pointsize>11</pointsize>
+    </font>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton{
         text-align:center;
         color:white;
-        background-color:rgb(0, 144, 250);
-        border-radius:10px;
+        background-color:rgb(0, 91, 171);
 }
-QPushButton:hover{
-        background-color:rgb(24, 169, 251);
+QPushButton:hover{A
+        background-color:rgb(24, 91, 171);
 }</string>
    </property>
    <property name="text">
@@ -79,11 +94,14 @@ QPushButton:hover{
   <widget class="QLabel" name="message">
    <property name="geometry">
     <rect>
-     <x>210</x>
-     <y>10</y>
-     <width>60</width>
-     <height>16</height>
+     <x>260</x>
+     <y>20</y>
+     <width>31</width>
+     <height>30</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
    </property>
    <property name="text">
     <string/>
@@ -92,57 +110,64 @@ QPushButton:hover{
   <widget class="QLabel" name="title">
    <property name="geometry">
     <rect>
-     <x>70</x>
-     <y>60</y>
-     <width>331</width>
-     <height>41</height>
+     <x>158</x>
+     <y>89</y>
+     <width>234</width>
+     <height>25</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>24</pointsize>
+     <family>微软雅黑</family>
+     <pointsize>18</pointsize>
     </font>
    </property>
    <property name="text">
     <string>传输单元服务部署</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignHCenter|Qt::AlignTop</set>
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLineEdit" name="file_path">
    <property name="geometry">
     <rect>
-     <x>190</x>
-     <y>190</y>
-     <width>211</width>
-     <height>25</height>
+     <x>84</x>
+     <y>236</y>
+     <width>297</width>
+     <height>40</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <family>微软雅黑</family>
+     <pointsize>10</pointsize>
     </font>
    </property>
   </widget>
   <widget class="QPushButton" name="open_file">
    <property name="geometry">
     <rect>
-     <x>190</x>
-     <y>230</y>
-     <width>211</width>
-     <height>30</height>
+     <x>380</x>
+     <y>237</y>
+     <width>81</width>
+     <height>38</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+     <pointsize>10</pointsize>
+    </font>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton{
         text-align:center;
         color:white;
-        background-color:rgb(0, 144, 250);
-        border-radius:10px;
+        background-color:rgb(0, 91, 171);
 }
-QPushButton:hover{
-        background-color:rgb(24, 169, 251);
+QPushButton:hover{A
+        background-color:rgb(24, 91, 171);
 }</string>
    </property>
    <property name="text">
@@ -152,16 +177,22 @@ QPushButton:hover{
   <widget class="QPushButton" name="back">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>370</y>
-     <width>61</width>
+     <x>37</x>
+     <y>375</y>
+     <width>71</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+     <pointsize>11</pointsize>
+    </font>
    </property>
    <property name="styleSheet">
     <string notr="true">QPushButton{
         text-align:center;
-        color:rgb(0, 144, 250);
+        color:#005BAB;
 		backfground:transparent;
         border-radius:10px;
 }
@@ -171,71 +202,36 @@ QPushButton:hover{
 }</string>
    </property>
    <property name="text">
-    <string>← 返回</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_2">
-   <property name="geometry">
-    <rect>
-     <x>70</x>
-     <y>130</y>
-     <width>111</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>14</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>服务类型:</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_3">
-   <property name="geometry">
-    <rect>
-     <x>70</x>
-     <y>180</y>
-     <width>101</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>14</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>服务文件路径:</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
+    <string> 返回</string>
    </property>
   </widget>
   <widget class="QComboBox" name="service_type">
    <property name="geometry">
     <rect>
-     <x>190</x>
-     <y>140</y>
-     <width>211</width>
-     <height>25</height>
+     <x>84</x>
+     <y>160</y>
+     <width>378</width>
+     <height>40</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QComboBox::drop-down {
+     subcontrol-origin: padding;
+     subcontrol- position :  top  right ;
+     width :  20px ;
+      border-left-width :  0px ;
+
+}
+ 
+QComboBox::down-arrow {
+     image:url(arrow.png);
+}</string>
    </property>
    <item>
     <property name="text">
@@ -243,13 +239,29 @@ QPushButton:hover{
     </property>
    </item>
   </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>380</y>
+     <width>16</width>
+     <height>13</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background:url(back.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
   <widget class="QLabel" name="label_8">
    <property name="geometry">
     <rect>
      <x>120</x>
-     <y>390</y>
-     <width>241</width>
-     <height>16</height>
+     <y>418</y>
+     <width>311</width>
+     <height>21</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -260,7 +272,8 @@ QPushButton:hover{
    </property>
    <property name="font">
     <font>
-     <pointsize>10</pointsize>
+     <family>微软雅黑</family>
+     <pointsize>8</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -268,6 +281,25 @@ QPushButton:hover{
    </property>
    <property name="text">
     <string>Copyright © 2021 苏州德姆斯信息技术有限公司出品</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_11">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>20</y>
+     <width>104</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background:url(logo.png);</string>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>

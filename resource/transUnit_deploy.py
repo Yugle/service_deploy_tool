@@ -222,7 +222,7 @@ class Ui_Deploy(object):
 
         if(message in ["操作成功！", "登录成功！"]):
             self.message.setText("✅ " + message)
-            self.message.setStyleSheet("border:1px solid green;background-color:#7FFFD4;color:white;")
+            self.message.setStyleSheet("border:1px solid green;background-color:#7FFFD4;color:black;")
             
         else:
             self.message.setText("⚠️ " + message)
