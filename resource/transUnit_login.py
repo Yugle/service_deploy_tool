@@ -58,11 +58,11 @@ class Ui_MainWindow(object):
         self.MainWindow.setMaximumSize(QtCore.QSize(550, 460))
         self.MainWindow.setStyleSheet("background-color:white;")
         screen = QtWidgets.QApplication.desktop()
-        self.MainWindow.move(int((screen.width() - 550)/2), int((screen.height() - 420)/2))
+        self.MainWindow.move(int((screen.width() - 550)/2), int((screen.height() - 460)/2))
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.connectMethod = QtWidgets.QTabWidget(self.centralwidget)
-        self.connectMethod.setGeometry(QtCore.QRect(0, 90, 551, 291))
+        self.connectMethod.setGeometry(QtCore.QRect(10, 90, 551, 291))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -236,53 +236,100 @@ class Ui_MainWindow(object):
         self.ADB = QtWidgets.QWidget()
         self.ADB.setObjectName("ADB")
         self.device_id = QtWidgets.QComboBox(self.ADB)
-        self.device_id.setGeometry(QtCore.QRect(221, 30, 141, 25))
+        self.device_id.setGeometry(QtCore.QRect(120, 20, 201, 40))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(10)
+        self.device_id.setFont(font)
+        self.device_id.setStyleSheet("QComboBox::drop-down {\n"
+"     subcontrol-origin: padding;\n"
+"     subcontrol- position :  top  right ;\n"
+"     width :  20px ;\n"
+"      border-left-width :  0px ;\n"
+"\n"
+"}\n"
+" \n"
+"QComboBox::down-arrow {\n"
+"     image:url(arrow.png);\n"
+"}")
         self.device_id.setEditable(True)
         self.device_id.setObjectName("device_id")
         self.open_port = QtWidgets.QPushButton(self.ADB)
-        self.open_port.setGeometry(QtCore.QRect(336, 79, 101, 25))
+        self.open_port.setGeometry(QtCore.QRect(330, 85, 101, 38))
         font = QtGui.QFont()
-        font.setPointSize(13)
+        font.setFamily("微软雅黑")
+        font.setPointSize(10)
         self.open_port.setFont(font)
         self.open_port.setStyleSheet("QPushButton{\n"
 "        text-align:center;\n"
 "        color:white;\n"
-"        background-color:rgb(0, 144, 250);\n"
-"        border-radius:7px;\n"
+"        background-color:rgb(0, 91, 171);\n"
 "}\n"
 "QPushButton:hover{\n"
-"        background-color:rgb(24, 169, 251);\n"
+"        background-color:rgb(24, 91, 171);\n"
 "}")
         self.open_port.setObjectName("open_port")
         self.device_ip = QtWidgets.QComboBox(self.ADB)
-        self.device_ip.setGeometry(QtCore.QRect(221, 128, 216, 25))
+        self.device_ip.setGeometry(QtCore.QRect(120, 150, 311, 40))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(10)
+        self.device_ip.setFont(font)
+        self.device_ip.setStyleSheet("QComboBox::drop-down {\n"
+"     subcontrol-origin: padding;\n"
+"     subcontrol- position :  top  right ;\n"
+"     width :  20px ;\n"
+"      border-left-width :  0px ;\n"
+"\n"
+"}\n"
+" \n"
+"QComboBox::down-arrow {\n"
+"     image:url(arrow.png);\n"
+"}")
         self.device_ip.setEditable(True)
         self.device_ip.setObjectName("device_ip")
         self.read_devices = QtWidgets.QPushButton(self.ADB)
-        self.read_devices.setGeometry(QtCore.QRect(366, 29, 71, 25))
+        self.read_devices.setGeometry(QtCore.QRect(330, 20, 101, 38))
         font = QtGui.QFont()
-        font.setPointSize(13)
+        font.setFamily("微软雅黑")
+        font.setPointSize(10)
         self.read_devices.setFont(font)
         self.read_devices.setStyleSheet("QPushButton{\n"
 "        text-align:center;\n"
 "        color:white;\n"
-"        background-color:rgb(0, 144, 250);\n"
-"        border-radius:7px;\n"
+"        background-color:rgb(0, 91, 171);\n"
 "}\n"
 "QPushButton:hover{\n"
-"        background-color:rgb(24, 169, 251);\n"
+"        background-color:rgb(24, 91, 171);\n"
 "}")
         self.read_devices.setObjectName("read_devices")
         self.adb_port = QtWidgets.QSpinBox(self.ADB)
-        self.adb_port.setGeometry(QtCore.QRect(221, 79, 91, 25))
+        self.adb_port.setGeometry(QtCore.QRect(180, 85, 141, 40))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(10)
+        self.adb_port.setFont(font)
         self.adb_port.setToolTip("")
+        self.adb_port.setStyleSheet("")
         self.adb_port.setMinimum(1024)
         self.adb_port.setMaximum(65535)
         self.adb_port.setProperty("value", 5555)
         self.adb_port.setObjectName("adb_port")
+        self.label = QtWidgets.QLabel(self.ADB)
+        self.label.setGeometry(QtCore.QRect(120, 100, 13, 13))
+        self.label.setStyleSheet("background:url(port.png);")
+        self.label.setText("")
+        self.label.setObjectName("label")
+        self.label_2 = QtWidgets.QLabel(self.ADB)
+        self.label_2.setGeometry(QtCore.QRect(140, 90, 31, 31))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(10)
+        self.label_2.setFont(font)
+        self.label_2.setObjectName("label_2")
         self.connectMethod.addTab(self.ADB, "")
         self.loginBtn = QtWidgets.QPushButton(self.centralwidget)
-        self.loginBtn.setGeometry(QtCore.QRect(149, 356, 252, 40))
+        self.loginBtn.setGeometry(QtCore.QRect(160, 356, 252, 40))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(12)
@@ -298,7 +345,7 @@ class Ui_MainWindow(object):
         self.loginBtn.setObjectName("loginBtn")
         self.message = QtWidgets.QLabel(self.centralwidget)
         self.message.setEnabled(True)
-        self.message.setGeometry(QtCore.QRect(220, 10, 21, 16))
+        self.message.setGeometry(QtCore.QRect(280, 10, 21, 16))
         self.message.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.message.setAutoFillBackground(False)
         self.message.setText("")
@@ -325,7 +372,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.connectMethod.setCurrentIndex(1)
+        self.connectMethod.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -342,28 +389,33 @@ class Ui_MainWindow(object):
         self.connectMethod.setTabText(self.connectMethod.indexOf(self.Telnet), _translate("MainWindow", "Telnet"))
         self.open_port.setText(_translate("MainWindow", "开启无线连接"))
         self.read_devices.setText(_translate("MainWindow", "读取设备"))
+        self.label_2.setText(_translate("MainWindow", "端口"))
         self.connectMethod.setTabText(self.connectMethod.indexOf(self.ADB), _translate("MainWindow", "ADB"))
         self.loginBtn.setText(_translate("MainWindow", "登录"))
         self.label_8.setText(_translate("MainWindow", "Copyright © 2021 苏州德姆斯信息技术有限公司出品"))
 
+
         for lineEdit in self.MainWindow.findChildren(QtWidgets.QLineEdit):
-                lineEdit.lower()
+            lineEdit.lower()
         self.tabs = ["SSH", "Telnet", "ADB"]
         self.currentTabIndex = 0
         self.currentTab = getattr(self, self.tabs[self.currentTabIndex])
         self.inputList = self.currentTab.findChildren(QtWidgets.QLineEdit)
+        self.labelList = self.currentTab.findChildren(QtWidgets.QLabel)
 
         self.loginBtn.clicked.connect(self.connectTransUnit)
         self.connectMethod.currentChanged.connect(lambda :self.tabChanged(self.connectMethod.currentIndex()))
 
         self.read_devices.clicked.connect(self.readAdbDevices)
 
-    def resetStyle(self, widget, label):
+    def resetStyle(self, widget, *label):
         widget.setToolTip("")
-        widget.setStyleSheet("")
-        label.setStyleSheet("")
+        widget.setStyleSheet("border:1px solid black;border-left:0px solid white;")
+        # label.setStyleSheet("border:1px solid rgb(122, 122, 122);border-right:0px solid white;")
 
     def tabChanged(self, preTab):
+        if(preTab == 2):
+            return
         preInputList = getattr(self, self.tabs[preTab]).findChildren(QtWidgets.QLineEdit)
         preLabelList = getattr(self, self.tabs[preTab]).findChildren(QtWidgets.QLabel)
         for i in range(len(preInputList)):
@@ -394,6 +446,7 @@ class Ui_MainWindow(object):
                 flag = False
 
         for i in range(len(self.inputList)):
+            print(self.inputList[i].text())
             if(self.inputList[i].text() == ""):
                 self.inputList[i].setStyleSheet("QLineEdit{border:1px ridge red;border-left:0px solid white;} QToolTip{border:1px solid white}")
                 self.labelList[i].setStyleSheet("border:1px ridge red;border-right:0px solid white;")
