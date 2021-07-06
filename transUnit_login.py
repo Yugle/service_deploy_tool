@@ -4,6 +4,7 @@ from deploy import *
 from transUnit_deploy import *
 import re
 import sys
+import consts
 # from adb import adb_commands
 # from adb import sign_cryptography
 
@@ -140,17 +141,18 @@ class Ui_MainWindow(object):
         self.label_6.setObjectName("label_6")
         self.label_7 = QtWidgets.QLabel(self.SSH)
         self.label_7.setGeometry(QtCore.QRect(160, 30, 14, 18))
-        self.label_7.setStyleSheet("background:url(ip.png);")
+        print(f"{consts.IMG_PATH}")
+        self.label_7.setStyleSheet(f"background:url({consts.IMG_PATH}ip.png);")
         self.label_7.setText("")
         self.label_7.setObjectName("label_7")
         self.label_9 = QtWidgets.QLabel(self.SSH)
         self.label_9.setGeometry(QtCore.QRect(160, 97, 14, 18))
-        self.label_9.setStyleSheet("background:url(username.png);")
+        self.label_9.setStyleSheet(f"background:url({consts.IMG_PATH}username.png);")
         self.label_9.setText("")
         self.label_9.setObjectName("label_9")
         self.label_10 = QtWidgets.QLabel(self.SSH)
         self.label_10.setGeometry(QtCore.QRect(160, 162, 14, 17))
-        self.label_10.setStyleSheet("background:url(password.png);")
+        self.label_10.setStyleSheet(f"background:url({consts.IMG_PATH}password.png);")
         self.label_10.setText("")
         self.label_10.setObjectName("label_10")
         self.ssh_password = QtWidgets.QLineEdit(self.SSH)
@@ -208,17 +210,17 @@ class Ui_MainWindow(object):
         self.label_25.setObjectName("label_25")
         self.label_38 = QtWidgets.QLabel(self.Telnet)
         self.label_38.setGeometry(QtCore.QRect(160, 30, 14, 18))
-        self.label_38.setStyleSheet("background:url(ip.png);")
+        self.label_38.setStyleSheet(f"background:url({consts.IMG_PATH}ip.png);")
         self.label_38.setText("")
         self.label_38.setObjectName("label_38")
         self.label_39 = QtWidgets.QLabel(self.Telnet)
         self.label_39.setGeometry(QtCore.QRect(160, 162, 14, 17))
-        self.label_39.setStyleSheet("background:url(password.png);")
+        self.label_39.setStyleSheet(f"background:url({consts.IMG_PATH}password.png);")
         self.label_39.setText("")
         self.label_39.setObjectName("label_39")
         self.label_40 = QtWidgets.QLabel(self.Telnet)
         self.label_40.setGeometry(QtCore.QRect(160, 97, 14, 18))
-        self.label_40.setStyleSheet("background:url(username.png);")
+        self.label_40.setStyleSheet(f"background:url({consts.IMG_PATH}username.png);")
         self.label_40.setText("")
         self.label_40.setObjectName("label_40")
         self.telnet_host = QtWidgets.QLineEdit(self.Telnet)
@@ -290,7 +292,7 @@ class Ui_MainWindow(object):
 "}\n"
 " \n"
 "QComboBox::down-arrow {\n"
-"     image:url(arrow.png);\n"
+f"image:url({consts.IMG_PATH}arrow.png);\n"
 "}")
         self.device_id.setEditable(True)
         self.device_id.setObjectName("device_id")
@@ -324,7 +326,7 @@ class Ui_MainWindow(object):
 "}\n"
 " \n"
 "QComboBox::down-arrow {\n"
-"     image:url(arrow.png);\n"
+f"image:url({consts.IMG_PATH}arrow.png);\n"
 "}")
         self.device_ip.setEditable(True)
         self.device_ip.setObjectName("device_ip")
@@ -356,7 +358,7 @@ class Ui_MainWindow(object):
         self.adb_port.setObjectName("adb_port")
         self.label = QtWidgets.QLabel(self.ADB)
         self.label.setGeometry(QtCore.QRect(120, 100, 13, 13))
-        self.label.setStyleSheet("background:url(port.png);")
+        self.label.setStyleSheet(f"background:url({consts.IMG_PATH}port.png);")
         self.label.setText("")
         self.label.setObjectName("label")
         self.label_2 = QtWidgets.QLabel(self.ADB)
@@ -398,7 +400,7 @@ class Ui_MainWindow(object):
         self.label_8.setObjectName("label_8")
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
         self.label_3.setGeometry(QtCore.QRect(20, 20, 104, 28))
-        self.label_3.setStyleSheet("background:url(logo.png);")
+        self.label_3.setStyleSheet(f"background:url({consts.IMG_PATH}logo.png);")
         self.label_3.setText("")
         self.label_3.setObjectName("label_3")
         self.message = QtWidgets.QLabel(self.centralwidget)
