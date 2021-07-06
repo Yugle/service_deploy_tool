@@ -112,3 +112,16 @@ class ConnectTransUnitByADB(object):
 	
 	def disconnect(self):
 		pass
+
+	def uploadFile(self, localFilePath, service=1):
+		remoteFilePath = "/sdcard/"
+
+		pushFile = consts.ADB_PATH + "-s " + self.device_id + " push " + localFilePath + " " + remoteFilePath
+		res = subprocess.Popen(pushFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.read().decode("utf-8")
+		if("error" in res):
+			raise Exception(res)
+		self.deploy()
+	
+	def deploy(self):
+		testShell = "ls"
+		res = subprocess.Popen(testShell, stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.read().decode("utf-8")

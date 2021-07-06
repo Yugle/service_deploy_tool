@@ -541,7 +541,8 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             if(not(device_id in deviceList)):
                 self.showMessage(f"登录失败，设备已断开，设备列表已刷新，请重新操作！")
                 flag = False
-
+                
+        self.resetButton()
         return flag
         
     def connectTransUnit(self):
@@ -592,11 +593,14 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.timer.timeout.connect(self.showPrompt)
         self.timer.start(self.timecount*1000)
 
+        self.resetButton()
+
+    def resetButton(self):
         self.connect_remote_ip.setText("无线连接")
         self.connect_remote_ip.setEnabled(True)
         self.loginBtn.setText("登录")
         self.loginBtn.setEnabled(True)
-
+        
     def showPrompt(self):
         self.message.setHidden(True)
         self.timer.stop()
