@@ -5,6 +5,8 @@ from transUnit_deploy import *
 import re
 import sys
 import consts
+import os
+import subprocess
 # from adb import adb_commands
 # from adb import sign_cryptography
 
@@ -33,6 +35,8 @@ class ConnectTransUnitThread(QtCore.QThread):
             if(self.currentTabIndex == 0):
                 self.client.connect()
             elif(self.currentTabIndex == 1):
+                self.client.connect()
+            else:
                 self.client.connect()
 
             self.result.emit("登录成功！")
@@ -141,7 +145,6 @@ class Ui_MainWindow(object):
         self.label_6.setObjectName("label_6")
         self.label_7 = QtWidgets.QLabel(self.SSH)
         self.label_7.setGeometry(QtCore.QRect(160, 30, 14, 18))
-        print(f"{consts.IMG_PATH}")
         self.label_7.setStyleSheet(f"background:url({consts.IMG_PATH}ip.png);")
         self.label_7.setText("")
         self.label_7.setObjectName("label_7")
@@ -311,25 +314,6 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
 "        background-color:rgb(24, 91, 171);\n"
 "}")
         self.open_port.setObjectName("open_port")
-        self.device_ip = QtWidgets.QComboBox(self.ADB)
-        self.device_ip.setGeometry(QtCore.QRect(120, 150, 311, 40))
-        font = QtGui.QFont()
-        font.setFamily("微软雅黑")
-        font.setPointSize(10)
-        self.device_ip.setFont(font)
-        self.device_ip.setStyleSheet("QComboBox::drop-down {\n"
-"     subcontrol-origin: padding;\n"
-"     subcontrol- position :  top  right ;\n"
-"     width :  20px ;\n"
-"      border-left-width :  0px ;\n"
-"\n"
-"}\n"
-" \n"
-"QComboBox::down-arrow {\n"
-f"image:url({consts.IMG_PATH}arrow.png);\n"
-"}")
-        self.device_ip.setEditable(True)
-        self.device_ip.setObjectName("device_ip")
         self.read_devices = QtWidgets.QPushButton(self.ADB)
         self.read_devices.setGeometry(QtCore.QRect(330, 20, 101, 38))
         font = QtGui.QFont()
@@ -368,6 +352,42 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         font.setPointSize(10)
         self.label_2.setFont(font)
         self.label_2.setObjectName("label_2")
+        self.device_ip = QtWidgets.QLineEdit(self.ADB)
+        self.device_ip.setGeometry(QtCore.QRect(150, 150, 171, 40))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(10)
+        self.device_ip.setFont(font)
+        self.device_ip.setStyleSheet("border:1px solid black;\n"
+"border-left:0px solid white;")
+        self.device_ip.setText("")
+        self.device_ip.setObjectName("device_ip")
+        self.label_26 = QtWidgets.QLabel(self.ADB)
+        self.label_26.setGeometry(QtCore.QRect(120, 150, 32, 40))
+        self.label_26.setStyleSheet("border:1px solid black;\n"
+"border-right:0px solid white;")
+        self.label_26.setText("")
+        self.label_26.setObjectName("label_26")
+        self.label_41 = QtWidgets.QLabel(self.ADB)
+        self.label_41.setGeometry(QtCore.QRect(130, 160, 14, 18))
+        self.label_41.setStyleSheet(f"background:url({consts.IMG_PATH}/ip.png);")
+        self.label_41.setText("")
+        self.label_41.setObjectName("label_41")
+        self.connect_remote_ip = QtWidgets.QPushButton(self.ADB)
+        self.connect_remote_ip.setGeometry(QtCore.QRect(330, 151, 101, 38))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(10)
+        self.connect_remote_ip.setFont(font)
+        self.connect_remote_ip.setStyleSheet("QPushButton{\n"
+"        text-align:center;\n"
+"        color:white;\n"
+"        background-color:rgb(0, 91, 171);\n"
+"}\n"
+"QPushButton:hover{\n"
+"        background-color:rgb(24, 91, 171);\n"
+"}")
+        self.connect_remote_ip.setObjectName("connect_remote_ip")
         self.connectMethod.addTab(self.ADB, "")
         self.loginBtn = QtWidgets.QPushButton(self.centralwidget)
         self.loginBtn.setGeometry(QtCore.QRect(150, 356, 252, 40))
@@ -400,6 +420,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.label_8.setObjectName("label_8")
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
         self.label_3.setGeometry(QtCore.QRect(20, 20, 104, 28))
+        print(f"{consts.IMG_PATH}")
         self.label_3.setStyleSheet(f"background:url({consts.IMG_PATH}logo.png);")
         self.label_3.setText("")
         self.label_3.setObjectName("label_3")
@@ -437,6 +458,8 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.open_port.setText(_translate("MainWindow", "开启无线连接"))
         self.read_devices.setText(_translate("MainWindow", "读取设备"))
         self.label_2.setText(_translate("MainWindow", "端口"))
+        self.device_ip.setPlaceholderText(_translate("MainWindow", "请输入传输单元IP地址"))
+        self.connect_remote_ip.setText(_translate("MainWindow", "无线连接"))
         self.connectMethod.setTabText(self.connectMethod.indexOf(self.ADB), _translate("MainWindow", "ADB"))
         self.loginBtn.setText(_translate("MainWindow", "登录"))
         self.label_8.setText(_translate("MainWindow", "Copyright © 2021 苏州德姆斯信息技术有限公司出品"))
@@ -453,7 +476,8 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.loginBtn.clicked.connect(self.connectTransUnit)
         self.connectMethod.currentChanged.connect(lambda :self.tabChanged(self.connectMethod.currentIndex()))
 
-        self.read_devices.clicked.connect(self.readAdbDevices)
+        self.read_devices.clicked.connect(self.readADBDevices)
+        self.open_port.clicked.connect(self.openADBRemoteConnect)
 
     def resetStyle(self, lineEdit, label, tip):
         lineEdit.setStyleSheet("border:1px solid black;border-left:0px solid white;")
@@ -510,22 +534,27 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
                 self.client = ConnectTransUnitBySSH(self.ssh_host.text(), self.ssh_username.text(), self.ssh_password.text())
             elif(self.currentTabIndex == 1):
                 self.client = ConnectTransUnitByTelnet(self.telnet_host.text(), self.telnet_username.text(), self.telnet_password.text())
+            else:
+                # self.client = ConnectTransUnitByADB(self.)
+                pass
 
             self.connect_thread = ConnectTransUnitThread(self.currentTabIndex, self.client)
             self.connect_thread.result.connect(self.showMessage)
             self.connect_thread.start()
 
-    def showMessage(self, message):
+    def showMessage(self, message, code=0):
         self.timecount = 3
         self.timer = QTimer()
 
         self.message.setHidden(False)
 
-        if(message == "登录成功！"):
-            # self.message.setText("✅ " + message)
-            # self.message.setStyleSheet("color: green;background-color:white;border:3px outset whitesmoke;border-radius:5px;")
-            
-            self.status.changeFlag(1)
+        if(message == "登录成功！" or code == 1):
+
+            if(code == 1):
+                self.message.setText("✅ " + message)
+                self.message.setStyleSheet("border:1px solid green;background-color:#7FFFD4;color:black;")
+            else:
+                self.status.changeFlag(1)
         else:
             self.message.setText("⚠️ " + message)
             self.message.setStyleSheet("border:1px solid red;background-color:#FFCCC7;")
@@ -552,18 +581,46 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             deployPage.setupUi(deployDialog)
             deployDialog.show()
 
-    def readAdbDevices(self):
-        # KitKat+ devices require authentication
-        signer = sign_cryptography.CryptographySigner(
-            op.expanduser('~/.android/adbkey'))
-        # Connect to the device
-        device = adb_commands.AdbCommands()
-        print(device)
-        # device.ConnectDevice(
-        #     rsa_keys=[signer])
-        # # Now we can use Shell, Pull, Push, etc!
-        # for i in xrange(10):
-        #   print device.Shell('echo %d' % i)
+    def readADBDevices(self):
+        self.device_id.clear()
+
+        adb = consts.ADB_PATH + "adb.exe "
+        readDevices = adb + "devices"
+        res = re.split("\t|\n", subprocess.getoutput(readDevices))[1:]
+
+        # 清洗命令执行结果，拿到device list
+        resLength = len(res)
+        deviceList = []
+        # deviceList = [deviceID for deviceID in re.split("\t|\n", res)[1:] if deviceID not in ["device", "", "offline"]
+        for deviceNum in range(resLength):
+            if(res[deviceNum] not in ["device", "" , "offline"]):
+                if(deviceNum == resLength-1):
+                    break
+                else:
+                    if(res[deviceNum+1] != "offline"):
+                        deviceList.append(res[deviceNum])
+
+        if(deviceList == []):
+            self.showMessage("设备列表为空，请检查设备连接！")
+        
+        else:
+            self.showMessage("读取设备成功！", 1)
+            for deviceNum in range(len(deviceList)):
+                self.device_id.addItem("")
+                self.device_id.setItemText(deviceNum, deviceList[deviceNum])
+    
+    def openADBRemoteConnect(self):
+        adb = consts.ADB_PATH + "adb.exe "
+        if(self.device_id.currentText() == ""):
+            self.showMessage("设备列表为空，请先连接并读取设备！")
+            return
+
+        openRemoteConnect = adb + "-s " + self.device_id.currentText() + " tcpip " + str(self.adb_port.value())
+        res = subprocess.getoutput(openRemoteConnect)
+        if(re.findall("restarting in TCP mode port: ", res) != []):
+            self.showMessage(f"设备{self.device_id.currentText()}已开启远程端口，现在你可以输入设备IP进行远程连接了！", 1)
+        else:
+            self.showMessage(f"设备{self.device_id.currentText()}已开启远程端口失败，请检查设备连接或更换端口！")
 
 if __name__ == '__main__':
 

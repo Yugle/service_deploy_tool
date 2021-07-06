@@ -1,7 +1,9 @@
 import paramiko
 import telnetlib
+import consts
 import time
 import re
+import subprocess
 
 class WindowsControl(object):
     def jumpToDialog(deployDialog):
@@ -89,4 +91,12 @@ class ConnectTransUnitByTelnet(object):
 		self.telnet.close()
 
 def ConnectTransUnitByADB(object):
-	pass
+	def __init__(self, device_id):
+		self.device_id = device_id
+
+	def connect(self):
+
+	def readDevices(self):
+
+
+		return device_list

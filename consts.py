@@ -1,2 +1,4 @@
+import os
+WORK_NAMESPACE = os.getcwd()
 IMG_PATH = "./resource/img/"
-ADB_PATH = "./lib/adb/"
+ADB_PATH = WORK_NAMESPACE + "\\lib\\adb\\"
