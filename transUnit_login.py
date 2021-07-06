@@ -475,7 +475,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.label_8.setText(_translate("MainWindow", "Copyright © 2021 苏州德姆斯信息技术有限公司出品"))
 
         self.message.setMaximumWidth(291)
-        self.message.setMinimumHeight(30)
+
         for lineEdit in self.MainWindow.findChildren(QtWidgets.QLineEdit):
             lineEdit.lower()
         self.tabs = ["SSH", "Telnet", "ADB"]
@@ -597,8 +597,12 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.message.adjustSize()
         if(self.message.width() == 291):
             self.message.setWordWrap(True)
+        if(len(message) > 22):
+            height = 50
+        else:
+            height = 30
         x = int((self.centralwidget.width() - self.message.width()) / 2)
-        self.message.setGeometry(QtCore.QRect(x, self.message.y(), self.message.width() + 3, self.message.height() + 6))
+        self.message.setGeometry(QtCore.QRect(x, self.message.y(), self.message.width() + 3, height))
 
         self.timer.timeout.connect(self.showPrompt)
         self.timer.start(self.timecount*1000)
