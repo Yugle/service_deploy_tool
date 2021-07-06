@@ -5,10 +5,7 @@ from transUnit_deploy import *
 import re
 import sys
 import consts
-import os
 import subprocess
-# from adb import adb_commands
-# from adb import sign_cryptography
 
 class JumpToDialog(QtWidgets.QWidget):
     isTimeToJump = QtCore.pyqtSignal(bool)
@@ -29,6 +26,7 @@ class ConnectTransUnitThread(QtCore.QThread):
         super().__init__()
         self.currentTabIndex = currentTabIndex
         self.client = client
+        self.adb_message = 0
 
     def run(self):
         try:
@@ -37,9 +35,12 @@ class ConnectTransUnitThread(QtCore.QThread):
             elif(self.currentTabIndex == 1):
                 self.client.connect()
             else:
-                self.client.connect()
-
-            self.result.emit("登录成功！")
+                self.adb_message = self.client.connect()
+            
+            if(self.adb_message == 1):
+                self.result.emit("连接远程设备成功！")
+            else:
+                self.result.emit("登录成功！")
         except Exception as e:
             e = str(e)
             if(e == "Authentication failed."):
@@ -388,6 +389,13 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
 "        background-color:rgb(24, 91, 171);\n"
 "}")
         self.connect_remote_ip.setObjectName("connect_remote_ip")
+        self.adb_ip_label = QtWidgets.QLabel(self.ADB)
+        self.adb_ip_label.setGeometry(QtCore.QRect(120, 190, 201, 21))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        self.adb_ip_label.setFont(font)
+        self.adb_ip_label.setStyleSheet("color:red;")
+        self.adb_ip_label.setObjectName("adb_ip_label")
         self.connectMethod.addTab(self.ADB, "")
         self.loginBtn = QtWidgets.QPushButton(self.centralwidget)
         self.loginBtn.setGeometry(QtCore.QRect(150, 356, 252, 40))
@@ -420,7 +428,6 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.label_8.setObjectName("label_8")
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
         self.label_3.setGeometry(QtCore.QRect(20, 20, 104, 28))
-        print(f"{consts.IMG_PATH}")
         self.label_3.setStyleSheet(f"background:url({consts.IMG_PATH}logo.png);")
         self.label_3.setText("")
         self.label_3.setObjectName("label_3")
@@ -472,87 +479,106 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.currentTab = getattr(self, self.tabs[self.currentTabIndex])
         self.inputList = self.currentTab.findChildren(QtWidgets.QLineEdit)[::-1]
         self.labelList = self.currentTab.findChildren(QtWidgets.QLabel)
+        self.labelOffset = 6
 
         self.loginBtn.clicked.connect(self.connectTransUnit)
         self.connectMethod.currentChanged.connect(lambda :self.tabChanged(self.connectMethod.currentIndex()))
 
-        self.read_devices.clicked.connect(self.readADBDevices)
-        self.open_port.clicked.connect(self.openADBRemoteConnect)
+        self.read_devices.clicked.connect(lambda :self.readADBDevices())
+        self.open_port.clicked.connect(self.openADBRemotePort)
+        self.connect_remote_ip.clicked.connect(self.connectRemoteDeviceByADB)
 
     def resetStyle(self, lineEdit, label, tip):
         lineEdit.setStyleSheet("border:1px solid black;border-left:0px solid white;")
         label.setStyleSheet("border:1px solid rgb(122, 122, 122);border-right:0px solid white;")
         tip.setText("")
 
-    def tabChanged(self, preTab):
-        if(preTab == 2):
-            return
-        preInputList = getattr(self, self.tabs[preTab]).findChildren(QtWidgets.QLineEdit)
-        preLabelList = getattr(self, self.tabs[preTab]).findChildren(QtWidgets.QLabel)
-        for i in range(len(preInputList)):
-            preInputList[i].setText("")
-            self.resetStyle(preInputList[i], preLabelList[i], preLabelList[i+6])
-        # for lineEdit in preInputList:
-        #     lineEdit.setText("")
-        #     self.resetStyle(lineEdit, )
-
+    def tabChanged(self, currentTab):
         self.currentTabIndex = self.connectMethod.currentIndex()
         self.currentTab = getattr(self, self.tabs[self.currentTabIndex])
-        self.inputList = self.currentTab.findChildren(QtWidgets.QLineEdit)[::-1]
-        self.labelList = self.currentTab.findChildren(QtWidgets.QLabel)
-
-    def checkInput(self):
-
-        flag = True
-        # 循环会出现索引问题
-        self.inputList[0].textChanged.connect(lambda :self.resetStyle(self.inputList[0], self.labelList[0], self.labelList[6]))
-        self.inputList[1].textChanged.connect(lambda :self.resetStyle(self.inputList[1], self.labelList[1], self.labelList[7]))
-        self.inputList[2].textChanged.connect(lambda :self.resetStyle(self.inputList[2], self.labelList[2], self.labelList[8]))
-
-        if(re.findall(r"^((2((5[0-5])|([0-4]\d)))|([0-1]?\d{1,2}))(\.((2((5[0-5])|([0-4]\d)))|([0-1]?\d{1,2}))){3}$", self.inputList[0].text()) == []):
-                self.inputList[0].setStyleSheet("QLineEdit{border:1px ridge red;border-left:0px solid white;}")
-                self.labelList[0].setStyleSheet("border:1px ridge red;border-right:0px solid white;")
-                self.labelList[6].setText(self.tips[0] + "格式错误！")
-
-                flag = False
+        if(self.currentTabIndex == 2):
+            self.labelOffset = 1
+            self.inputList = [self.device_ip]
+            self.labelList = [self.label_26, self.adb_ip_label]
+        else:
+            self.labelOffset = 6
+            self.inputList = self.currentTab.findChildren(QtWidgets.QLineEdit)[::-1]
+            self.labelList = self.currentTab.findChildren(QtWidgets.QLabel)
 
         for i in range(len(self.inputList)):
-            if(self.inputList[i].text() == ""):
-                self.inputList[i].setStyleSheet("QLineEdit{border:1px ridge red;border-left:0px solid white;}")
-                self.labelList[i].setStyleSheet("border:1px ridge red;border-right:0px solid white;")
-                self.labelList[i+6].setText(self.tips[i] + "不能为空！")
+            self.inputList[i].setText("")
+            self.resetStyle(self.inputList[i], self.labelList[i], self.labelList[i+self.labelOffset])
+
+    def checkInput(self, toCheckEmpty=True):
+        flag = True
+        # 直接循环会出现索引问题
+        # for i in range(len(self.inputList)):
+        #     self.inputList[i].textChanged.connect(lambda :self.resetStyle(self.inputList[i], self.labelList[i], self.labelList[i+6]))
+        if(self.currentTabIndex == 2):
+            self.inputList[0].textChanged.connect(lambda :self.resetStyle(self.inputList[0], self.labelList[0], self.labelList[self.labelOffset]))
+        else:
+            self.inputList[0].textChanged.connect(lambda :self.resetStyle(self.inputList[0], self.labelList[0], self.labelList[self.labelOffset+0]))
+            self.inputList[1].textChanged.connect(lambda :self.resetStyle(self.inputList[1], self.labelList[1], self.labelList[self.labelOffset+1]))
+            self.inputList[2].textChanged.connect(lambda :self.resetStyle(self.inputList[2], self.labelList[2], self.labelList[self.labelOffset+2]))
+        
+        if(toCheckEmpty):
+            if(re.findall(r"^((2((5[0-5])|([0-4]\d)))|([0-1]?\d{1,2}))(\.((2((5[0-5])|([0-4]\d)))|([0-1]?\d{1,2}))){3}$", self.inputList[0].text()) == []):
+                    self.inputList[0].setStyleSheet("QLineEdit{border:1px ridge red;border-left:0px solid white;}")
+                    self.labelList[0].setStyleSheet("border:1px ridge red;border-right:0px solid white;")
+                    self.labelList[self.labelOffset].setText(self.tips[0] + "格式错误！")
+
+                    flag = False
+
+            for i in range(len(self.inputList)):
+                if(self.inputList[i].text() == ""):
+                    self.inputList[i].setStyleSheet("QLineEdit{border:1px ridge red;border-left:0px solid white;}")
+                    self.labelList[i].setStyleSheet("border:1px ridge red;border-right:0px solid white;")
+                    self.labelList[i+self.labelOffset].setText(self.tips[i] + "不能为空！")
+                    flag = False
+        else:
+            device_id = self.device_id.currentText()
+            deviceList = self.readADBDevices(False)
+            if(not(device_id in deviceList)):
+                self.showMessage(f"登录失败，设备已断开，设备列表已刷新，请重新操作！")
                 flag = False
 
         return flag
-
+        
     def connectTransUnit(self):
-        if(self.checkInput()):
-            self.loginBtn.setText("登录中...")
-            self.loginBtn.setEnabled(False)
+        self.loginBtn.setText("登录中...")
+        self.loginBtn.setEnabled(False)
 
-            if(self.currentTabIndex == 0):
-                self.client = ConnectTransUnitBySSH(self.ssh_host.text(), self.ssh_username.text(), self.ssh_password.text())
-            elif(self.currentTabIndex == 1):
-                self.client = ConnectTransUnitByTelnet(self.telnet_host.text(), self.telnet_username.text(), self.telnet_password.text())
-            else:
-                # self.client = ConnectTransUnitByADB(self.)
-                pass
+        if(self.currentTabIndex == 2):
+            if(self.checkInput(False)):
+                print(self.checkInput(False))
+                self.client = ConnectTransUnitByADB(self.device_id.currentText(), self.adb_port.value())
 
-            self.connect_thread = ConnectTransUnitThread(self.currentTabIndex, self.client)
-            self.connect_thread.result.connect(self.showMessage)
-            self.connect_thread.start()
+                self.connect_thread = ConnectTransUnitThread(self.currentTabIndex, self.client)
+                self.connect_thread.result.connect(self.showMessage)
+                self.connect_thread.start()
+        else:
+            if(self.checkInput()):
+                if(self.currentTabIndex == 0):
+                    self.client = ConnectTransUnitBySSH(self.ssh_host.text(), self.ssh_username.text(), self.ssh_password.text())
+                elif(self.currentTabIndex == 1):
+                    self.client = ConnectTransUnitByTelnet(self.telnet_host.text(), self.telnet_username.text(), self.telnet_password.text())
+                
+                self.connect_thread = ConnectTransUnitThread(self.currentTabIndex, self.client)
+                self.connect_thread.result.connect(self.showMessage)
+                self.connect_thread.start()
 
-    def showMessage(self, message, code=0):
+    def showMessage(self, message, override=False):
         self.timecount = 3
         self.timer = QTimer()
 
         self.message.setHidden(False)
 
-        if(message == "登录成功！" or code == 1):
-
-            if(code == 1):
+        if(message in ["登录成功！", "连接远程设备成功！"] or override):
+            if(override or message == "连接远程设备成功！"):
                 self.message.setText("✅ " + message)
                 self.message.setStyleSheet("border:1px solid green;background-color:#7FFFD4;color:black;")
+                if(message == "连接远程设备成功！"):
+                    self.readADBDevices(False)
             else:
                 self.status.changeFlag(1)
         else:
@@ -566,6 +592,8 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.timer.timeout.connect(self.showPrompt)
         self.timer.start(self.timecount*1000)
 
+        self.connect_remote_ip.setText("无线连接")
+        self.connect_remote_ip.setEnabled(True)
         self.loginBtn.setText("登录")
         self.loginBtn.setEnabled(True)
 
@@ -581,17 +609,16 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             deployPage.setupUi(deployDialog)
             deployDialog.show()
 
-    def readADBDevices(self):
+    def readADBDevices(self, toShowMessage=True):
         self.device_id.clear()
 
-        adb = consts.ADB_PATH + "adb.exe "
-        readDevices = adb + "devices"
+        readDevices = consts.ADB_PATH + "devices"
         res = re.split("\t|\n", subprocess.getoutput(readDevices))[1:]
 
         # 清洗命令执行结果，拿到device list
         resLength = len(res)
         deviceList = []
-        # deviceList = [deviceID for deviceID in re.split("\t|\n", res)[1:] if deviceID not in ["device", "", "offline"]
+        # deviceList = [deviceID for deviceID in re.split("\t|\n", res)[1:] if deviceID not in ["device", "", "offline"]]
         for deviceNum in range(resLength):
             if(res[deviceNum] not in ["device", "" , "offline"]):
                 if(deviceNum == resLength-1):
@@ -601,29 +628,42 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
                         deviceList.append(res[deviceNum])
 
         if(deviceList == []):
-            self.showMessage("设备列表为空，请检查设备连接！")
+            if(toShowMessage):
+                self.showMessage("设备列表为空，请检查设备连接！")
         
         else:
-            self.showMessage("读取设备成功！", 1)
+            if(toShowMessage):
+                self.showMessage("读取设备成功！", True)
             for deviceNum in range(len(deviceList)):
                 self.device_id.addItem("")
                 self.device_id.setItemText(deviceNum, deviceList[deviceNum])
+        
+        return deviceList
     
-    def openADBRemoteConnect(self):
-        adb = consts.ADB_PATH + "adb.exe "
+    def openADBRemotePort(self):
         if(self.device_id.currentText() == ""):
             self.showMessage("设备列表为空，请先连接并读取设备！")
             return
 
-        openRemoteConnect = adb + "-s " + self.device_id.currentText() + " tcpip " + str(self.adb_port.value())
+        openRemoteConnect = consts.ADB_PATH + "-s " + self.device_id.currentText() + " tcpip " + str(self.adb_port.value())
         res = subprocess.getoutput(openRemoteConnect)
         if(re.findall("restarting in TCP mode port: ", res) != []):
             self.showMessage(f"设备{self.device_id.currentText()}已开启远程端口，现在你可以输入设备IP进行远程连接了！", 1)
         else:
-            self.showMessage(f"设备{self.device_id.currentText()}已开启远程端口失败，请检查设备连接或更换端口！")
+            self.showMessage(f"设备{self.device_id.currentText()}已开启远程端口失败，请重试、检查设备连接或更换端口！")
+
+    def connectRemoteDeviceByADB(self):
+        if(self.checkInput()):
+            self.connect_remote_ip.setText("连接中...")
+            self.connect_remote_ip.setEnabled(False)
+
+            self.client = ConnectTransUnitByADB(self.device_ip.text(), self.adb_port.value())
+            
+            self.connectRemoteDevice_thread = ConnectTransUnitThread(self.currentTabIndex, self.client)
+            self.connectRemoteDevice_thread.result.connect(self.showMessage)
+            self.connectRemoteDevice_thread.start()
 
 if __name__ == '__main__':
-
     mqtt_client = QtWidgets.QApplication(sys.argv)
     myWindow = QtWidgets.QMainWindow()
     window = Ui_MainWindow()

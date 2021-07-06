@@ -13,7 +13,7 @@ class WindowsControl(object):
         mainWindow.show()
 
 class ConnectTransUnitBySSH(object):
-	def __init__(self, host, username, password, serviceType):
+	def __init__(self, host, username, password, serviceType=0):
 		self.host = host
 		self.port = 22
 		self.username = username
@@ -90,13 +90,25 @@ class ConnectTransUnitByTelnet(object):
 	def disconnect(self):
 		self.telnet.close()
 
-def ConnectTransUnitByADB(object):
-	def __init__(self, device_id):
+class ConnectTransUnitByADB(object):
+	def __init__(self, device_id, adb_port):
 		self.device_id = device_id
+		self.adb_port = adb_port
+		self.adb = consts.ADB_PATH
 
 	def connect(self):
+		if(re.findall(":", self.device_id) == []):
+			return 0
+		else:
+			connectRemoteIp = self.adb + "connect " + self.device_id + ":" + str(self.adb_port)
+			res = subprocess.Popen(connectRemoteIp, stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.read().decode("utf-8")
 
-	def readDevices(self):
-
-
-		return device_list
+			if(re.findall("10060", res) != []):
+				raise Exception("连接超时，请检查IP或网络！")
+			elif(re.findall("10061", res) != []):
+				raise Exception("设备拒绝连接，请先开启设备远程端口！")
+			
+			return 1
+	
+	def disconnect(self):
+		pass

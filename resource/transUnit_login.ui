@@ -846,6 +846,27 @@ QPushButton:hover{
        <string>无线连接</string>
       </property>
      </widget>
+     <widget class="QLabel" name="adb_ip_label">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>190</y>
+        <width>201</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color:red;</string>
+      </property>
+      <property name="text">
+       <string>传输单元IP地址不能为空！</string>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="QPushButton" name="loginBtn">

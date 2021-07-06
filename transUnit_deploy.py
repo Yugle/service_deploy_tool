@@ -141,13 +141,13 @@ class Ui_Deploy(object):
 "}\n"
 " \n"
 "QComboBox::down-arrow {\n"
-"     image:url(arrow.png);\n"
+f"image:url({consts.IMG_PATH}arrow.png);\n"
 "}")
         self.service_type.setObjectName("service_type")
         self.service_type.addItem("")
         self.label = QtWidgets.QLabel(Deploy)
         self.label.setGeometry(QtCore.QRect(40, 380, 16, 13))
-        self.label.setStyleSheet("background:url(back.png);")
+        self.label.setStyleSheet(f"background:url({consts.IMG_PATH}back.png);")
         self.label.setText("")
         self.label.setObjectName("label")
         self.label_8 = QtWidgets.QLabel(Deploy)
@@ -166,7 +166,7 @@ class Ui_Deploy(object):
         self.label_8.setObjectName("label_8")
         self.label_11 = QtWidgets.QLabel(Deploy)
         self.label_11.setGeometry(QtCore.QRect(20, 20, 104, 28))
-        self.label_11.setStyleSheet("background:url(logo.png);")
+        self.label_11.setStyleSheet(f"background:url({consts.IMG_PATH}logo.png);")
         self.label_11.setText("")
         self.label_11.setObjectName("label_11")
 
