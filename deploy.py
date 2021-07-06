@@ -97,16 +97,15 @@ class ConnectTransUnitByADB(object):
 		self.adb = consts.ADB_PATH
 
 	def connect(self):
-		if(re.findall(":", self.device_id) == []):
+		if((":" in self.device_id) or ("." not in self.device_id)):
 			return 0
 		else:
 			connectRemoteIp = self.adb + "connect " + self.device_id + ":" + str(self.adb_port)
 			res = subprocess.Popen(connectRemoteIp, stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.read().decode("utf-8")
-
 			if(re.findall("10060", res) != []):
 				raise Exception("连接超时，请检查IP或网络！")
 			elif(re.findall("10061", res) != []):
-				raise Exception("设备拒绝连接，请先开启设备远程端口！")
+				raise Exception("设备拒绝连接，请检查IP或先开启设备远程端口！")
 			
 			return 1
 	

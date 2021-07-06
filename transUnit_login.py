@@ -47,6 +47,8 @@ class ConnectTransUnitThread(QtCore.QThread):
                 e = "账号或密码错误！"
             elif(re.findall("(Unable to connect to port)|(timed out)", e) != []):
                 e = "连接失败，请检查网络或传输单元IP地址！"
+            elif("Permission denied" in e):
+                e = "操作失败，无权限操作，请检查IP或权限！"
 
             self.result.emit(e)
 
@@ -541,8 +543,10 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             if(not(device_id in deviceList)):
                 self.showMessage(f"登录失败，设备已断开，设备列表已刷新，请重新操作！")
                 flag = False
-                
-        self.resetButton()
+
+        if(flag == False):        
+            self.resetButton()
+            
         return flag
         
     def connectTransUnit(self):
@@ -577,7 +581,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         if(message in ["登录成功！", "连接远程设备成功！"] or override):
             if(override or message == "连接远程设备成功！"):
                 self.message.setText("✅ " + message)
-                self.message.setStyleSheet("border:1px solid green;background-color:#7FFFD4;color:black;")
+                self.message.setStyleSheet("border:1px solid green;background-color:rgb(235, 250, 241);color:black;")
                 if(message == "连接远程设备成功！"):
                     self.readADBDevices(False)
             else:
