@@ -189,6 +189,9 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.update.clicked.connect(self.updateSvc)
         self.back.clicked.connect(self.backToMainWindow)
         self.file_path.textChanged.connect(lambda :self.file_path.setStyleSheet(""))
+        
+        self.message.setMaximumWidth(291)
+        self.message.setMinimumHeight(30)
         self.showMessage({"message": "登录成功！", "type": 0})
 
     def chooseFile(self):
@@ -218,6 +221,8 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
 
         message = messageDict["message"]
         type = messageDict["type"]
+
+        self.message.setWordWrap(False)
         self.message.setHidden(False)
 
         if(message in ["操作成功！", "登录成功！"]):
@@ -229,8 +234,10 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             self.message.setStyleSheet("border:1px solid red;background-color:#FFCCC7;color:black;")
 
         self.message.adjustSize()
+        if(self.message.width() == 291):
+            self.message.setWordWrap(True)
         x = int((550 - self.message.width()) / 2)
-        self.message.setGeometry(QtCore.QRect(x, self.message.y(), self.message.width() + 3, 30))
+        self.message.setGeometry(QtCore.QRect(x, self.message.y(), self.message.width() + 3, self.height() + 6))
 
         self.timer.timeout.connect(self.showPrompt)
         self.timer.start(self.timecount*1000)

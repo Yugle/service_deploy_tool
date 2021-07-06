@@ -435,6 +435,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.label_3.setObjectName("label_3")
         self.message = QtWidgets.QLabel(self.centralwidget)
         self.message.setGeometry(QtCore.QRect(260, 20, 31, 30))
+        # self.message.setGeometry(QtCore.QRect(130, 20, 291, 30))
         self.message.setStyleSheet("")
         self.message.setText("")
         self.message.setObjectName("message")
@@ -473,6 +474,8 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.loginBtn.setText(_translate("MainWindow", "登录"))
         self.label_8.setText(_translate("MainWindow", "Copyright © 2021 苏州德姆斯信息技术有限公司出品"))
 
+        self.message.setMaximumWidth(291)
+        self.message.setMinimumHeight(30)
         for lineEdit in self.MainWindow.findChildren(QtWidgets.QLineEdit):
             lineEdit.lower()
         self.tabs = ["SSH", "Telnet", "ADB"]
@@ -541,12 +544,12 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             device_id = self.device_id.currentText()
             deviceList = self.readADBDevices(False)
             if(not(device_id in deviceList)):
-                self.showMessage(f"登录失败，设备已断开，设备列表已刷新，请重新操作！")
+                self.showMessage(f"登录失败，设备列表已刷新，请重新操作！")
                 flag = False
 
         if(flag == False):        
             self.resetButton()
-            
+
         return flag
         
     def connectTransUnit(self):
@@ -576,6 +579,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.timecount = 3
         self.timer = QTimer()
 
+        self.message.setWordWrap(False)
         self.message.setHidden(False)
 
         if(message in ["登录成功！", "连接远程设备成功！"] or override):
@@ -591,8 +595,10 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             self.message.setStyleSheet("border:1px solid red;background-color:#FFCCC7;")
 
         self.message.adjustSize()
+        if(self.message.width() == 291):
+            self.message.setWordWrap(True)
         x = int((self.centralwidget.width() - self.message.width()) / 2)
-        self.message.setGeometry(QtCore.QRect(x, self.message.y(), self.message.width() + 3, 30))
+        self.message.setGeometry(QtCore.QRect(x, self.message.y(), self.message.width() + 3, self.message.height() + 6))
 
         self.timer.timeout.connect(self.showPrompt)
         self.timer.start(self.timecount*1000)
