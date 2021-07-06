@@ -11,11 +11,12 @@ class WindowsControl(object):
         mainWindow.show()
 
 class ConnectTransUnitBySSH(object):
-	def __init__(self, host, username, password):
+	def __init__(self, host, username, password, serviceType):
 		self.host = host
 		self.port = 22
 		self.username = username
 		self.password = password
+		self.seviceType = serviceType
 
 	def connect(self):
 		self.ssh_client = paramiko.SSHClient()
@@ -49,40 +50,43 @@ class ConnectTransUnitBySSH(object):
 		transport.close()
 		self.deploy()
 
-	def disconnect(self):
-		self.ssh_client.close()
-
 	def deploy(self):
 		stdin,stdout,stderr = self.ssh_client.exec_command("ls")
 		print(stdout.read().decode())
 
-class ConnectTransUnitByTelnet(object):
-	def connect(self, params):
-		telnet = telnetlib.Telnet()
-		
-		host = params[0]
-		port = 23
-		username = params[1]
-		password = params[2]
+	def disconnect(self):
+		self.ssh_client.close()
 
-		telnet.open(host, port=23)
-		telnet.read_until(b'login: ',timeout=10)
-		telnet.write(username.encode('ascii') + b'\n')
+class ConnectTransUnitByTelnet(object):
+	def __init__(self, host, username, password):
+		self.host = host
+		self.port = 23
+		self.username = username
+		self.password = password
+
+	def connect(self):
+		self.telnet = telnetlib.Telnet()
+
+		self.telnet.open(self.host, port=23)
+		self.telnet.read_until(b'login: ',timeout=10)
+		self.telnet.write(self.username.encode('ascii') + b'\n')
 		# 等待Password出现后输入用户名，最多等待10秒
-		telnet.read_until(b'Password: ',timeout=10)
-		telnet.write(password.encode('ascii') + b'\n')
+		self.telnet.read_until(b'Password: ',timeout=10)
+		self.telnet.write(self.password.encode('ascii') + b'\n')
 		time.sleep(2)
-		
 		# 延时两秒再收取返回结果，给服务端足够响应时间
 		
-		# telnet.write(b"ls\n")
+		self.telnet.write(b"test_login\n")
 		# 获取登录结果
-
-		command_result = telnet.read_very_eager().decode('ascii')
-		print(command_result)
-		# print(telnet.read_all().decode('ascii'))
-		time.sleep(2)
-		telnet.close()
+		command_result = self.telnet.read_very_eager().decode('ascii')
+		if(re.findall("test_login", command_result) == []):
+			raise Exception("登录失败，请检查IP地址、用户名或密码！")
 
 	def uploadFile(self, localFilePath):
 		pass
+
+	def disconnect(self):
+		self.telnet.close()
+
+def ConnectTransUnitByADB(object):
+	pass

@@ -230,7 +230,7 @@ QPushButton:hover{
 }
  
 QComboBox::down-arrow {
-     image:url(arrow.png);
+     image:url(img/arrow.png);
 }</string>
    </property>
    <item>
@@ -249,7 +249,7 @@ QComboBox::down-arrow {
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background:url(back.png);</string>
+    <string notr="true">background:url(img/back.png);</string>
    </property>
    <property name="text">
     <string/>
@@ -296,7 +296,7 @@ QComboBox::down-arrow {
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background:url(logo.png);</string>
+    <string notr="true">background:url(img/logo.png);</string>
    </property>
    <property name="text">
     <string/>
