@@ -193,7 +193,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
     def chooseFile(self):
         self.filePathGot = QFileDialog.getOpenFileName(None, "选择文件",'', "Service File(*.*)")[0]
         self.file_path.setText(self.filePathGot)
-        if(self.protocol == 2):
+        if(self.protocol == 1):
             message = {"message": "使用Telnet部署方式较慢，请耐心等待！", "type": 0}
             self.showMessage(message)
 
