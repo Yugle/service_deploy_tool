@@ -623,7 +623,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         if(status == 1):
             self.MainWindow.hide()
             deployDialog = DeployDialog()
-            deployPage = Ui_Deploy(self.MainWindow, self.client)
+            deployPage = Ui_Deploy(self.MainWindow, self.client, self.currentTabIndex)
             deployPage.setupUi(deployDialog)
             deployDialog.show()
 

@@ -3,6 +3,7 @@ import telnetlib
 import consts
 import time
 import re
+import uu
 import subprocess
 
 class WindowsControl(object):
@@ -66,7 +67,7 @@ class ConnectTransUnitByTelnet(object):
 		self.username = username
 		self.password = password
 
-	def connect(self):
+	def connect(self, isInit=True):
 		self.telnet = telnetlib.Telnet()
 
 		self.telnet.open(self.host, port=23)
@@ -75,17 +76,52 @@ class ConnectTransUnitByTelnet(object):
 		# 等待Password出现后输入用户名，最多等待10秒
 		self.telnet.read_until(b'Password: ',timeout=10)
 		self.telnet.write(self.password.encode('ascii') + b'\n')
-		time.sleep(2)
-		# 延时两秒再收取返回结果，给服务端足够响应时间
 		
 		self.telnet.write(b"test_login\n")
+		time.sleep(2)
 		# 获取登录结果
 		command_result = self.telnet.read_very_eager().decode('ascii')
 		if(re.findall("test_login", command_result) == []):
-			raise Exception("登录失败，请检查IP地址、用户名或密码！")
+			if(isInit == True):
+				raise Exception("登录失败，请检查IP地址、用户名或密码！")
+			else:
+				raise Exception("连接断开，请返回首页重新连接！")
 
 	def uploadFile(self, localFilePath):
-		pass
+		outputFile = localFilePath + "_encode"
+		uu.encode(localFilePath, outputFile)
+
+		self.telnet.write(b"cd /root/matt_test/upload_test\n")
+		self.telnet.write(b"cat > uploaded\n")
+
+		count = 0
+		with open(outputFile, 'r') as f:
+			while True:
+				line = f.readline()
+				if not line:
+				    break
+				# self.telnet.sock.sendall(line.encode('utf-8'))
+				self.telnet.write(line.encode("utf-8"))
+
+				count = count + 1
+				if(count%5 == 0):
+					time.sleep(0.001)
+
+		self.telnet.close()
+		self.connect()
+		self.telnet.write(b"cd /root/matt_test/upload_test\n")
+		time.sleep(1)
+		self.telnet.write(b"uudecode -o toDeploy uploaded\n")
+		time.sleep(1)
+		self.telnet.write(b"rm uploaded\n")
+		time.sleep(1)
+		self.deploy()
+
+	def deploy(self):
+		self.telnet.write(b"chmod +x toDeploy\n")
+		time.sleep(1)
+		command_result = self.telnet.read_some().decode('ascii')
+		print(command_result)
 
 	def disconnect(self):
 		self.telnet.close()
@@ -108,12 +144,9 @@ class ConnectTransUnitByADB(object):
 				raise Exception("设备拒绝连接，请检查IP或先开启设备远程端口！")
 			
 			return 1
-	
-	def disconnect(self):
-		pass
 
 	def uploadFile(self, localFilePath, service=1):
-		remoteFilePath = "/sdcard/"
+		remoteFilePath = "/sdcard/test/"
 
 		pushFile = consts.ADB_PATH + "-s " + self.device_id + " push " + localFilePath + " " + remoteFilePath
 		res = subprocess.Popen(pushFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.read().decode("utf-8")
@@ -122,5 +155,10 @@ class ConnectTransUnitByADB(object):
 		self.deploy()
 	
 	def deploy(self):
-		testShell = "ls"
+		adbShell = consts.ADB_PATH + "shell "
+		
+		testShell = adbShell + "ls"
 		res = subprocess.Popen(testShell, stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.read().decode("utf-8")
+
+	def disconnect(self):
+		pass

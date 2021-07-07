@@ -7,20 +7,15 @@ from deploy import *
 class UploadFileAndDeployThread(QtCore.QThread):
     result = QtCore.pyqtSignal(dict)
 
-    def __init__(self, localFilePath, client, currentTabIndex=0, type=0):
+    def __init__(self, localFilePath, client, type=0):
         super().__init__()
         self.localFilePath = localFilePath
         self.client = client
-        self.currentTabIndex = currentTabIndex
         self.type = type
 
     def run(self):
         try:
-            if(self.currentTabIndex == 0):
-                self.client.uploadFile(self.localFilePath)
-            elif(self.currentTabIndex == 1):
-                pass
-                # ConnectTransUnitByTelnet.connect(1, self.params)
+            self.client.uploadFile(self.localFilePath)
 
             message = {"message": "操作成功！", "type": self.type}
             self.result.emit(message)
@@ -28,9 +23,10 @@ class UploadFileAndDeployThread(QtCore.QThread):
             self.result.emit({"message": str(e), "type": self.type})
 
 class Ui_Deploy(object):
-    def __init__(self, mainWindow, client):
+    def __init__(self, mainWindow, client, protocol):
         self.mainWindow = mainWindow
         self.client = client
+        self.protocol = protocol
 
     def setupUi(self, Deploy):
         self.childDialog = Deploy
@@ -95,7 +91,7 @@ class Ui_Deploy(object):
         self.file_path.setFont(font)
         self.file_path.setObjectName("file_path")
         self.open_file = QtWidgets.QPushButton(Deploy)
-        self.open_file.setGeometry(QtCore.QRect(380, 237, 81, 38))
+        self.open_file.setGeometry(QtCore.QRect(380, 236, 81, 40))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(10)
@@ -197,6 +193,9 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
     def chooseFile(self):
         self.filePathGot = QFileDialog.getOpenFileName(None, "选择文件",'', "Service File(*.*)")[0]
         self.file_path.setText(self.filePathGot)
+        if(self.protocol == 2):
+            message = {"message": "使用Telnet部署方式较慢，请耐心等待！", "type": 0}
+            self.showMessage(message)
 
     def deploySvc(self):
         self.deploy.setText("部署中...")
@@ -264,25 +263,12 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         # WindowsControl.backToMainWindow(self.mainWindow)
 
 class DeployDialog(QtWidgets.QDialog):
-    # def __init__(self, client):
-    #   super().__init__()
-    #   self.client = client    
-
     def closeEvent(self, event):
         reply = QtWidgets.QMessageBox.question(self,
-                                               '传输单元诊断服务部署工具',
+                                               '传输单元服务部署工具',
                                                "是否要退出程序？",
                                                QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
                                                QtWidgets.QMessageBox.No)
-        # quitMessageBox = QtWidgets.QMessageBox()
-        # quitMessageBox.setWindowTitle('提醒')
-        # quitMessageBox.setText('账号或密码错误！')
-        # quitMessageBox.setIcon(QtWidgets.QMessageBox.Information)
-        # quitMessageBox.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-        # quitMessageBox.setStyleSheet("QPushButton:hover{background-color: rgb(255, 93, 52);}")
-        # quitMessageBox.exec_()
-
-        # buttonlist = quitMessageBox.findChildren(QtWidgets.QMessageBox)
 
         if reply == QtWidgets.QMessageBox.Yes:
             event.accept()
