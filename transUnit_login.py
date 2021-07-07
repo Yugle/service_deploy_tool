@@ -598,7 +598,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         if(self.message.width() == 291):
             self.message.setWordWrap(True)
         if(len(message) > 22):
-            height = 50
+            height = 40
         else:
             height = 30
         x = int((self.centralwidget.width() - self.message.width()) / 2)

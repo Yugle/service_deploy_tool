@@ -233,19 +233,14 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             self.message.setText("⚠️ " + message)
             self.message.setStyleSheet("border:1px solid red;background-color:#FFCCC7;color:black;")
 
-        # self.message.adjustSize()
-        # if(self.message.width() == 291):
-        #     self.message.setWordWrap(True)
-        # x = int((550 - self.message.width()) / 2)
-        # self.message.setGeometry(QtCore.QRect(x, self.message.y(), self.message.width() + 3, self.height() + 6))
         self.message.adjustSize()
         if(self.message.width() == 291):
             self.message.setWordWrap(True)
         if(len(message) > 22):
-            height = 50
+            height = 40
         else:
             height = 30
-        x = int((self.centralwidget.width() - self.message.width()) / 2)
+        x = int((self.childDialog.width() - self.message.width()) / 2)
         self.message.setGeometry(QtCore.QRect(x, self.message.y(), self.message.width() + 3, height))
 
         self.timer.timeout.connect(self.showPrompt)
