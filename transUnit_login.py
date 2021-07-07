@@ -47,6 +47,8 @@ class ConnectTransUnitThread(QtCore.QThread):
                 e = "账号或密码错误！"
             elif(re.findall("(Unable to connect to port)|(timed out)", e) != []):
                 e = "连接失败，请检查网络或传输单元IP地址！"
+            elif("Permission denied" in e):
+                e = "操作失败，无权限操作，请检查IP或权限！"
 
             self.result.emit(e)
 
@@ -433,6 +435,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.label_3.setObjectName("label_3")
         self.message = QtWidgets.QLabel(self.centralwidget)
         self.message.setGeometry(QtCore.QRect(260, 20, 31, 30))
+        # self.message.setGeometry(QtCore.QRect(130, 20, 291, 30))
         self.message.setStyleSheet("")
         self.message.setText("")
         self.message.setObjectName("message")
@@ -470,6 +473,8 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.connectMethod.setTabText(self.connectMethod.indexOf(self.ADB), _translate("MainWindow", "ADB"))
         self.loginBtn.setText(_translate("MainWindow", "登录"))
         self.label_8.setText(_translate("MainWindow", "Copyright © 2021 苏州德姆斯信息技术有限公司出品"))
+
+        self.message.setMaximumWidth(291)
 
         for lineEdit in self.MainWindow.findChildren(QtWidgets.QLineEdit):
             lineEdit.lower()
@@ -539,8 +544,11 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             device_id = self.device_id.currentText()
             deviceList = self.readADBDevices(False)
             if(not(device_id in deviceList)):
-                self.showMessage(f"登录失败，设备已断开，设备列表已刷新，请重新操作！")
+                self.showMessage(f"登录失败，设备列表已刷新，请重新操作！")
                 flag = False
+
+        if(flag == False):        
+            self.resetButton()
 
         return flag
         
@@ -571,12 +579,13 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.timecount = 3
         self.timer = QTimer()
 
+        self.message.setWordWrap(False)
         self.message.setHidden(False)
 
         if(message in ["登录成功！", "连接远程设备成功！"] or override):
             if(override or message == "连接远程设备成功！"):
                 self.message.setText("✅ " + message)
-                self.message.setStyleSheet("border:1px solid green;background-color:#7FFFD4;color:black;")
+                self.message.setStyleSheet("border:1px solid green;background-color:rgb(235, 250, 241);color:black;")
                 if(message == "连接远程设备成功！"):
                     self.readADBDevices(False)
             else:
@@ -586,17 +595,26 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             self.message.setStyleSheet("border:1px solid red;background-color:#FFCCC7;")
 
         self.message.adjustSize()
+        if(self.message.width() == 291):
+            self.message.setWordWrap(True)
+        if(len(message) > 22):
+            height = 40
+        else:
+            height = 30
         x = int((self.centralwidget.width() - self.message.width()) / 2)
-        self.message.setGeometry(QtCore.QRect(x, self.message.y(), self.message.width() + 3, 30))
+        self.message.setGeometry(QtCore.QRect(x, self.message.y(), self.message.width() + 3, height))
 
         self.timer.timeout.connect(self.showPrompt)
         self.timer.start(self.timecount*1000)
 
+        self.resetButton()
+
+    def resetButton(self):
         self.connect_remote_ip.setText("无线连接")
         self.connect_remote_ip.setEnabled(True)
         self.loginBtn.setText("登录")
         self.loginBtn.setEnabled(True)
-
+        
     def showPrompt(self):
         self.message.setHidden(True)
         self.timer.stop()
@@ -605,7 +623,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         if(status == 1):
             self.MainWindow.hide()
             deployDialog = DeployDialog()
-            deployPage = Ui_Deploy(self.MainWindow, self.client)
+            deployPage = Ui_Deploy(self.MainWindow, self.client, self.currentTabIndex)
             deployPage.setupUi(deployDialog)
             deployDialog.show()
 
