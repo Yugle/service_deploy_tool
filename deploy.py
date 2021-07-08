@@ -6,12 +6,12 @@ import re
 import uu
 import subprocess
 
-class WindowsControl(object):
-    def jumpToDialog(deployDialog):
-        deployDialog.show()
+# class WindowsControl(object):
+#     def jumpToDialog(deployDialog):
+#         deployDialog.show()
 
-    def backToMainWindow(mainWindow):
-        mainWindow.show()
+#     def backToMainWindow(mainWindow):
+#         mainWindow.show()
 
 class ConnectTransUnitBySSH(object):
 	def __init__(self, host, username, password, serviceType=0):
@@ -36,15 +36,16 @@ class ConnectTransUnitBySSH(object):
 		)
 
 	def uploadFile(self, localFilePath):
-		host = "192.168.1.25"
-		port = 22
-		username = "admin"
-		password = "dhms2018"
+		# host = "192.168.1.25"
+		# port = 22
+		# username = "admin"
+		# password = "dhms2018"
 
-		remoteFilePath = "/home/admin/uploadFile_test/"
+		remoteFilePath = "/root/matt_test/upload_test/"
+		self.checkDir(remoteFilePath)
 
-		transport = paramiko.Transport((host, port))
-		transport.connect(username=username, password=password)
+		transport = paramiko.Transport((self.host, self.port))
+		transport.connect(username=self.username, password=self.password)
 		 
 		sftp = paramiko.SFTPClient.from_transport(transport)
 		filename = re.split(r'[/|\\]', localFilePath)[-1]
@@ -59,6 +60,11 @@ class ConnectTransUnitBySSH(object):
 
 	def disconnect(self):
 		self.ssh_client.close()
+
+	def checkDir(self, dir):
+		stdin,stdout,stderr = self.ssh_client.exec_command("cd " + dir)
+		if("No such file or directory" in stdout.read().decode()):
+			self.ssh_client.exec_command("mkdir " + dir)
 
 class ConnectTransUnitByTelnet(object):
 	def __init__(self, host, username, password):
@@ -91,6 +97,9 @@ class ConnectTransUnitByTelnet(object):
 		outputFile = localFilePath + "_encode"
 		uu.encode(localFilePath, outputFile)
 
+		remoteFilePath = "/root/matt_test/upload_test/"
+
+		self.checkDir(remoteFilePath)
 		self.telnet.write(b"cd /root/matt_test/upload_test\n")
 		self.telnet.write(b"cat > uploaded\n")
 
@@ -121,10 +130,17 @@ class ConnectTransUnitByTelnet(object):
 		self.telnet.write(b"chmod +x toDeploy\n")
 		time.sleep(1)
 		command_result = self.telnet.read_some().decode('ascii')
-		print(command_result)
 
 	def disconnect(self):
 		self.telnet.close()
+
+	def checkDir(self, dir):
+		self.telnet.write(b'cd ' + dir.encode('ascii') + b'\n')
+		# self.telnet.write(b"cd /root/matt_test/upload_test\n")
+		time.sleep(1)
+		command_result = self.telnet.read_some().decode('ascii')
+		if("No such file or directory" in command_result):
+			self.telnet.write(b'mkdir ' + dir.encode('ascii') + b'\n')
 
 class ConnectTransUnitByADB(object):
 	def __init__(self, device_id, adb_port):
@@ -146,7 +162,8 @@ class ConnectTransUnitByADB(object):
 			return 1
 
 	def uploadFile(self, localFilePath, service=1):
-		remoteFilePath = "/sdcard/test/"
+		remoteFilePath = "/sdcard/"
+		self.checkDir(remoteFilePath)
 
 		pushFile = consts.ADB_PATH + "-s " + self.device_id + " push " + localFilePath + " " + remoteFilePath
 		res = subprocess.Popen(pushFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.read().decode("utf-8")
@@ -162,3 +179,9 @@ class ConnectTransUnitByADB(object):
 
 	def disconnect(self):
 		pass
+
+	def checkDir(self, dir):
+		adbShell = consts.ADB_PATH + "shell "
+		res = subprocess.Popen(adbShell+"cd "+dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.read().decode("utf-8")
+		if("No such file or directory" in res):
+			subprocess.run(adbShell+"mkdir "+dir)

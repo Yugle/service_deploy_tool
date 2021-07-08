@@ -543,8 +543,8 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         else:
             device_id = self.device_id.currentText()
             deviceList = self.readADBDevices(False)
-            if(not(device_id in deviceList)):
-                self.showMessage(f"登录失败，设备列表已刷新，请重新操作！")
+            if(device_id not in deviceList):
+                self.showMessage("登录失败，设备列表已刷新，请重新操作！")
                 flag = False
 
         if(flag == False):        
@@ -555,10 +555,12 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
     def connectTransUnit(self):
         self.loginBtn.setText("登录中...")
         self.loginBtn.setEnabled(False)
+        # 清空message信息，因为子窗口调用时父窗口的message重新显示
+        self.message.setText("")
+        self.message.setStyleSheet("")
 
         if(self.currentTabIndex == 2):
             if(self.checkInput(False)):
-                print(self.checkInput(False))
                 self.client = ConnectTransUnitByADB(self.device_id.currentText(), self.adb_port.value())
 
                 self.connect_thread = ConnectTransUnitThread(self.currentTabIndex, self.client)
@@ -580,13 +582,13 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.timer = QTimer()
 
         self.message.setWordWrap(False)
-        self.message.setHidden(False)
 
         if(message in ["登录成功！", "连接远程设备成功！"] or override):
             if(override or message == "连接远程设备成功！"):
                 self.message.setText("✅ " + message)
                 self.message.setStyleSheet("border:1px solid green;background-color:rgb(235, 250, 241);color:black;")
                 if(message == "连接远程设备成功！"):
+                    pass
                     self.readADBDevices(False)
             else:
                 self.status.changeFlag(1)
@@ -604,14 +606,17 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         x = int((self.centralwidget.width() - self.message.width()) / 2)
         self.message.setGeometry(QtCore.QRect(x, self.message.y(), self.message.width() + 3, height))
 
+        self.message.setHidden(False)
         self.timer.timeout.connect(self.showPrompt)
         self.timer.start(self.timecount*1000)
 
         self.resetButton()
 
     def resetButton(self):
-        self.connect_remote_ip.setText("无线连接")
-        self.connect_remote_ip.setEnabled(True)
+        if(self.currentTabIndex == 2):
+            self.connect_remote_ip.setText("无线连接")
+            self.connect_remote_ip.setEnabled(True)
+
         self.loginBtn.setText("登录")
         self.loginBtn.setEnabled(True)
         
@@ -646,11 +651,11 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
                         deviceList.append(res[deviceNum])
 
         if(deviceList == []):
-            if(toShowMessage):
+            if(toShowMessage == True):
                 self.showMessage("设备列表为空，请检查设备连接！")
         
         else:
-            if(toShowMessage):
+            if(toShowMessage == True):
                 self.showMessage("读取设备成功！", True)
             for deviceNum in range(len(deviceList)):
                 self.device_id.addItem("")
@@ -682,10 +687,10 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             self.connectRemoteDevice_thread.start()
 
 if __name__ == '__main__':
-    mqtt_client = QtWidgets.QApplication(sys.argv)
+    dhms_transunit = QtWidgets.QApplication(sys.argv)
     myWindow = QtWidgets.QMainWindow()
     window = Ui_MainWindow()
     window.setupUi(myWindow)
     myWindow.setWindowIcon(QtGui.QIcon(":/icon.ico"))
     myWindow.show()
-    sys.exit(mqtt_client.exec_())
+    sys.exit(dhms_transunit.exec_())
