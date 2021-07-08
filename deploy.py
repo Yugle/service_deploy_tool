@@ -144,9 +144,9 @@ class ConnectTransUnitByTelnet(object):
 
 class ConnectTransUnitByADB(object):
 	def __init__(self, device_id, adb_port):
+		self.adb = consts.ADB_PATH + "\\lib\\adb\\adb.exe "
 		self.device_id = device_id
 		self.adb_port = adb_port
-		self.adb = consts.ADB_PATH
 
 	def connect(self):
 		if((":" in self.device_id) or ("." not in self.device_id)):

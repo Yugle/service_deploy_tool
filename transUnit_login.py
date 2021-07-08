@@ -2,6 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QTimer, QDateTime
 from deploy import *
 from transUnit_deploy import *
+import os
 import re
 import sys
 import consts
@@ -633,9 +634,12 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             deployDialog.show()
 
     def readADBDevices(self, toShowMessage=True):
+        # self.adb = self.lib + "\\lib\\adb\\adb.exe "
+        # self.adb = "adb "
+        self.adb = consts.ADB_PATH
         self.device_id.clear()
 
-        readDevices = consts.ADB_PATH + "devices"
+        readDevices = self.adb + "devices"
         res = re.split("\t|\n", subprocess.getoutput(readDevices))[1:]
 
         # 清洗命令执行结果，拿到device list
@@ -668,7 +672,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             self.showMessage("设备列表为空，请先连接并读取设备！")
             return
 
-        openRemoteConnect = consts.ADB_PATH + "-s " + self.device_id.currentText() + " tcpip " + str(self.adb_port.value())
+        openRemoteConnect = self.adb + "-s " + self.device_id.currentText() + " tcpip " + str(self.adb_port.value())
         res = subprocess.getoutput(openRemoteConnect)
         if(re.findall("restarting in TCP mode port: ", res) != []):
             self.showMessage(f"设备{self.device_id.currentText()}已开启远程端口，现在你可以输入设备IP进行远程连接了！", 1)
