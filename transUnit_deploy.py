@@ -191,7 +191,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.showMessage({"message": "登录成功！", "type": 0})
 
     def chooseFile(self):
-        self.filePathGot = QFileDialog.getOpenFileName(None, "选择文件",'', "Service File(*.*)")[0]
+        self.filePathGot = QFileDialog.getOpenFileName(None, "选择文件",'', "Service File()")[0]
         self.file_path.setText(self.filePathGot)
         if(self.protocol == 1):
             message = {"message": "使用Telnet部署方式较慢，请耐心等待！", "type": 0}
@@ -207,7 +207,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             self.upload_thread.result.connect(self.showMessage)
             self.upload_thread.start()
         else:
-            self.file_path.setStyleSheet("QLineEdit{border:3px ridge #CD5C5C;border-radius:5px;}")
+            self.file_path.setStyleSheet("QLineEdit{border:1px ridge red}")
             message = {"message": "文件路径有误！", "type": 0}
             self.showMessage(message)
 
@@ -222,7 +222,6 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         type = messageDict["type"]
 
         self.message.setWordWrap(False)
-        self.message.setHidden(False)
 
         if(message in ["操作成功！", "登录成功！"]):
             self.message.setText("✅ " + message)
@@ -242,6 +241,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         x = int((self.childDialog.width() - self.message.width()) / 2)
         self.message.setGeometry(QtCore.QRect(x, self.message.y(), self.message.width() + 3, height))
 
+        self.message.setHidden(False)
         self.timer.timeout.connect(self.showPrompt)
         self.timer.start(self.timecount*1000)
 
