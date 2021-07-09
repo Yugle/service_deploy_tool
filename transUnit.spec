@@ -1,11 +1,10 @@
 # -*- mode: python ; coding: utf-8 -*-
 
-
 block_cipher = None
 
-
+pathex = os.path.abspath('transUnit_pack.spec')[:-19]
 a = Analysis(['transUnit_login.py'],
-             pathex=['C:\\Users\\Phil\\Desktop\\pack_env'],
+             pathex=[pathex],
              binaries=[],
              datas=[],
              hiddenimports=[],
@@ -43,7 +42,7 @@ exe = EXE(pyz,
           a.scripts,
           [],
           exclude_binaries=True,
-          name='transUnit_login',
+          name='DHMS',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,
@@ -56,4 +55,4 @@ coll = COLLECT(exe,
                strip=False,
                upx=True,
                upx_exclude=[],
-               name='transUnit_login')
+               name='DHMS')
