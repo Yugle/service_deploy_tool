@@ -1,9 +1,18 @@
 # -*- mode: python ; coding: utf-8 -*-
+import os
+import glob
 
 block_cipher = None
 
-pathex = os.path.abspath('transUnit_pack.spec')[:-19]
-a = Analysis(['transUnit_login.py'],
+# current_path = os.path.abspath(__file__)
+current_path = os.path.abspath(".\\pack\\transUnit.spec")
+print(current_path)
+for i in range(2):
+    pathex = os.path.abspath(os.path.dirname(current_path) + os.path.sep + ".")
+    current_path = pathex
+pathex = pathex + "\\"
+
+a = Analysis([pathex + 'transUnit_login.py'],
              pathex=[pathex],
              binaries=[],
              datas=[],
@@ -15,11 +24,9 @@ a = Analysis(['transUnit_login.py'],
              win_private_assemblies=False,
              cipher=block_cipher,
              noarchive=False)
-
+             
 def extra_datas(mydir):
     def rec_glob(p, files):
-        import os
-        import glob
         for d in glob.glob(p):
             if os.path.isfile(d):
                 files.append(d)
@@ -42,12 +49,12 @@ exe = EXE(pyz,
           a.scripts,
           [],
           exclude_binaries=True,
-          name='DHMS',
+          name='DHMS_TranUnit',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
-          console=False )
+          console=False , icon=pathex+'resource\\icon.ico')
 coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,
@@ -55,4 +62,4 @@ coll = COLLECT(exe,
                strip=False,
                upx=True,
                upx_exclude=[],
-               name='DHMS')
+               name='DHMS_TranUnit')

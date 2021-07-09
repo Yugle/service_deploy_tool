@@ -39,6 +39,10 @@
   <property name="windowTitle">
    <string>传输单元服务部署工具</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../resource/icon.ico</normaloff>../resource/icon.ico</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">background-color:white;</string>
   </property>
