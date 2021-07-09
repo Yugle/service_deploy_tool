@@ -1,9 +1,11 @@
 # -*- mode: python ; coding: utf-8 -*-
 
+
 block_cipher = None
 
+
 a = Analysis(['transUnit_login.py'],
-             pathex=['/Users/phil/Desktop/transunitservicedeploytool'],
+             pathex=['C:\\Users\\Phil\\Desktop\\pack_env'],
              binaries=[],
              datas=[],
              hiddenimports=[],
@@ -32,25 +34,26 @@ def extra_datas(mydir):
     return extra_datas
 
 # append the 'config' dir
-a.datas += extra_datas('lib')    ###这里是自己的资源文件夹
-       
+a.datas += extra_datas('lib')
+a.datas += extra_datas('resource')
+
 pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
 exe = EXE(pyz,
           a.scripts,
-          a.binaries,
-          a.zipfiles,
-          a.datas,
           [],
-          name='k8s_ui',
+          exclude_binaries=True,
+          name='transUnit_login',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
-          upx_exclude=[],
-          runtime_tmpdir=None,
-          console=False , icon='')
-app = BUNDLE(exe,
-             name='k8s_ui.app',
-             icon='',
-             bundle_identifier=None)
+          console=False )
+coll = COLLECT(exe,
+               a.binaries,
+               a.zipfiles,
+               a.datas,
+               strip=False,
+               upx=True,
+               upx_exclude=[],
+               name='transUnit_login')

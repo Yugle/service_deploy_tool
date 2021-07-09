@@ -18,6 +18,7 @@ class UploadFileAndDeployThread(QtCore.QThread):
             self.client.uploadFile(self.localFilePath)
 
             message = {"message": "操作成功！", "type": self.type}
+
             self.result.emit(message)
         except Exception as e:
             self.result.emit({"message": str(e), "type": self.type})
@@ -191,7 +192,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.showMessage({"message": "登录成功！", "type": 0})
 
     def chooseFile(self):
-        self.filePathGot = QFileDialog.getOpenFileName(None, "选择文件",'', "Service File()")[0]
+        self.filePathGot = QFileDialog.getOpenFileName(None, "选择文件",'', "Service File(*.py)")[0]
         self.file_path.setText(self.filePathGot)
         if(self.protocol == 1):
             message = {"message": "使用Telnet部署方式较慢，请耐心等待！", "type": 0}
@@ -257,10 +258,16 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.timer.stop()
 
     def backToMainWindow(self):
+        self.upload_thread.quit()
         self.client.disconnect()
         self.childDialog.hide()
         self.mainWindow.show()
         # WindowsControl.backToMainWindow(self.mainWindow)
+
+    def closeEvent(self, event):
+        self.upload_thread.quit()
+
+        event.accept()
 
 class DeployDialog(QtWidgets.QDialog):
     def closeEvent(self, event):

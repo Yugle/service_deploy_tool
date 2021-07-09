@@ -591,6 +591,8 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
                     pass
                     self.readADBDevices(False)
             else:
+                if(self.currentTabIndex == 2):
+                    self.connectRemoteDevice_thread.quit()
                 self.status.changeFlag(1)
         else:
             self.message.setText("⚠️ " + message)
@@ -685,6 +687,11 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             self.connectRemoteDevice_thread = ConnectTransUnitThread(self.currentTabIndex, self.client)
             self.connectRemoteDevice_thread.result.connect(self.showMessage)
             self.connectRemoteDevice_thread.start()
+
+    def closeEvent(self, event):
+        self.connect_thread.quit()
+
+        event.accept()
 
 if __name__ == '__main__':
     dhms_transunit = QtWidgets.QApplication(sys.argv)

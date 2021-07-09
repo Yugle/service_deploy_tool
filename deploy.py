@@ -36,35 +36,39 @@ class ConnectTransUnitBySSH(object):
 		)
 
 	def uploadFile(self, localFilePath):
-		# host = "192.168.1.25"
-		# port = 22
-		# username = "admin"
-		# password = "dhms2018"
-
 		remoteFilePath = "/root/phil_test/upload_test/"
-		self.checkDir(remoteFilePath)
-
-		transport = paramiko.Transport((self.host, self.port))
-		transport.connect(username=self.username, password=self.password)
-		 
-		sftp = paramiko.SFTPClient.from_transport(transport)
 		filename = re.split(r'[/|\\]', localFilePath)[-1]
-		sftp.put(localFilePath, remoteFilePath + filename)
 
-		transport.close()
+		self.checkDirAndFile(remoteFilePath, filename)
+
+		sftp_client = paramiko.SFTPClient.from_transport(self.ssh_client.get_transport())
+		sftp_client.put(localFilePath, remoteFilePath + filename, confirm=True)
+		sftp_client.close()
+
 		self.deploy()
 
 	def deploy(self):
 		stdin,stdout,stderr = self.ssh_client.exec_command("ls")
-		print(stdout.read().decode())
+		# print(stdout.read().decode())
 
 	def disconnect(self):
 		self.ssh_client.close()
 
-	def checkDir(self, dir):
+	def checkDirAndFile(self, dir, filename):
 		stdin,stdout,stderr = self.ssh_client.exec_command("cd " + dir)
-		if("No such file or directory" in stdout.read().decode()):
-			self.ssh_client.exec_command("mkdir -p " + dir)
+		error = stderr.read().decode()
+
+		if(error != ''):
+			if("No such file or directory" in error):
+				stdin,stdout,stderr = self.ssh_client.exec_command("mkdir -p " + dir)
+			else:
+				raise Exception(error)
+		else:
+			stdin,stdout,stderr = self.ssh_client.exec_command("find " + dir + filename)
+			error = stderr.read().decode()
+
+			if(error == ""):
+				stdin,stdout,stderr = self.ssh_client.exec_command("rm " + dir + filename)
 
 class ConnectTransUnitByTelnet(object):
 	def __init__(self, host, username, password):

@@ -18,4 +18,3 @@ if("Windows" in platform.platform()):
     ADB_PATH = WORK_NAMESPACE + "\\lib\\adb\\adb.exe "
 else:
     ADB_PATH = "adb "
-
