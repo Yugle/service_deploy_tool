@@ -41,7 +41,7 @@ class ConnectTransUnitBySSH(object):
 		# username = "admin"
 		# password = "dhms2018"
 
-		remoteFilePath = "/root/matt_test/upload_test/"
+		remoteFilePath = "/root/phil_test/upload_test/"
 		self.checkDir(remoteFilePath)
 
 		transport = paramiko.Transport((self.host, self.port))
@@ -64,7 +64,7 @@ class ConnectTransUnitBySSH(object):
 	def checkDir(self, dir):
 		stdin,stdout,stderr = self.ssh_client.exec_command("cd " + dir)
 		if("No such file or directory" in stdout.read().decode()):
-			self.ssh_client.exec_command("mkdir " + dir)
+			self.ssh_client.exec_command("mkdir -p " + dir)
 
 class ConnectTransUnitByTelnet(object):
 	def __init__(self, host, username, password):
