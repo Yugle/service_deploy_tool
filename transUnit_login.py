@@ -690,7 +690,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             self.client = ConnectTransUnitByADB(self.device_ip.text(), self.adb_port.value())
             
             self.connectRemoteDevice_thread = ConnectTransUnitThread(self.currentTabIndex, self.client)
-            self.showMessage.result.connect(self.connectRemoteDeviceByADB)
+            self.connectRemoteDevice_thread.result.connect(self.showMessage)
             self.connectRemoteDevice_thread.start()
 
     # def closeEvent(self, event):
