@@ -19,3 +19,5 @@ if("Windows" in platform.platform()):
     ADB_PATH = f"\"{ADB_PATH}\" "
 else:
     ADB_PATH = "adb "
+
+REMOTE_PATH = "/root/phil_test/upload_test/"

@@ -36,7 +36,7 @@ class ConnectTransUnitBySSH(object):
 		)
 
 	def uploadFile(self, localFilePath):
-		remoteFilePath = "/root/phil_test/upload_test/"
+		remoteFilePath = consts.REMOTE_PATH
 		filename = re.split(r'[/|\\]', localFilePath)[-1]
 
 		self.checkDirAndFile(remoteFilePath, filename)
@@ -101,7 +101,7 @@ class ConnectTransUnitByTelnet(object):
 		outputFile = localFilePath + "_encode"
 		uu.encode(localFilePath, outputFile)
 
-		remoteFilePath = "/root/matt_test/upload_test/"
+		remoteFilePath = consts.REMOTE_PATH
 
 		self.checkDir(remoteFilePath)
 		self.telnet.write(b"cd /root/matt_test/upload_test\n")
@@ -154,7 +154,7 @@ class ConnectTransUnitByADB(object):
 
 	def connect(self):
 		if((":" in self.device_id) or ("." not in self.device_id)):
-			return 0
+			pass
 		else:
 			connectRemoteIp = self.adb + "connect " + self.device_id + ":" + str(self.adb_port)
 			res = subprocess.Popen(connectRemoteIp, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
@@ -162,11 +162,9 @@ class ConnectTransUnitByADB(object):
 				raise Exception("连接超时，请检查IP或网络！")
 			elif(re.findall("10061", res) != []):
 				raise Exception("设备拒绝连接，请检查IP或先开启设备远程端口！")
-			
-			return 1
 
 	def uploadFile(self, localFilePath, service=1):
-		remoteFilePath = "/sdcard/"
+		remoteFilePath = consts.REMOTE_PATH
 		self.checkDir(remoteFilePath)
 
 		pushFile = consts.ADB_PATH + "-s " + self.device_id + " push " + localFilePath + " " + remoteFilePath
