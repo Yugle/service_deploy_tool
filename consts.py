@@ -1,11 +1,23 @@
 import os
 import platform
 
-# WORK_NAMESPACE = os.getcwd()
+def getResourcePath():
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    
+    return base_path
+
+WORK_NAMESPACE = getResourcePath()
 IMG_PATH = "./resource/img/"
 
 if("Windows" in platform.platform()):
-    ADB_PATH = "lib\\adb\\adb.exe "
-    # ADB_PATH = WORK_NAMESPACE + "\\lib\\adb\\adb.exe "
+    ADB_PATH = WORK_NAMESPACE + "\\lib\\adb\\adb.exe"
+    ADB_PATH = f"\"{ADB_PATH}\" "
 else:
-    ADB_PATH = "adb " # for mac test
+    ADB_PATH = "adb "
+
+REMOTE_PATH = "/root/phil_test/upload_test/"

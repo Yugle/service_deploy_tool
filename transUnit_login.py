@@ -2,7 +2,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QTimer, QDateTime
 from deploy import *
 from transUnit_deploy import *
-import os
 import re
 import sys
 import consts
@@ -57,6 +56,7 @@ class Ui_MainWindow(object):
     def __init__(self):
         self.status = JumpToDialog()
         self.status.isTimeToJump.connect(self.showDialog)
+        self.isRemoteDeviceThreadCreated = False
 
     def setupUi(self, MainWindow):
         self.MainWindow = MainWindow
@@ -68,6 +68,9 @@ class Ui_MainWindow(object):
         self.MainWindow.setStyleSheet("background-color:white;")
         screen = QtWidgets.QApplication.desktop()
         self.MainWindow.move(int((screen.width() - 550)/2), int((screen.height() - 460)/2))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(f"{consts.IMG_PATH}../icon.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.MainWindow.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.connectMethod = QtWidgets.QTabWidget(self.centralwidget)
@@ -589,9 +592,12 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
                 self.message.setText("✅ " + message)
                 self.message.setStyleSheet("border:1px solid green;background-color:rgb(235, 250, 241);color:black;")
                 if(message == "连接远程设备成功！"):
-                    pass
                     self.readADBDevices(False)
+                    self.connectRemoteDevice_thread.quit()
             else:
+                if(self.isRemoteDeviceThreadCreated == True):
+                    self.connectRemoteDevice_thread.quit()
+                    self.isRemoteDeviceThreadCreated = False
                 self.status.changeFlag(1)
         else:
             self.message.setText("⚠️ " + message)
@@ -628,18 +634,16 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
     def showDialog(self, status):
         if(status == 1):
             self.MainWindow.hide()
+            self.connect_thread.quit()
             deployDialog = DeployDialog()
             deployPage = Ui_Deploy(self.MainWindow, self.client, self.currentTabIndex)
             deployPage.setupUi(deployDialog)
             deployDialog.show()
 
     def readADBDevices(self, toShowMessage=True):
-        # self.adb = self.lib + "\\lib\\adb\\adb.exe "
-        # self.adb = "adb "
-        self.adb = consts.ADB_PATH
         self.device_id.clear()
 
-        readDevices = self.adb + "devices"
+        readDevices = consts.ADB_PATH + "devices"
         res = re.split("\t|\n", subprocess.getoutput(readDevices))[1:]
 
         # 清洗命令执行结果，拿到device list
@@ -672,7 +676,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             self.showMessage("设备列表为空，请先连接并读取设备！")
             return
 
-        openRemoteConnect = self.adb + "-s " + self.device_id.currentText() + " tcpip " + str(self.adb_port.value())
+        openRemoteConnect = consts.ADB_PATH + "-s " + self.device_id.currentText() + " tcpip " + str(self.adb_port.value())
         res = subprocess.getoutput(openRemoteConnect)
         if(re.findall("restarting in TCP mode port: ", res) != []):
             self.showMessage(f"设备{self.device_id.currentText()}已开启远程端口，现在你可以输入设备IP进行远程连接了！", 1)
@@ -689,12 +693,17 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             self.connectRemoteDevice_thread = ConnectTransUnitThread(self.currentTabIndex, self.client)
             self.connectRemoteDevice_thread.result.connect(self.showMessage)
             self.connectRemoteDevice_thread.start()
+            self.isRemoteDeviceThreadCreated = True
+
+    # def closeEvent(self, event):
+    #     self.connect_thread.quit()
+
+    #     event.accept()
 
 if __name__ == '__main__':
     dhms_transunit = QtWidgets.QApplication(sys.argv)
     myWindow = QtWidgets.QMainWindow()
     window = Ui_MainWindow()
     window.setupUi(myWindow)
-    myWindow.setWindowIcon(QtGui.QIcon(":/icon.ico"))
     myWindow.show()
     sys.exit(dhms_transunit.exec_())

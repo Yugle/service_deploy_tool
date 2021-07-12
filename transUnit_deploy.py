@@ -18,6 +18,7 @@ class UploadFileAndDeployThread(QtCore.QThread):
             self.client.uploadFile(self.localFilePath)
 
             message = {"message": "操作成功！", "type": self.type}
+
             self.result.emit(message)
         except Exception as e:
             self.result.emit({"message": str(e), "type": self.type})
@@ -27,6 +28,7 @@ class Ui_Deploy(object):
         self.mainWindow = mainWindow
         self.client = client
         self.protocol = protocol
+        self.isThreadCreated = False
 
     def setupUi(self, Deploy):
         self.childDialog = Deploy
@@ -39,6 +41,9 @@ class Ui_Deploy(object):
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         Deploy.setFont(font)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(f"{consts.IMG_PATH}../icon.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        Deploy.setWindowIcon(icon)
         Deploy.setStyleSheet("background-color:white;")
         self.deploy = QtWidgets.QPushButton(Deploy)
         self.deploy.setGeometry(QtCore.QRect(138, 312, 117, 40))
@@ -191,7 +196,8 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.showMessage({"message": "登录成功！", "type": 0})
 
     def chooseFile(self):
-        self.filePathGot = QFileDialog.getOpenFileName(None, "选择文件",'', "Service File()")[0]
+        self.filePathGot = QFileDialog.getOpenFileName(None, "选择文件", "c:\\", "Service File(*.py)")[0]
+        QFileDialog.getOpenFileName
         self.file_path.setText(self.filePathGot)
         if(self.protocol == 1):
             message = {"message": "使用Telnet部署方式较慢，请耐心等待！", "type": 0}
@@ -206,6 +212,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             self.upload_thread = UploadFileAndDeployThread(localFilePath, self.client)
             self.upload_thread.result.connect(self.showMessage)
             self.upload_thread.start()
+            self.isThreadCreated = True
         else:
             self.file_path.setStyleSheet("QLineEdit{border:1px ridge red}")
             message = {"message": "文件路径有误！", "type": 0}
@@ -226,7 +233,9 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         if(message in ["操作成功！", "登录成功！"]):
             self.message.setText("✅ " + message)
             self.message.setStyleSheet("border:1px solid green;background-color:rgb(235, 250, 241);color:black;")
-            
+            if(self.isThreadCreated == True):
+                self.upload_thread.quit()
+                self.isThreadCreated = False
         else:
             self.message.setText("⚠️ " + message)
             self.message.setStyleSheet("border:1px solid red;background-color:#FFCCC7;color:black;")
@@ -257,10 +266,20 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.timer.stop()
 
     def backToMainWindow(self):
+        if(self.isThreadCreated == True):
+            self.upload_thread.quit()
+            self.isThreadCreated = False
         self.client.disconnect()
         self.childDialog.hide()
         self.mainWindow.show()
         # WindowsControl.backToMainWindow(self.mainWindow)
+
+    def closeEvent(self, event):
+        if(self.isThreadCreated == True):
+            self.upload_thread.quit()
+            self.isThreadCreated = False
+
+        event.accept()
 
 class DeployDialog(QtWidgets.QDialog):
     def closeEvent(self, event):

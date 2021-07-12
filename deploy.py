@@ -36,35 +36,39 @@ class ConnectTransUnitBySSH(object):
 		)
 
 	def uploadFile(self, localFilePath):
-		# host = "192.168.1.25"
-		# port = 22
-		# username = "admin"
-		# password = "dhms2018"
-
-		remoteFilePath = "/root/matt_test/upload_test/"
-		self.checkDir(remoteFilePath)
-
-		transport = paramiko.Transport((self.host, self.port))
-		transport.connect(username=self.username, password=self.password)
-		 
-		sftp = paramiko.SFTPClient.from_transport(transport)
+		remoteFilePath = consts.REMOTE_PATH
 		filename = re.split(r'[/|\\]', localFilePath)[-1]
-		sftp.put(localFilePath, remoteFilePath + filename)
 
-		transport.close()
+		self.checkDirAndFile(remoteFilePath, filename)
+
+		sftp_client = paramiko.SFTPClient.from_transport(self.ssh_client.get_transport())
+		sftp_client.put(localFilePath, remoteFilePath + filename, confirm=True)
+		sftp_client.close()
+
 		self.deploy()
 
 	def deploy(self):
 		stdin,stdout,stderr = self.ssh_client.exec_command("ls")
-		print(stdout.read().decode())
+		# print(stdout.read().decode())
 
 	def disconnect(self):
 		self.ssh_client.close()
 
-	def checkDir(self, dir):
+	def checkDirAndFile(self, dir, filename):
 		stdin,stdout,stderr = self.ssh_client.exec_command("cd " + dir)
-		if("No such file or directory" in stdout.read().decode()):
-			self.ssh_client.exec_command("mkdir " + dir)
+		error = stderr.read().decode()
+
+		if(error != ''):
+			if("No such file or directory" in error):
+				stdin,stdout,stderr = self.ssh_client.exec_command("mkdir -p " + dir)
+			else:
+				raise Exception(error)
+		else:
+			stdin,stdout,stderr = self.ssh_client.exec_command("find " + dir + filename)
+			error = stderr.read().decode()
+
+			if(error == ""):
+				stdin,stdout,stderr = self.ssh_client.exec_command("rm " + dir + filename)
 
 class ConnectTransUnitByTelnet(object):
 	def __init__(self, host, username, password):
@@ -97,7 +101,7 @@ class ConnectTransUnitByTelnet(object):
 		outputFile = localFilePath + "_encode"
 		uu.encode(localFilePath, outputFile)
 
-		remoteFilePath = "/root/matt_test/upload_test/"
+		remoteFilePath = consts.REMOTE_PATH
 
 		self.checkDir(remoteFilePath)
 		self.telnet.write(b"cd /root/matt_test/upload_test\n")
@@ -118,7 +122,7 @@ class ConnectTransUnitByTelnet(object):
 
 		self.telnet.close()
 		self.connect()
-		self.telnet.write(b"cd /root/matt_test/upload_test\n")
+		self.telnet.write(b"cd " + remoteFilePath.encode("ascii") + b"\n")
 		time.sleep(1)
 		self.telnet.write(b"uudecode -o toDeploy uploaded\n")
 		time.sleep(1)
@@ -144,29 +148,27 @@ class ConnectTransUnitByTelnet(object):
 
 class ConnectTransUnitByADB(object):
 	def __init__(self, device_id, adb_port):
-		self.adb = consts.ADB_PATH + "\\lib\\adb\\adb.exe "
 		self.device_id = device_id
 		self.adb_port = adb_port
+		self.adb = consts.ADB_PATH
 
 	def connect(self):
 		if((":" in self.device_id) or ("." not in self.device_id)):
-			return 0
+			pass
 		else:
 			connectRemoteIp = self.adb + "connect " + self.device_id + ":" + str(self.adb_port)
-			res = subprocess.Popen(connectRemoteIp, stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.read().decode("utf-8")
+			res = subprocess.Popen(connectRemoteIp, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 			if(re.findall("10060", res) != []):
 				raise Exception("连接超时，请检查IP或网络！")
 			elif(re.findall("10061", res) != []):
 				raise Exception("设备拒绝连接，请检查IP或先开启设备远程端口！")
-			
-			return 1
 
 	def uploadFile(self, localFilePath, service=1):
-		remoteFilePath = "/sdcard/"
+		remoteFilePath = consts.REMOTE_PATH
 		self.checkDir(remoteFilePath)
 
 		pushFile = consts.ADB_PATH + "-s " + self.device_id + " push " + localFilePath + " " + remoteFilePath
-		res = subprocess.Popen(pushFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.read().decode("utf-8")
+		res = subprocess.Popen(pushFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		if("error" in res):
 			raise Exception(res)
 		self.deploy()
@@ -175,13 +177,13 @@ class ConnectTransUnitByADB(object):
 		adbShell = consts.ADB_PATH + "shell "
 		
 		testShell = adbShell + "ls"
-		res = subprocess.Popen(testShell, stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.read().decode("utf-8")
+		res = subprocess.Popen(testShell, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 
 	def disconnect(self):
 		pass
 
 	def checkDir(self, dir):
 		adbShell = consts.ADB_PATH + "shell "
-		res = subprocess.Popen(adbShell+"cd "+dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.read().decode("utf-8")
+		res = subprocess.Popen(adbShell+"cd "+dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		if("No such file or directory" in res):
-			subprocess.run(adbShell+"mkdir "+dir)
+			subprocess.Popen(adbShell+"mkdir -p"+dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)

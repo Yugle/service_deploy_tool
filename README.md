@@ -6,6 +6,9 @@ python transUnit_login.py
 ```
 ## 打包
 ```
-pyinstaller -w -F -i .\resource\icon.ico --clean .\transUnit_login.py
-pyinstaller -w -F -i .\resource\icon.ico --clean .\transUnit_login.spec
+pyinstaller -w -i .\resource\icon.ico --clean .\transUnit_login.py
+pyinstaller -o .\out .\pack\transUnit.spec
 ```
+## 封包
+
+使用[Inno Setup Compiler](https://jrsoftware.org/isdl.php)进行封包，[封包脚本](/pack/封包.iss)
