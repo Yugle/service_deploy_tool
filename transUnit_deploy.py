@@ -12,7 +12,7 @@ class UploadFileAndDeployThread(QtCore.QThread):
         self.localFilePath = localFilePath
         self.client = client
         self.type = type
-
+        
     def run(self):
         try:
             self.client.uploadFile(self.localFilePath)
@@ -196,7 +196,8 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.showMessage({"message": "登录成功！", "type": 0})
 
     def chooseFile(self):
-        self.filePathGot = QFileDialog.getOpenFileName(None, "选择文件",'', "Service File(*.py)")[0]
+        self.filePathGot = QFileDialog.getOpenFileName(None, "选择文件", "c:\\", "Service File(*.py)")[0]
+        QFileDialog.getOpenFileName
         self.file_path.setText(self.filePathGot)
         if(self.protocol == 1):
             message = {"message": "使用Telnet部署方式较慢，请耐心等待！", "type": 0}
@@ -232,7 +233,8 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         if(message in ["操作成功！", "登录成功！"]):
             self.message.setText("✅ " + message)
             self.message.setStyleSheet("border:1px solid green;background-color:rgb(235, 250, 241);color:black;")
-            
+            if(self.isThreadCreated == True):
+                self.upload_thread.quit()
         else:
             self.message.setText("⚠️ " + message)
             self.message.setStyleSheet("border:1px solid red;background-color:#FFCCC7;color:black;")

@@ -27,6 +27,7 @@ class ConnectTransUnitThread(QtCore.QThread):
         self.currentTabIndex = currentTabIndex
         self.client = client
         self.adb_message = 0
+        print("线程创建")
 
     def run(self):
         try:
@@ -591,8 +592,8 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
                 self.message.setText("✅ " + message)
                 self.message.setStyleSheet("border:1px solid green;background-color:rgb(235, 250, 241);color:black;")
                 if(message == "连接远程设备成功！"):
-                    pass
                     self.readADBDevices(False)
+                    self.connectRemoteDevice_thread.quit()
             else:
                 if(self.currentTabIndex == 2):
                     self.connectRemoteDevice_thread.quit()
@@ -632,6 +633,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
     def showDialog(self, status):
         if(status == 1):
             self.MainWindow.hide()
+            self.connect_thread.quit()
             deployDialog = DeployDialog()
             deployPage = Ui_Deploy(self.MainWindow, self.client, self.currentTabIndex)
             deployPage.setupUi(deployDialog)
@@ -688,13 +690,13 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             self.client = ConnectTransUnitByADB(self.device_ip.text(), self.adb_port.value())
             
             self.connectRemoteDevice_thread = ConnectTransUnitThread(self.currentTabIndex, self.client)
-            self.connectRemoteDevice_thread.result.connect(self.showMessage)
+            self.showMessage.result.connect(self.connectRemoteDeviceByADB)
             self.connectRemoteDevice_thread.start()
 
-    def closeEvent(self, event):
-        self.connect_thread.quit()
+    # def closeEvent(self, event):
+    #     self.connect_thread.quit()
 
-        event.accept()
+    #     event.accept()
 
 if __name__ == '__main__':
     dhms_transunit = QtWidgets.QApplication(sys.argv)

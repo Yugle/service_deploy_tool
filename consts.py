@@ -15,6 +15,7 @@ WORK_NAMESPACE = getResourcePath()
 IMG_PATH = "./resource/img/"
 
 if("Windows" in platform.platform()):
-    ADB_PATH = WORK_NAMESPACE + "\\lib\\adb\\adb.exe "
+    ADB_PATH = WORK_NAMESPACE + "\\lib\\adb\\adb.exe"
+    ADB_PATH = f"\"{ADB_PATH}\" "
 else:
     ADB_PATH = "adb "

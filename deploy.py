@@ -122,7 +122,7 @@ class ConnectTransUnitByTelnet(object):
 
 		self.telnet.close()
 		self.connect()
-		self.telnet.write(b"cd /root/matt_test/upload_test\n")
+		self.telnet.write(b"cd " + remoteFilePath.encode("ascii") + b"\n")
 		time.sleep(1)
 		self.telnet.write(b"uudecode -o toDeploy uploaded\n")
 		time.sleep(1)
@@ -157,7 +157,7 @@ class ConnectTransUnitByADB(object):
 			return 0
 		else:
 			connectRemoteIp = self.adb + "connect " + self.device_id + ":" + str(self.adb_port)
-			res = subprocess.Popen(connectRemoteIp, stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.read().decode("utf-8")
+			res = subprocess.Popen(connectRemoteIp, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 			if(re.findall("10060", res) != []):
 				raise Exception("连接超时，请检查IP或网络！")
 			elif(re.findall("10061", res) != []):
@@ -170,7 +170,7 @@ class ConnectTransUnitByADB(object):
 		self.checkDir(remoteFilePath)
 
 		pushFile = consts.ADB_PATH + "-s " + self.device_id + " push " + localFilePath + " " + remoteFilePath
-		res = subprocess.Popen(pushFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.read().decode("utf-8")
+		res = subprocess.Popen(pushFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		if("error" in res):
 			raise Exception(res)
 		self.deploy()
@@ -179,13 +179,13 @@ class ConnectTransUnitByADB(object):
 		adbShell = consts.ADB_PATH + "shell "
 		
 		testShell = adbShell + "ls"
-		res = subprocess.Popen(testShell, stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.read().decode("utf-8")
+		res = subprocess.Popen(testShell, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 
 	def disconnect(self):
 		pass
 
 	def checkDir(self, dir):
 		adbShell = consts.ADB_PATH + "shell "
-		res = subprocess.Popen(adbShell+"cd "+dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.read().decode("utf-8")
+		res = subprocess.Popen(adbShell+"cd "+dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		if("No such file or directory" in res):
-			subprocess.run(adbShell+"mkdir "+dir)
+			subprocess.Popen(adbShell+"mkdir -p"+dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
