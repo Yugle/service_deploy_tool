@@ -12,7 +12,7 @@ class UploadFileAndDeployThread(QtCore.QThread):
         self.localFilePath = localFilePath
         self.client = client
         self.type = type
-        
+
     def run(self):
         try:
             self.client.uploadFile(self.localFilePath)
@@ -235,6 +235,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             self.message.setStyleSheet("border:1px solid green;background-color:rgb(235, 250, 241);color:black;")
             if(self.isThreadCreated == True):
                 self.upload_thread.quit()
+                self.isThreadCreated = False
         else:
             self.message.setText("⚠️ " + message)
             self.message.setStyleSheet("border:1px solid red;background-color:#FFCCC7;color:black;")
@@ -267,6 +268,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
     def backToMainWindow(self):
         if(self.isThreadCreated == True):
             self.upload_thread.quit()
+            self.isThreadCreated = False
         self.client.disconnect()
         self.childDialog.hide()
         self.mainWindow.show()
@@ -275,6 +277,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
     def closeEvent(self, event):
         if(self.isThreadCreated == True):
             self.upload_thread.quit()
+            self.isThreadCreated = False
 
         event.accept()
 

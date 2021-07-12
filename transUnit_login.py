@@ -27,7 +27,6 @@ class ConnectTransUnitThread(QtCore.QThread):
         self.currentTabIndex = currentTabIndex
         self.client = client
         self.adb_message = 0
-        print("线程创建")
 
     def run(self):
         try:
@@ -57,6 +56,7 @@ class Ui_MainWindow(object):
     def __init__(self):
         self.status = JumpToDialog()
         self.status.isTimeToJump.connect(self.showDialog)
+        self.isRemoteDeviceThreadCreated = False
 
     def setupUi(self, MainWindow):
         self.MainWindow = MainWindow
@@ -595,8 +595,9 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
                     self.readADBDevices(False)
                     self.connectRemoteDevice_thread.quit()
             else:
-                if(self.currentTabIndex == 2):
+                if(self.isRemoteDeviceThreadCreated == True):
                     self.connectRemoteDevice_thread.quit()
+                    self.isRemoteDeviceThreadCreated = False
                 self.status.changeFlag(1)
         else:
             self.message.setText("⚠️ " + message)
@@ -692,6 +693,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             self.connectRemoteDevice_thread = ConnectTransUnitThread(self.currentTabIndex, self.client)
             self.connectRemoteDevice_thread.result.connect(self.showMessage)
             self.connectRemoteDevice_thread.start()
+            self.isRemoteDeviceThreadCreated = True
 
     # def closeEvent(self, event):
     #     self.connect_thread.quit()
