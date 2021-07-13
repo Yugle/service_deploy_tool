@@ -14,12 +14,12 @@ import subprocess
 #         mainWindow.show()
 
 class ConnectTransUnitBySSH(object):
-	def __init__(self, host, username, password, serviceType=0):
+	def __init__(self, host, username, password):
 		self.host = host
 		self.port = 22
 		self.username = username
 		self.password = password
-		self.seviceType = serviceType
+		self.service_name = ["fastdiag", "ssh"]
 
 	def connect(self):
 		self.ssh_client = paramiko.SSHClient()
@@ -69,6 +69,68 @@ class ConnectTransUnitBySSH(object):
 
 			if(error == ""):
 				stdin,stdout,stderr = self.ssh_client.exec_command("rm " + dir + filename)
+
+	def getInfo(self, service):
+		self.service = self.service_name[service]
+		path = "/usr/bin/"
+		information = {}
+
+		information["service_name"] = self.service
+		# information["service_version"] = self.getServiceVersion()
+		information["service_version"] = "v1.0"
+		information["service_md5"] = self.getMD5(self.service)
+		information["service_deploy_time"] = self.getDeployTime(self.service)
+		# information["service_path"] = self.getServicePath()
+		information["service_path"] = path + self.service
+		# information["service_profile"] = self.getServiceProfile()
+		information["service_profile"] = "/private/conf/test_conf.json"
+		# information["service_daemon"] = self.getServiceDaemon()
+		information["service_daemon"] = "/private/daemon.ini"
+		# information["service_conf"] = self.getServiceConf()
+		information["service_conf"] = "--help"
+		information["service_time"] = self.getServiceTime(self.service)
+		information["disk_available"] = self.getDiskAvailableSpace()
+		information["log_path"] = self.getLogPath(self.service)
+
+		return information
+
+	def getDeployTime(self, service):
+		stdin,stdout,stderr = self.ssh_client.exec_command("stat %s"%service)
+		change_time = stdout.read().decode("utf-8").split(": ")[-1].split(".")[0]
+		
+		return change_time
+
+	def getMD5(self, service):
+		stdin,stdout,stderr = self.ssh_client.exec_command("md5sum %s"%service)
+		md5 = stdout.read().decode("utf-8").split(" ")[0]
+
+		return md5
+
+	def getServiceTime(self, service):
+		service = "sessiongo"
+		stdin,stdout,stderr = self.ssh_client.exec_command(f"ps -ef pid,name,etime | grep {service}$")
+		res = stdout.read().decode("utf-8").split(" ")
+		etime = res
+		if(len(res) >= 2):
+			etime = res[-2]
+
+		return etime
+
+	def getDiskAvailableSpace(self):
+		stdin,stdout,stderr = self.ssh_client.exec_command("df -h /log")
+		log_available = stdout.readlines()[-1].split(" ")[-4]
+
+		stdin,stdout,stderr = self.ssh_client.exec_command("df -h /usr/bin")
+		usr_bin_available = stdout.readlines()[-1].split(" ")[-4]
+
+		return [log_available, usr_bin_available]
+
+	def getLogPath(self, service):
+		stdin,stdout,stderr = self.ssh_client.exec_command(f"find /log/{service}*")
+		log_list = re.findall(f"{service}\\S+.log", stdout.read().decode("utf-8"))
+		# log_list = re.findall(f"/log/{service}\\S+.log", stdout.read().decode("utf-8"))0
+
+		return log_list
 
 class ConnectTransUnitByTelnet(object):
 	def __init__(self, host, username, password):

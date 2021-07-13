@@ -1,11 +1,14 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QTimer, QDateTime
 from deploy import *
-from transUnit_deploy import *
+# from transUnit_deploy import *
+from transUnit_detail import *
+# from transUnit_edit import *
 import re
 import sys
 import consts
 import subprocess
+import sys
 
 class JumpToDialog(QtWidgets.QWidget):
     isTimeToJump = QtCore.pyqtSignal(bool)
@@ -481,7 +484,9 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.message.setMaximumWidth(291)
 
         for lineEdit in self.MainWindow.findChildren(QtWidgets.QLineEdit):
+            lineEdit.returnPressed.connect(self.connectTransUnit)
             lineEdit.lower()
+
         self.tabs = ["SSH", "Telnet", "ADB"]
         self.tips = ["传输单元IP地址", "用户名", "密码"]
         self.currentTabIndex = 0
@@ -491,6 +496,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.labelOffset = 6
 
         self.loginBtn.clicked.connect(self.connectTransUnit)
+
         self.connectMethod.currentChanged.connect(lambda :self.tabChanged(self.connectMethod.currentIndex()))
 
         self.read_devices.clicked.connect(lambda :self.readADBDevices())
@@ -635,10 +641,12 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         if(status == 1):
             self.MainWindow.hide()
             self.connect_thread.quit()
-            deployDialog = DeployDialog()
-            deployPage = Ui_Deploy(self.MainWindow, self.client, self.currentTabIndex)
-            deployPage.setupUi(deployDialog)
-            deployDialog.show()
+            # 子窗口要加self，否则一弹出就会被收回
+            self.deployDialog = DeployDialog()
+            # deployPage = Ui_Deploy(self.MainWindow, self.client, self.currentTabIndex)
+            self.deployPage = Ui_Deploy()
+            self.deployPage.setupUi(self.deployDialog)
+            self.deployDialog.show()
 
     def readADBDevices(self, toShowMessage=True):
         self.device_id.clear()
@@ -695,6 +703,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             self.connectRemoteDevice_thread.start()
             self.isRemoteDeviceThreadCreated = True
 
+    # 此QT写法未继承，无法重写父类函数
     # def closeEvent(self, event):
     #     self.connect_thread.quit()
 
