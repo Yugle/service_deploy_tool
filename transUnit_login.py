@@ -6,6 +6,7 @@ import re
 import sys
 import consts
 import subprocess
+import sys
 
 class JumpToDialog(QtWidgets.QWidget):
     isTimeToJump = QtCore.pyqtSignal(bool)
@@ -481,7 +482,9 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.message.setMaximumWidth(291)
 
         for lineEdit in self.MainWindow.findChildren(QtWidgets.QLineEdit):
+            lineEdit.returnPressed.connect(self.connectTransUnit)
             lineEdit.lower()
+
         self.tabs = ["SSH", "Telnet", "ADB"]
         self.tips = ["传输单元IP地址", "用户名", "密码"]
         self.currentTabIndex = 0
@@ -491,6 +494,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.labelOffset = 6
 
         self.loginBtn.clicked.connect(self.connectTransUnit)
+
         self.connectMethod.currentChanged.connect(lambda :self.tabChanged(self.connectMethod.currentIndex()))
 
         self.read_devices.clicked.connect(lambda :self.readADBDevices())
@@ -695,6 +699,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             self.connectRemoteDevice_thread.start()
             self.isRemoteDeviceThreadCreated = True
 
+    # 此QT写法未继承，无法重写父类函数
     # def closeEvent(self, event):
     #     self.connect_thread.quit()
 
