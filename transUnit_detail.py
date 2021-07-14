@@ -470,9 +470,13 @@ class Ui_Deploy(object):
 
         self.deploySvc(self.filePath)
 
-    def deploySvc(self, filePath):
-        self.deploy.setText("部署中...")
-        self.deploy.setEnabled(False)
+    def uploadFile(self, filePath, type=0):
+        """
+        type为上传部署文件还是配置文件，相应的要在deploy.py上传文件中更改远程路径(todo)
+        """
+        if(type == 0):
+            self.deploy.setText("部署中...")
+            self.deploy.setEnabled(False)
         localFilePath = filePath
 
         if(Path(localFilePath).is_file()):
@@ -493,7 +497,7 @@ class Ui_Deploy(object):
 
         self.message.setWordWrap(False)
 
-        if(message in ["操作成功！", "登录成功！"]):
+        if(message in ["操作成功！", "登录成功！", "修改成功！", "取消操作！"]):
             self.message.setText(" ✅ " + message)
             self.message.setStyleSheet("border-radius:2px;background-color:#65c294;color:white;")
 
@@ -520,7 +524,7 @@ class Ui_Deploy(object):
         self.timer.start(self.timecount*1000)
 
         if(type == 0):
-            self.deploy.setText("部署")
+            self.deploy.setText("部署|更新")
             self.deploy.setEnabled(True)
         elif(type == 1):
             self.update.setText("更新")
@@ -565,13 +569,19 @@ class Ui_Deploy(object):
         if(Path(consts.PROFILE).is_file()):
             # 子窗口要加self，否则一弹出就会被收回
             self.editDialog = EditDialog()
-            # self.editPage = Ui_Deploy(self.MainWindow, self.client, self.currentTabIndex)
-            # self.editPage = Ui_Deploy(self.MainWindow, self.client, self.currentTabIndex)
             self.editPage = Ui_edit_file()
             self.editPage.setupUi(self.editDialog)
             self.editDialog.show()
-            s = self.editDialog.exec_()
-            print(s)
+            self.editDialog.exec_()
+            result = self.editDialog.result
+            if(result[0] == True):
+                self.uploadFile(consts.PROFILE, type=1)
+                self.showMessage({"message": "修改成功！", "type": 0})
+            elif(result[1] == True):
+                self.showMessage({"message": "取消操作！", "type": 0})
+            else:
+                self.showMessage({"message": "Json格式错误，配置文件已回退，请重新修改！", "type": 0})
+
             # json.load(consts.PROFILE)
 
     def closeEvent(self, event):

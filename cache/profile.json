@@ -1,1 +1,336 @@
-{"config": [{"deviceId": 1127, "input": [{"address": 5, "category": "WSNC-150s", "id": "122201201190", "inputCategory": "", "intervalFormula": 60000, "isBigEndian": true, "length": 16500, "mpage_header": [{"bitOffset": 0, "bits": 32, "byteOffset": 0, "id": "timestamp", "method": "read"}, {"bitOffset": 0, "bits": 16, "byteOffset": 4, "id": "length", "method": "read"}, {"bitOffset": 0, "bits": 16, "byteOffset": 100, "id": "compressFlag", "method": "read"}], "mpage_header_len": 102, "name": "c:1289-s:1290-i:1", "offset": 393216, "param": [{"bitOffset": 0, "bits": 16, "byteOffset": 6, "id": "a.1290.1", "isUnsigned": true, "method": "function main(d); return 1/(d*0.1/1000000.0) ;end", "repeat": 0, "repeatOffset": 0, "singlePrecisionFloat": false}, {"bitOffset": 0, "bits": 16, "byteOffset": 8, "id": "a.1290.2", "isUnsigned": true, "method": "function main(d); return d*0.01/1000.0 ;end", "repeat": 0, "repeatOffset": 0, "singlePrecisionFloat": false}, {"bitOffset": 0, "bits": 131072, "byteOffset": 102, "id": "a.1290.3", "isUnsigned": false, "method": "indexArray={\"a.1290.2\"}; function main(d,a); return (((d*5)/32768)/a[0])*9.8 ;end", "repeat": 0, "repeatOffset": 0, "singlePrecisionFloat": false}], "sampleRate": "indexArray={\"a.1290.1\"}; function main(a); return a[0] ;end", "type": "modbus", "input_device_levels": ["c126", "s634"]}, {"address": 5, "category": "WSNC-150s", "id": "122201201190", "inputCategory": "", "intervalFormula": 6000, "isBigEndian": true, "length": 6, "mpage_header": [{"bitOffset": 0, "bits": 32, "byteOffset": 0, "id": "timestamp", "method": "read"}, {"bitOffset": 0, "bits": 16, "byteOffset": 4, "id": "nc", "method": "read"}], "mpage_header_len": 6, "name": "c:1289-s:1290-i:2", "offset": 16844290, "param": [{"bitOffset": 0, "bits": 16, "byteOffset": 4, "id": "a.1290.4", "isUnsigned": true, "method": "function main(d); return d*175.72/65536-46.85 ;end", "repeat": 0, "repeatOffset": 0, "singlePrecisionFloat": false}], "sampleRate": "", "type": "modbus", "input_device_levels": ["c126", "s634"]}, {"address": 5, "category": "WSNC-150s", "id": "122201201190", "inputCategory": "", "intervalFormula": 6000, "isBigEndian": true, "length": 6, "mpage_header": [{"bitOffset": 0, "bits": 32, "byteOffset": 0, "id": "timestamp", "method": "read"}, {"bitOffset": 0, "bits": 16, "byteOffset": 4, "id": "nc", "method": "read"}], "mpage_header_len": 6, "name": "c:1289-s:1290-i:2", "offset": 16844291, "param": [{"bitOffset": 0, "bits": 16, "byteOffset": 4, "id": "a.1290.5", "isUnsigned": true, "method": "function main(d); return d/1000.0 ;end", "repeat": 0, "repeatOffset": 0, "singlePrecisionFloat": false}], "sampleRate": "", "type": "modbus", "input_device_levels": ["c126", "s634"]}, {"address": 5, "category": "WSNC-150s", "id": "122201201190", "inputCategory": "", "intervalFormula": 6000, "isBigEndian": true, "length": 6, "mpage_header": [{"bitOffset": 0, "bits": 32, "byteOffset": 0, "id": "timestamp", "method": "read"}, {"bitOffset": 0, "bits": 16, "byteOffset": 4, "id": "nc", "method": "read"}], "mpage_header_len": 6, "name": "c:1289-s:1290-i:2", "offset": 16844293, "param": [{"bitOffset": 0, "bits": 16, "byteOffset": 4, "id": "a.1290.6", "isUnsigned": true, "method": "function main(d); return d/100.0 ;end", "repeat": 0, "repeatOffset": 0, "singlePrecisionFloat": false}], "sampleRate": "", "type": "modbus", "input_device_levels": ["c126", "s634"]}], "output": [{"args": ["a.1290.4"], "boundary_lower": "", "boundary_upper": "", "faultType": [], "groupKey": "", "interval": "10000", "metric": "m.8535", "name": "\u6e29\u5ea6", "parseType": "simple", "precision": 3, "source": "", "tags": [], "threshold": [], "type": "data", "unit": 5, "unit_value": "", "validator": ""}, {"args": ["a.1290.5"], "boundary_lower": "", "boundary_upper": "", "faultType": [], "groupKey": "", "interval": "10000", "metric": "m.8536", "name": "\u7535\u538b", "parseType": "simple", "precision": 3, "source": "", "tags": [], "threshold": [], "type": "data", "unit": 10, "unit_value": "", "validator": ""}, {"args": ["a.1290.6"], "boundary_lower": "", "boundary_upper": "", "faultType": [], "groupKey": "", "interval": "10000", "metric": "m.8537", "name": "\u901f\u5ea6\u5747\u65b9\u6839", "parseType": "simple", "precision": 3, "source": "", "tags": [], "threshold": [], "type": "data", "unit": 2, "unit_value": "", "validator": ""}, {"args": ["a.1290.3"], "boundary_lower": "", "boundary_upper": "", "faultType": [], "groupKey": "", "interval": "10000", "metric": "m.8534", "name": "\u632f\u52a8\u52a0\u901f\u5ea6", "parseType": "simple", "precision": 3, "source": "", "tags": ["vib-anlysis"], "threshold": [], "type": "analysis", "unit": 24, "unit_value": "", "validator": ""}]}], "interval": 60000, "modbus": {"baud_rate": 115200, "data_bit": 8, "master": true, "parity": "NONE", "path": "/dev/ttyS3", "slaveAddr": 0, "slaveLength": 0, "stop_bit": 1}, "network": {"type": "wired", "access": "dynamic"}, "productCode": "1", "tuId": 587, "tumId": 335, "tumName": "\u5434\u9e4f\u7684\u4f20\u8f93\u5355\u5143", "uploadInterval": 300, "version": "2021-04-19T10:20:45.877833242+08:00", "config_version": "3.0.0"}
+{
+  "config": [
+    {
+      "deviceId": 1127,
+      "input": [
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "122201201190",
+          "inputCategory": "",
+          "intervalFormula": 60000,
+          "isBigEndian": true,
+          "length": 16500,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "length",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 100,
+              "id": "compressFlag",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 102,
+          "name": "c:1289-s:1290-i:1",
+          "offset": 393216,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 6,
+              "id": "a.1290.1",
+              "isUnsigned": true,
+              "method": "function main(d); return 1/(d*0.1/1000000.0) ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 8,
+              "id": "a.1290.2",
+              "isUnsigned": true,
+              "method": "function main(d); return d*0.01/1000.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            },
+            {
+              "bitOffset": 0,
+              "bits": 131072,
+              "byteOffset": 102,
+              "id": "a.1290.3",
+              "isUnsigned": false,
+              "method": "indexArray={\"a.1290.2\"}; function main(d,a); return (((d*5)/32768)/a[0])*9.8 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "indexArray={\"a.1290.1\"}; function main(a); return a[0] ;end",
+          "type": "modbus",
+          "input_device_levels": [
+            "c126",
+            "s634"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "122201201190",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:1289-s:1290-i:2",
+          "offset": 16844290,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.1290.4",
+              "isUnsigned": true,
+              "method": "function main(d); return d*175.72/65536-46.85 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c126",
+            "s634"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "122201201190",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:1289-s:1290-i:2",
+          "offset": 16844291,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.1290.5",
+              "isUnsigned": true,
+              "method": "function main(d); return d/1000.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c126",
+            "s634"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "122201201190",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:1289-s:1290-i:2",
+          "offset": 16844293,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.1290.6",
+              "isUnsigned": true,
+              "method": "function main(d); return d/100.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c126",
+            "s634"
+          ]
+        }
+      ],
+      "output": [
+        {
+          "args": [
+            "a.1290.4"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.8535",
+          "name": "\u6e29\u5ea6",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [],
+          "threshold": [],
+          "type": "data",
+          "unit": 5,
+          "unit_value": "",
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.1290.5"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.8536",
+          "name": "\u7535\u538b",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [],
+          "threshold": [],
+          "type": "data",
+          "unit": 10,
+          "unit_value": "",
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.1290.6"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.8537",
+          "name": "\u901f\u5ea6\u5747\u65b9\u6839",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [],
+          "threshold": [],
+          "type": "data",
+          "unit": 2,
+          "unit_value": "",
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.1290.3"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.8534",
+          "name": "\u632f\u52a8\u52a0\u901f\u5ea6",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "vib-anlysis"
+          ],
+          "threshold": [],
+          "type": "analysis",
+          "unit": 24,
+          "unit_value": "",
+          "validator": ""
+        }
+      ]
+    }
+  ],
+  "interval": 60000,
+  "modbus": {
+    "baud_rate": 115200,
+    "data_bit": 8,
+    "master": true,
+    "parity": "NONE",
+    "path": "/dev/ttyS3",
+    "slaveAddr": 0,
+    "slaveLength": 0,
+    "stop_bit": 1
+  },
+  "network": {
+    "type": "wired",
+    "access": "dynamic"
+  },
+  "productCode": "1",
+  "tuId": 587,
+  "tumId": 335,
+  "tumName": "\u5434\u9e4f\u7684\u4f20\u8f93\u5355\u5143",
+  "uploadInterval": 300,
+  "version": "2021-04-19T10:20:45.877833242+08:00",
+  "config_version": "3.0.0"
+}

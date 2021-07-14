@@ -75,10 +75,13 @@ class Ui_edit_file(object):
         self.json_edit.setPlainText(profile_json)
 
         self.json_edit.textChanged.connect(self.resetStyle)
+        self.edit_file.updateJson(self.json_edit.toPlainText())
 
         self.save.clicked.connect(self.saveFile)
+        # self.cancel.clicked.connect()
 
     def resetStyle(self):
+        self.edit_file.setWindowTitle(consts.PROFILE.split("/")[-1] + "-未保存")
         self.edit_file.updateJson(self.json_edit.toPlainText())
         if(self.error_message.text() != ""):
             self.error_message.setText("")
@@ -87,41 +90,40 @@ class Ui_edit_file(object):
     def checkJson(self):
         try:
             json.loads(self.json_edit.toPlainText())
+
+            return True
         except Exception as e:
             error_line = re.findall(r"\d+", str(e))[0]
             self.error_message.setText("Json格式错误，请检查第%s行"%error_line)
             self.json_edit.setStyleSheet("border:1px ridge red;")
 
-        return True
+        return False
 
     def saveFile(self):
         if(self.checkJson()):
             with open(consts.PROFILE, "w") as f:
                 f.write(self.json_edit.toPlainText())
-
-    def closeEvent(self, event):
-        event.ignore()
-
+            self.edit_file.setWindowTitle(consts.PROFILE.split("/")[-1])
+            
 class EditDialog(QtWidgets.QDialog):
     def __init__(self):
         super().__init__()
-        self.json = "1111111"
+        self.json = ""
+        self.result = [False, False] #是否保存，是否取消
 
     def updateJson(self, json):
         self.json = json
 
     def checkJson(self):
         try:
-            json.loads(self.json_edit.toPlainText())
+            json.loads(self.json)
+            return True
         except Exception as e:
-            error_line = re.findall(r"\d+", str(e))[0]
-            self.error_message.setText("Json格式错误，请检查第%s行"%error_line)
-            self.json_edit.setStyleSheet("border:1px ridge red;")
-
-        return True
+            return False
 
     def saveFile(self):
-        pass
+        with open(consts.PROFILE, "w") as f:
+            f.write(self.json)
 
     def closeEvent(self, event):
         reply = QtWidgets.QMessageBox.question(self,
@@ -131,12 +133,12 @@ class EditDialog(QtWidgets.QDialog):
                                                QtWidgets.QMessageBox.No)
 
         if reply == QtWidgets.QMessageBox.Yes:
-            # if(self.checkJson()):
-            #     self.saveFile()
-            #     event.accept()
-            # else:
-            #     event.ignore()
-            # event.accept()
-            event.done("sssss")
+            if(self.checkJson()):
+                self.saveFile()
+                self.result = [True, False]
+            else:
+                self.result = [False, False]
+            event.accept()
         else:
+            self.result = [False, True]
             event.accept()
