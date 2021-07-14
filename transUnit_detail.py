@@ -3,6 +3,8 @@ from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtCore import QTimer, QDateTime
 from pathlib import Path
 import consts
+from deploy import *
+from transUnit_edit import *
 
 class UploadFileAndDeployThread(QtCore.QThread):
     result = QtCore.pyqtSignal(dict)
@@ -34,16 +36,15 @@ class GetInformationThread(QtCore.QThread):
     def run(self):
         # try:
         information = self.client.getInfo(self.service)
-        print(information)
+        # print(information)
         self.result.emit(information)
 
 class Ui_Deploy(object):
-    # def __init__(self, mainWindow, client, protocol):
-    def __init__(self):
-
-    #     self.mainWindow = mainWindow
-    #     self.client = client
-    #     self.protocol = protocol
+    def __init__(self, mainWindow, client, protocol):
+        self.mainWindow = mainWindow
+        self.client = client
+        self.protocol = protocol
+        self.protocol_name = ["SSH", "Telnet", "ADB"]
         self.isThreadCreated = False
 
     def setupUi(self, Deploy):
@@ -56,7 +57,7 @@ class Ui_Deploy(object):
         font.setFamily("微软雅黑")
         Deploy.setFont(font)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(".\\../resource/icon.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(f"{consts.IMG_PATH}../icon.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Deploy.setWindowIcon(icon)
         Deploy.setStyleSheet("background-color:rgb(240,240,240);")
         self.back = QtWidgets.QPushButton(Deploy)
@@ -442,14 +443,14 @@ class Ui_Deploy(object):
         self.label_7.setText(_translate("Deploy", "MD5："))
         self.deploy.setText(_translate("Deploy", "部署|更新"))
         self.label_9.setText(_translate("Deploy", "Copyright © 2021 苏州德姆斯信息技术有限公司出品"))
-        self.connect_status.setText(_translate("Deploy", "ADB已连接"))
+        self.connect_status.setText(_translate("Deploy", "%s已连接")%self.protocol_name[self.protocol])
         self.label.setText(_translate("Deploy", "可视化诊断服务"))
 
-        # self.client = ConnectTransUnitBySSH(host="192.168.1.146", username="root", password="123456")
-        # self.client.connect()
-        # self.getInfo = GetInformationThread(self.client, 1)
-        # self.getInfo.result.connect(self.showInfo)
-        # self.getInfo.start()
+        self.client = ConnectTransUnitBySSH(host="192.168.1.146", username="root", password="123456")
+        self.client.connect()
+        self.get_info = GetInformationThread(self.client, 1)
+        self.get_info.result.connect(self.showInfo)
+        self.get_info.start()
 
         self.deploy.clicked.connect(self.chooseFile)
         self.back.clicked.connect(self.backToMainWindow)
@@ -458,6 +459,8 @@ class Ui_Deploy(object):
         self.message.setMinimumHeight(30)
         self.showMessage({"message": "登录成功！", "type": 0})
         self.showInfo()
+
+        self.alter_profile.clicked.connect(self.showTextEdit)
 
     def chooseFile(self):
         self.filePath = QFileDialog.getOpenFileName(None, "选择文件", "c:\\", "Service File(*.py)")[0]
@@ -491,14 +494,15 @@ class Ui_Deploy(object):
         self.message.setWordWrap(False)
 
         if(message in ["操作成功！", "登录成功！"]):
-            self.message.setText("✅ " + message)
-            self.message.setStyleSheet("border:1px solid green;background-color:rgb(235, 250, 241);color:black;")
+            self.message.setText(" ✅ " + message)
+            self.message.setStyleSheet("border-radius:2px;background-color:#65c294;color:white;")
+
             if(self.isThreadCreated == True):
                 self.upload_thread.quit()
                 self.isThreadCreated = False
         else:
-            self.message.setText("⚠️ " + message)
-            self.message.setStyleSheet("border:1px solid red;background-color:#FFCCC7;color:black;")
+            self.message.setText(" ⚠️ " + message)
+            self.message.setStyleSheet("border-radius:2px;background-color:#FFCCC7;")
 
         self.message.adjustSize()
         if(self.message.width() == 291):
@@ -507,7 +511,8 @@ class Ui_Deploy(object):
             height = 40
         else:
             height = 30
-        x = int((self.childDialog.width() - self.message.width()) / 2)
+        delta = self.childDialog.width() - self.groupBox.width()
+        x = int((self.groupBox.width() - self.message.width() - delta) / 2)
         self.message.setGeometry(QtCore.QRect(x, self.message.y(), self.message.width() + 3, height))
 
         self.message.setHidden(False)
@@ -554,6 +559,21 @@ class Ui_Deploy(object):
             self.log_path.addItem("")
             self.log_path.setItemText(logNum, log_list[logNum])
 
+        self.get_info.quit()
+
+    def showTextEdit(self):
+        if(Path(consts.PROFILE).is_file()):
+            # 子窗口要加self，否则一弹出就会被收回
+            self.editDialog = EditDialog()
+            # self.editPage = Ui_Deploy(self.MainWindow, self.client, self.currentTabIndex)
+            # self.editPage = Ui_Deploy(self.MainWindow, self.client, self.currentTabIndex)
+            self.editPage = Ui_edit_file()
+            self.editPage.setupUi(self.editDialog)
+            self.editDialog.show()
+            s = self.editDialog.exec_()
+            print(s)
+            # json.load(consts.PROFILE)
+
     def closeEvent(self, event):
         if(self.isThreadCreated == True):
             self.upload_thread.quit()
@@ -573,13 +593,3 @@ class DeployDialog(QtWidgets.QDialog):
             event.accept()
         else:
             event.ignore()
-
-if __name__ == '__main__':
-    import sys
-    dhms_transunit = QtWidgets.QApplication(sys.argv)
-    deployDialog = DeployDialog()
-    # deployPage = Ui_Deploy(self.MainWindow, self.client, self.currentTabIndex)
-    deployPage = Ui_Deploy()
-    deployPage.setupUi(deployDialog)
-    deployDialog.show()
-    sys.exit(dhms_transunit.exec_())

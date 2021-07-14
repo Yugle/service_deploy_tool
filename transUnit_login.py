@@ -101,6 +101,7 @@ class Ui_MainWindow(object):
 "    background-color:transparent;\n"
 "    min-width:95px;\n"
 "    min-height:40px;\n"
+"    border-bottom:1px solid #EEEEEE;\n"
 "}\n"
 "QTabBar::tab:hover{\n"
 "    background:transparent;\n"
@@ -595,8 +596,9 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
 
         if(message in ["登录成功！", "连接远程设备成功！"] or override):
             if(override or message == "连接远程设备成功！"):
-                self.message.setText("✅ " + message)
-                self.message.setStyleSheet("border:1px solid green;background-color:rgb(235, 250, 241);color:black;")
+                self.message.setText(" ✅ " + message)
+                self.message.setStyleSheet("border-radius:2px;background-color:#65c294;color:white;")
+
                 if(message == "连接远程设备成功！"):
                     self.readADBDevices(False)
                     self.connectRemoteDevice_thread.quit()
@@ -606,8 +608,8 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
                     self.isRemoteDeviceThreadCreated = False
                 self.status.changeFlag(1)
         else:
-            self.message.setText("⚠️ " + message)
-            self.message.setStyleSheet("border:1px solid red;background-color:#FFCCC7;")
+            self.message.setText(" ⚠️ " + message)
+            self.message.setStyleSheet("border-radius:2px;background-color:#FFCCC7;")
 
         self.message.adjustSize()
         if(self.message.width() == 291):
@@ -643,8 +645,8 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             self.connect_thread.quit()
             # 子窗口要加self，否则一弹出就会被收回
             self.deployDialog = DeployDialog()
-            # deployPage = Ui_Deploy(self.MainWindow, self.client, self.currentTabIndex)
-            self.deployPage = Ui_Deploy()
+            self.deployPage = Ui_Deploy(self.MainWindow, self.client, self.currentTabIndex)
+            # self.deployPage = Ui_Deploy()
             self.deployPage.setupUi(self.deployDialog)
             self.deployDialog.show()
 

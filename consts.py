@@ -20,4 +20,7 @@ if("Windows" in platform.platform()):
 else:
     ADB_PATH = "adb "
 
+CACHE = "./cache/"
+PROFILE = CACHE + "profile.json"
+
 REMOTE_PATH = "/root/phil_test/upload_test/"

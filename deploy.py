@@ -5,6 +5,7 @@ import time
 import re
 import uu
 import subprocess
+import json
 
 # class WindowsControl(object):
 #     def jumpToDialog(deployDialog):
@@ -91,6 +92,7 @@ class ConnectTransUnitBySSH(object):
 		information["service_time"] = self.getServiceTime(self.service)
 		information["disk_available"] = self.getDiskAvailableSpace()
 		information["log_path"] = self.getLogPath(self.service)
+		self.saveProfile("/private/conf/test_conf.json")
 
 		return information
 
@@ -131,6 +133,13 @@ class ConnectTransUnitBySSH(object):
 		# log_list = re.findall(f"/log/{service}\\S+.log", stdout.read().decode("utf-8"))0
 
 		return log_list
+
+	def saveProfile(self, service):
+		stdin,stdout,stderr = self.ssh_client.exec_command(f"cat {service}")
+		profile_json = json.loads(stdout.read().decode("utf-8"))
+
+		with open(f"{consts.CACHE}profile.json","w") as profile:
+			json.dump(profile_json, profile)
 
 class ConnectTransUnitByTelnet(object):
 	def __init__(self, host, username, password):

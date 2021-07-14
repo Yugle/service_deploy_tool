@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '.\transUnit_edit.ui'
+# Form implementation generated from reading ui file 'transUnit_edit.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -14,9 +14,13 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_edit_file(object):
     def setupUi(self, edit_file):
         edit_file.setObjectName("edit_file")
+        edit_file.setWindowModality(QtCore.Qt.ApplicationModal)
         edit_file.resize(600, 480)
         edit_file.setMinimumSize(QtCore.QSize(600, 480))
         edit_file.setMaximumSize(QtCore.QSize(600, 480))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("../resource/icon.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        edit_file.setWindowIcon(icon)
         self.save = QtWidgets.QPushButton(edit_file)
         self.save.setGeometry(QtCore.QRect(160, 430, 111, 31))
         font = QtGui.QFont()
@@ -32,28 +36,35 @@ class Ui_edit_file(object):
 "        background-color:rgb(24, 91, 171);\n"
 "}")
         self.save.setObjectName("save")
-        self.update_2 = QtWidgets.QPushButton(edit_file)
-        self.update_2.setGeometry(QtCore.QRect(330, 430, 111, 31))
+        self.cancel = QtWidgets.QPushButton(edit_file)
+        self.cancel.setGeometry(QtCore.QRect(330, 430, 111, 31))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(11)
-        self.update_2.setFont(font)
-        self.update_2.setStyleSheet("QPushButton{\n"
+        self.cancel.setFont(font)
+        self.cancel.setStyleSheet("QPushButton{\n"
 "        text-align:center;\n"
 "        color:rgb(6,6,6);\n"
 "}\n"
 "QPushButton:hover{A\n"
 "        background-color:rgb(24, 91, 171);\n"
 "}")
-        self.update_2.setObjectName("update_2")
+        self.cancel.setObjectName("cancel")
         self.json_edit = QtWidgets.QPlainTextEdit(edit_file)
-        self.json_edit.setGeometry(QtCore.QRect(20, 20, 561, 391))
+        self.json_edit.setGeometry(QtCore.QRect(20, 20, 561, 381))
         font = QtGui.QFont()
         font.setFamily("Courier")
         font.setPointSize(10)
         self.json_edit.setFont(font)
         self.json_edit.setPlainText("")
         self.json_edit.setObjectName("json_edit")
+        self.error_message = QtWidgets.QLabel(edit_file)
+        self.error_message.setGeometry(QtCore.QRect(20, 404, 561, 21))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        self.error_message.setFont(font)
+        self.error_message.setStyleSheet("color:red;")
+        self.error_message.setObjectName("error_message")
 
         self.retranslateUi(edit_file)
         QtCore.QMetaObject.connectSlotsByName(edit_file)
@@ -62,13 +73,5 @@ class Ui_edit_file(object):
         _translate = QtCore.QCoreApplication.translate
         edit_file.setWindowTitle(_translate("edit_file", "file_name"))
         self.save.setText(_translate("edit_file", "保存"))
-        self.update_2.setText(_translate("edit_file", "取消"))
-
-if __name__ == '__main__':
-    import sys
-    dhms_transunit = QtWidgets.QApplication(sys.argv)
-    myWindow = QtWidgets.QMainWindow()
-    window = Ui_edit_file()
-    window.setupUi(myWindow)
-    myWindow.show()
-    sys.exit(dhms_transunit.exec_())
+        self.cancel.setText(_translate("edit_file", "取消"))
+        self.error_message.setText(_translate("edit_file", "密码不能为空！"))

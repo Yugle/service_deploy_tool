@@ -91,6 +91,7 @@ QTabBar::tab{
 	background-color:transparent;
     min-width:95px;
     min-height:40px;
+	border-bottom:1px solid #EEEEEE;
 }
 QTabBar::tab:hover{
     background:transparent;
