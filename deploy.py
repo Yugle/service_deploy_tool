@@ -234,7 +234,7 @@ class ConnectTransUnitByADB(object):
 			elif(re.findall("10061", res) != []):
 				raise Exception("设备拒绝连接，请检查IP或先开启设备远程端口！")
 
-	def uploadFile(self, localFilePath, service=1):
+	def uploadFile(self, localFilePath, type, service):
 		remoteFilePath = consts.REMOTE_PATH
 		self.checkDir(remoteFilePath)
 
@@ -242,7 +242,8 @@ class ConnectTransUnitByADB(object):
 		res = subprocess.Popen(pushFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		if("error" in res):
 			raise Exception(res)
-		self.deploy()
+		if(type == 0):
+			self.deploy()
 	
 	def deploy(self):
 		adbShell = consts.ADB_PATH + "shell "

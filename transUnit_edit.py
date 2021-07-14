@@ -5,8 +5,8 @@ import re
 
 class Ui_edit_file(object):
     def setupUi(self, edit_file):
-        # 设置窗口模态：该窗口弹出后母窗口无法操作
         self.edit_file = edit_file
+        # 设置窗口模态：该窗口弹出后母窗口无法操作
         edit_file.setWindowModality(QtCore.Qt.ApplicationModal)
         edit_file.setObjectName("edit_file")
         edit_file.resize(600, 480)
@@ -104,7 +104,7 @@ class Ui_edit_file(object):
             with open(consts.PROFILE, "w") as f:
                 f.write(self.json_edit.toPlainText())
             self.edit_file.setWindowTitle(consts.PROFILE.split("/")[-1])
-            
+
 class EditDialog(QtWidgets.QDialog):
     def __init__(self):
         super().__init__()

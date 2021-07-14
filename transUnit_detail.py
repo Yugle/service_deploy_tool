@@ -17,7 +17,7 @@ class UploadFileAndDeployThread(QtCore.QThread):
 
     def run(self):
         try:
-            self.client.uploadFile(self.localFilePath)
+            self.client.uploadFile(self.localFilePath, type=1)
 
             message = {"message": "操作成功！", "type": self.type}
 
@@ -159,7 +159,7 @@ class Ui_Deploy(object):
         self.service_name.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.service_name.setObjectName("service_name")
         self.alter_conf = QtWidgets.QPushButton(self.groupBox)
-        self.alter_conf.setGeometry(QtCore.QRect(470, 358, 91, 31))
+        self.alter_conf.setGeometry(QtCore.QRect(470, 359, 91, 31))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(10)
@@ -331,7 +331,7 @@ class Ui_Deploy(object):
         self.service_profile.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.service_profile.setObjectName("service_profile")
         self.service_conf = QtWidgets.QLineEdit(self.groupBox)
-        self.service_conf.setGeometry(QtCore.QRect(160, 364, 280, 21))
+        self.service_conf.setGeometry(QtCore.QRect(160, 363, 280, 25))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(11)
@@ -461,6 +461,8 @@ class Ui_Deploy(object):
         self.showInfo()
 
         self.alter_profile.clicked.connect(self.showTextEdit)
+        self.alter_conf.clicked.connect(self.alterConf)
+        self.service_conf.returnPressed.connect(self.alterConf)
 
     def chooseFile(self):
         self.filePath = QFileDialog.getOpenFileName(None, "选择文件", "c:\\", "Service File(*.py)")[0]
@@ -468,7 +470,7 @@ class Ui_Deploy(object):
             message = {"message": "使用Telnet部署方式较慢，请耐心等待！", "type": 0}
             self.showMessage(message)
 
-        self.deploySvc(self.filePath)
+        self.uploadFile(self.filePath)
 
     def uploadFile(self, filePath, type=0):
         """
@@ -487,6 +489,17 @@ class Ui_Deploy(object):
         else:
             message = {"message": "文件路径有误，请重新选择！", "type": 0}
             self.showMessage(message)
+
+    def alterConf(self):
+        if(self.alter_conf.text() == "修改"):
+            self.alter_conf.setText("保存")
+            self.service_conf.setStyleSheet("")
+            self.service_conf.setReadOnly(False)
+            self.service_conf.setFocus()
+        else:
+            self.alter_conf.setText("修改")
+            self.service_conf.setStyleSheet("border:transparent;")
+            self.service_conf.setReadOnly(True)
 
     def showMessage(self, messageDict):
         self.timecount = 3
@@ -581,8 +594,6 @@ class Ui_Deploy(object):
                 self.showMessage({"message": "取消操作！", "type": 0})
             else:
                 self.showMessage({"message": "Json格式错误，配置文件已回退，请重新修改！", "type": 0})
-
-            # json.load(consts.PROFILE)
 
     def closeEvent(self, event):
         if(self.isThreadCreated == True):
