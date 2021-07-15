@@ -56,6 +56,7 @@ class Ui_edit_file(object):
         font.setFamily("Courier")
         font.setPointSize(10)
         self.json_edit.setFont(font)
+        self.json_edit.setReadOnly(True)
         self.json_edit.setPlainText("")
         self.json_edit.setObjectName("json_edit")
         self.error_message = QtWidgets.QLabel(edit_file)

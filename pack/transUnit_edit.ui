@@ -104,6 +104,9 @@ QPushButton:hover{A
      <pointsize>10</pointsize>
     </font>
    </property>
+   <property name="readOnly">
+    <bool>true</bool>
+   </property>
    <property name="plainText">
     <string/>
    </property>
