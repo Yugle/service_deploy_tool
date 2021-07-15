@@ -22,6 +22,8 @@ else:
 
 CACHE = "./cache/"
 PROFILE = CACHE + "profile.json"
+if(not os.path.exists(CACHE)):
+    os.mkdir(CACHE)
 
 REMOTE_PATH = "/root/phil_test/upload_test/"
 SERVICE_PATH = "/system/bin/"

@@ -483,6 +483,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.label_8.setText(_translate("MainWindow", "Copyright © 2021 苏州德姆斯信息技术有限公司出品"))
 
         self.message.setMaximumWidth(291)
+        self.message.setMinimumHeight(30)
 
         for lineEdit in self.MainWindow.findChildren(QtWidgets.QLineEdit):
             lineEdit.returnPressed.connect(self.connectTransUnit)
@@ -626,7 +627,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         #     height = 30
         x = int((self.centralwidget.width() - self.message.width()) / 2)
         # self.message.setGeometry(QtCore.QRect(x, self.message.y(), self.message.width() + 3, height))
-        self.message.setGeometry(QtCore.QRect(x, self.message.y(), self.message.width() + 3, self.message.height()))
+        self.message.setGeometry(QtCore.QRect(x, self.message.y(), self.message.width() + 5, self.message.height()))
         
         self.message.setHidden(False)
         self.timer.timeout.connect(self.showPrompt)
