@@ -609,7 +609,7 @@ QPushButton:hover{A
      <rect>
       <x>160</x>
       <y>184</y>
-      <width>280</width>
+      <width>401</width>
       <height>21</height>
      </rect>
     </property>
@@ -654,7 +654,7 @@ QPushButton:hover{A
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="service_time">
+   <widget class="QLabel" name="service_runtime">
     <property name="geometry">
      <rect>
       <x>160</x>
@@ -879,22 +879,6 @@ QPushButton:hover{A
      <string>可视化诊断服务</string>
     </property>
    </widget>
-   <widget class="QListView" name="log_path">
-    <property name="geometry">
-     <rect>
-      <x>160</x>
-      <y>472</y>
-      <width>280</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border:transparent;</string>
-    </property>
-    <property name="sizeAdjustPolicy">
-     <enum>QAbstractScrollArea::AdjustToContents</enum>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_26">
     <property name="geometry">
      <rect>
@@ -925,6 +909,44 @@ QPushButton:hover{A
     </property>
     <property name="text">
      <string/>
+    </property>
+   </widget>
+   <widget class="QListView" name="log_path">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>473</y>
+      <width>401</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>微软雅黑</family>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QListView{
+   background-color:transparent;
+    border:transparent;
+    color:rgb(24, 169, 251);
+}
+QListView::item:hover{
+    color:black;
+}</string>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAsNeeded</enum>
+    </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::NoEditTriggers</set>
     </property>
    </widget>
   </widget>

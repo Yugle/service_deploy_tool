@@ -1,6 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
-from PyQt5.QtCore import QTimer, QDateTime
+from PyQt5.QtCore import QTimer, QDateTime, QStringListModel
 from pathlib import Path
 import consts
 from deploy import *
@@ -38,6 +38,21 @@ class GetInformationThread(QtCore.QThread):
         information = self.client.getInfo(self.service)
         # print(information)
         self.result.emit(information)
+
+class ReadLogThread(QtCore.QThread):
+    result = QtCore.pyqtSignal(str)
+
+    def __init__(self, client, log_name):
+        super().__init__()
+        self.client = client
+        self.log_path = "/log/" + log_name
+
+    def run(self):
+        try:
+            log = self.client.readFile(self.log_path)
+            self.result.emit(log)
+        except Exception as e:
+            self.result.emit("读取失败：" + str(e))
 
 class Ui_Deploy(object):
     def __init__(self, mainWindow, client, protocol):
@@ -290,7 +305,7 @@ class Ui_Deploy(object):
         self.label_7.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_7.setObjectName("label_7")
         self.service_md5 = QtWidgets.QLabel(self.groupBox)
-        self.service_md5.setGeometry(QtCore.QRect(160, 184, 280, 21))
+        self.service_md5.setGeometry(QtCore.QRect(160, 184, 401, 21))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(11)
@@ -309,16 +324,16 @@ class Ui_Deploy(object):
         self.service_deploy_time.setText("")
         self.service_deploy_time.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.service_deploy_time.setObjectName("service_deploy_time")
-        self.service_time = QtWidgets.QLabel(self.groupBox)
-        self.service_time.setGeometry(QtCore.QRect(160, 400, 280, 21))
+        self.service_runtime = QtWidgets.QLabel(self.groupBox)
+        self.service_runtime.setGeometry(QtCore.QRect(160, 400, 280, 21))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(11)
-        self.service_time.setFont(font)
-        self.service_time.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.service_time.setText("")
-        self.service_time.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.service_time.setObjectName("service_time")
+        self.service_runtime.setFont(font)
+        self.service_runtime.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.service_runtime.setText("")
+        self.service_runtime.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.service_runtime.setObjectName("service_runtime")
         self.service_profile = QtWidgets.QLabel(self.groupBox)
         self.service_profile.setGeometry(QtCore.QRect(160, 292, 280, 21))
         font = QtGui.QFont()
@@ -404,9 +419,28 @@ class Ui_Deploy(object):
         self.label.setStyleSheet("color:rgb(0, 91, 171);")
         self.label.setObjectName("label")
         self.log_path = QtWidgets.QListView(self.groupBox)
-        self.log_path.setGeometry(QtCore.QRect(160, 472, 280, 21))
-        self.log_path.setStyleSheet("border:transparent;")
-        self.log_path.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        self.log_path.setGeometry(QtCore.QRect(160, 472, 401, 70))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(11)
+        self.log_path.setFont(font)
+        self.log_path.setStyleSheet("QListView{\n"
+"   background-color:transparent;\n"
+"    border:transparent;\n"
+"    color:#005BAB;\n"
+"}\n"
+"QListView::item:selected{\n"
+"    background-color:transparent;\n"
+"    color:rgb(24, 169, 251);\n"
+"}\n"
+"QListView::item:hover{\n"
+"    background-color:transparent;\n"
+"    color:rgb(24, 169, 251);\n"
+"}\n"
+)
+        self.log_path.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.log_path.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.log_path.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.log_path.setObjectName("log_path")
         self.label_26 = QtWidgets.QLabel(self.groupBox)
         self.label_26.setGeometry(QtCore.QRect(477, 52, 20, 20))
@@ -443,11 +477,9 @@ class Ui_Deploy(object):
         self.label_7.setText(_translate("Deploy", "MD5："))
         self.deploy.setText(_translate("Deploy", "部署|更新"))
         self.label_9.setText(_translate("Deploy", "Copyright © 2021 苏州德姆斯信息技术有限公司出品"))
-        self.connect_status.setText(_translate("Deploy", "%s已连接")%self.protocol_name[self.protocol])
+        self.connect_status.setText(_translate("Deploy", "ADB已连接"))
         self.label.setText(_translate("Deploy", "可视化诊断服务"))
 
-        self.client = ConnectTransUnitBySSH(host="192.168.1.146", username="root", password="123456")
-        self.client.connect()
         self.get_info = GetInformationThread(self.client, 1)
         self.get_info.result.connect(self.showInfo)
         self.get_info.start()
@@ -463,6 +495,8 @@ class Ui_Deploy(object):
         self.alter_profile.clicked.connect(self.showTextEdit)
         self.alter_conf.clicked.connect(self.alterConf)
         self.service_conf.returnPressed.connect(self.alterConf)
+
+        self.log_path.clicked.connect(self.readLog)
 
     def chooseFile(self):
         self.filePath = QFileDialog.getOpenFileName(None, "选择文件", "c:\\", "Service File(*.py)")[0]
@@ -553,6 +587,7 @@ class Ui_Deploy(object):
             self.isThreadCreated = False
         self.client.disconnect()
         self.childDialog.hide()
+        os.remove(consts.PROFILE)
         self.mainWindow.show()
         # WindowsControl.backToMainWindow(self.mainWindow)
 
@@ -567,14 +602,14 @@ class Ui_Deploy(object):
         self.service_profile.setText(information["service_profile"])
         self.service_daemon.setText(information["service_daemon"])
         self.service_conf.setText(information["service_conf"])
-        self.service_time.setText(information["service_time"])
+        self.service_runtime.setText(information["service_runtime"])
         disk_available = "/log剩余"+information["disk_available"][0]+"，/usr/bin剩余"+information["disk_available"][1] 
         self.disk_available.setText(disk_available)
 
-        log_list = information["log_path"]
-        for logNum in range(len(log_list)):
-            self.log_path.addItem("")
-            self.log_path.setItemText(logNum, log_list[logNum])
+        self.log_path_list = information["log_path"]
+        log_list = QStringListModel()
+        log_list.setStringList(self.log_path_list)
+        self.log_path.setModel(log_list)
 
         self.get_info.quit()
 
@@ -594,6 +629,15 @@ class Ui_Deploy(object):
                 self.showMessage({"message": "取消操作！", "type": 0})
             else:
                 self.showMessage({"message": "Json格式错误，配置文件已回退，请重新修改！", "type": 0})
+
+    def readLog(self, index):
+        self.read_log = ReadLogThread(self.client, self.log_path_list[index.row()])
+        self.read_log.result.connect(self.showLog)
+        self.read_log.start()
+
+    def showLog(self, log):
+        QtWidgets.QMessageBox.information(self.childDialog, "ListView",log)
+        self.read_log.quit()
 
     def closeEvent(self, event):
         if(self.isThreadCreated == True):

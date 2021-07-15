@@ -2,6 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import consts
 import json
 import re
+import os
 
 class Ui_edit_file(object):
     def setupUi(self, edit_file):
@@ -75,14 +76,14 @@ class Ui_edit_file(object):
         self.json_edit.setPlainText(profile_json)
 
         self.json_edit.textChanged.connect(self.resetStyle)
-        self.edit_file.updateJson(self.json_edit.toPlainText())
+        self.edit_file.updateMember(self.json_edit.toPlainText())
 
         self.save.clicked.connect(self.saveFile)
-        # self.cancel.clicked.connect()
+        self.cancel.clicked.connect(self.backToParentDialog)
 
     def resetStyle(self):
         self.edit_file.setWindowTitle(consts.PROFILE.split("/")[-1] + "-未保存")
-        self.edit_file.updateJson(self.json_edit.toPlainText())
+        self.edit_file.updateMember(self.json_edit.toPlainText())
         if(self.error_message.text() != ""):
             self.error_message.setText("")
             self.json_edit.setStyleSheet("")
@@ -105,14 +106,20 @@ class Ui_edit_file(object):
                 f.write(self.json_edit.toPlainText())
             self.edit_file.setWindowTitle(consts.PROFILE.split("/")[-1])
 
+            self.edit_file.updateMember(self.json_edit.toPlainText(), result=[True, False])
+
+    def backToParentDialog(self):
+        self.edit_file.hide()
+
 class EditDialog(QtWidgets.QDialog):
     def __init__(self):
         super().__init__()
         self.json = ""
-        self.result = [False, False] #是否保存，是否取消
+        self.result = [False, True] #是否保存，是否取消
 
-    def updateJson(self, json):
+    def updateMember(self, json, result=[False, True]):
         self.json = json
+        self.result = result
 
     def checkJson(self):
         try:
@@ -126,19 +133,20 @@ class EditDialog(QtWidgets.QDialog):
             f.write(self.json)
 
     def closeEvent(self, event):
-        reply = QtWidgets.QMessageBox.question(self,
-                                               '传输单元服务部署工具',
-                                               "是否保存？",
-                                               QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
-                                               QtWidgets.QMessageBox.No)
+        if(not self.result[0]):
+            reply = QtWidgets.QMessageBox.question(self,
+                                                   '传输单元服务部署工具',
+                                                   "是否保存？",
+                                                   QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                                                   QtWidgets.QMessageBox.No)
 
-        if reply == QtWidgets.QMessageBox.Yes:
-            if(self.checkJson()):
-                self.saveFile()
-                self.result = [True, False]
+            if reply == QtWidgets.QMessageBox.Yes:
+                if(self.checkJson()):
+                    self.saveFile()
+                    self.result = [True, False]
+                else:
+                    self.result = [False, False]
             else:
-                self.result = [False, False]
-            event.accept()
-        else:
-            self.result = [False, True]
-            event.accept()
+                self.result = [False, True]
+
+        event.accept()

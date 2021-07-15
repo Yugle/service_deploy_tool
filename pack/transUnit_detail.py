@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '.\transUnit_detail.ui'
+# Form implementation generated from reading ui file 'transUnit_detail.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -21,7 +21,7 @@ class Ui_Deploy(object):
         font.setFamily("微软雅黑")
         Deploy.setFont(font)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(".\\../resource/icon.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("../resource/icon.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Deploy.setWindowIcon(icon)
         Deploy.setStyleSheet("background-color:rgb(240,240,240);")
         self.back = QtWidgets.QPushButton(Deploy)
@@ -123,7 +123,7 @@ class Ui_Deploy(object):
         self.service_name.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.service_name.setObjectName("service_name")
         self.alter_conf = QtWidgets.QPushButton(self.groupBox)
-        self.alter_conf.setGeometry(QtCore.QRect(470, 358, 91, 31))
+        self.alter_conf.setGeometry(QtCore.QRect(470, 359, 91, 31))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(10)
@@ -254,7 +254,7 @@ class Ui_Deploy(object):
         self.label_7.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_7.setObjectName("label_7")
         self.service_md5 = QtWidgets.QLabel(self.groupBox)
-        self.service_md5.setGeometry(QtCore.QRect(160, 184, 280, 21))
+        self.service_md5.setGeometry(QtCore.QRect(160, 184, 401, 21))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(11)
@@ -273,16 +273,16 @@ class Ui_Deploy(object):
         self.service_deploy_time.setText("")
         self.service_deploy_time.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.service_deploy_time.setObjectName("service_deploy_time")
-        self.service_time = QtWidgets.QLabel(self.groupBox)
-        self.service_time.setGeometry(QtCore.QRect(160, 400, 280, 21))
+        self.service_runtime = QtWidgets.QLabel(self.groupBox)
+        self.service_runtime.setGeometry(QtCore.QRect(160, 400, 280, 21))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(11)
-        self.service_time.setFont(font)
-        self.service_time.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.service_time.setText("")
-        self.service_time.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.service_time.setObjectName("service_time")
+        self.service_runtime.setFont(font)
+        self.service_runtime.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.service_runtime.setText("")
+        self.service_runtime.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.service_runtime.setObjectName("service_runtime")
         self.service_profile = QtWidgets.QLabel(self.groupBox)
         self.service_profile.setGeometry(QtCore.QRect(160, 292, 280, 21))
         font = QtGui.QFont()
@@ -295,7 +295,7 @@ class Ui_Deploy(object):
         self.service_profile.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.service_profile.setObjectName("service_profile")
         self.service_conf = QtWidgets.QLineEdit(self.groupBox)
-        self.service_conf.setGeometry(QtCore.QRect(160, 364, 280, 21))
+        self.service_conf.setGeometry(QtCore.QRect(160, 363, 280, 25))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(11)
@@ -367,21 +367,35 @@ class Ui_Deploy(object):
         self.label.setFont(font)
         self.label.setStyleSheet("color:rgb(0, 91, 171);")
         self.label.setObjectName("label")
-        self.log_path = QtWidgets.QListView(self.groupBox)
-        self.log_path.setGeometry(QtCore.QRect(160, 472, 280, 21))
-        self.log_path.setStyleSheet("border:transparent;")
-        self.log_path.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
-        self.log_path.setObjectName("log_path")
         self.label_26 = QtWidgets.QLabel(self.groupBox)
         self.label_26.setGeometry(QtCore.QRect(477, 52, 20, 20))
         self.label_26.setStyleSheet("border-image:url(../resource/img/success.png);")
         self.label_26.setText("")
         self.label_26.setObjectName("label_26")
-        self.message_2 = QtWidgets.QLabel(self.groupBox)
-        self.message_2.setGeometry(QtCore.QRect(280, 10, 31, 30))
-        self.message_2.setStyleSheet("")
-        self.message_2.setText("")
-        self.message_2.setObjectName("message_2")
+        self.message = QtWidgets.QLabel(self.groupBox)
+        self.message.setGeometry(QtCore.QRect(280, 10, 31, 30))
+        self.message.setStyleSheet("")
+        self.message.setText("")
+        self.message.setObjectName("message")
+        self.log_path = QtWidgets.QListView(self.groupBox)
+        self.log_path.setEnabled(True)
+        self.log_path.setGeometry(QtCore.QRect(160, 473, 401, 61))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(11)
+        self.log_path.setFont(font)
+        self.log_path.setStyleSheet("QListView{\n"
+"   background-color:transparent;\n"
+"    border:transparent;\n"
+"    color:rgb(24, 169, 251);\n"
+"}\n"
+"QListView::item:hover{\n"
+"    color:black;\n"
+"}")
+        self.log_path.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.log_path.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.log_path.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.log_path.setObjectName("log_path")
 
         self.retranslateUi(Deploy)
         QtCore.QMetaObject.connectSlotsByName(Deploy)

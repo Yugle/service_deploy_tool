@@ -504,6 +504,12 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.open_port.clicked.connect(self.openADBRemotePort)
         self.connect_remote_ip.clicked.connect(self.connectRemoteDeviceByADB)
 
+        # for test
+        self.ssh_host.setText("192.168.1.146")
+        self.ssh_username.setText("root")
+        self.ssh_password.setText("123456")
+        self.ssh_host.setFocus()
+
     def resetStyle(self, lineEdit, label, tip):
         lineEdit.setStyleSheet("border:1px solid black;border-left:0px solid white;")
         label.setStyleSheet("border:1px solid rgb(122, 122, 122);border-right:0px solid white;")
@@ -704,13 +710,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             self.connectRemoteDevice_thread.result.connect(self.showMessage)
             self.connectRemoteDevice_thread.start()
             self.isRemoteDeviceThreadCreated = True
-
-    # 此QT写法未继承，无法重写父类函数
-    # def closeEvent(self, event):
-    #     self.connect_thread.quit()
-
-    #     event.accept()
-
+            
 if __name__ == '__main__':
     dhms_transunit = QtWidgets.QApplication(sys.argv)
     myWindow = QtWidgets.QMainWindow()

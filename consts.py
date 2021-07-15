@@ -24,3 +24,17 @@ CACHE = "./cache/"
 PROFILE = CACHE + "profile.json"
 
 REMOTE_PATH = "/root/phil_test/upload_test/"
+SERVICE_PATH = "/system/bin/"
+SHELL = {
+    "test_login": "test_login",
+    "ls": "ls",
+    "cd": "cd ",
+    "find": "find ",
+    "mkdir -p": "mkdir -p ",
+    "rm": "rm ",
+    "stat": "stat ",
+    "md5sum": "md5sum ",
+    "getRuntime": "ps -ef pid,name,etime | grep ",
+    "df -h": "df -h ",
+    "cat": "cat "
+}
