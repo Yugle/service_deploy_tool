@@ -620,13 +620,14 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.message.adjustSize()
         if(self.message.width() == 291):
             self.message.setWordWrap(True)
-        if(len(message) > 22):
-            height = 40
-        else:
-            height = 30
+        # if(len(message) > 22):
+        #     height = 40
+        # else:
+        #     height = 30
         x = int((self.centralwidget.width() - self.message.width()) / 2)
-        self.message.setGeometry(QtCore.QRect(x, self.message.y(), self.message.width() + 3, height))
-
+        # self.message.setGeometry(QtCore.QRect(x, self.message.y(), self.message.width() + 3, height))
+        self.message.setGeometry(QtCore.QRect(x, self.message.y(), self.message.width() + 3, self.message.height()))
+        
         self.message.setHidden(False)
         self.timer.timeout.connect(self.showPrompt)
         self.timer.start(self.timecount*1000)

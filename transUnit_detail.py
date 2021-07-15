@@ -1,6 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
-from PyQt5.QtCore import QTimer, QDateTime, QStringListModel
+from PyQt5.QtCore import QTimer, QDateTime, QStringListModel, Qt
 from pathlib import Path
 import consts
 from deploy import *
@@ -45,12 +45,15 @@ class ReadLogThread(QtCore.QThread):
     def __init__(self, client, log_name):
         super().__init__()
         self.client = client
+        self.log_name = log_name
         self.log_path = "/log/" + log_name
 
     def run(self):
         try:
             log = self.client.readFile(self.log_path)
-            self.result.emit(log)
+            with open(consts.CACHE + self.log_name, "w") as log_file:
+                log_file.write(log)
+            self.result.emit(self.log_name)
         except Exception as e:
             self.result.emit("读取失败：" + str(e))
 
@@ -64,6 +67,7 @@ class Ui_Deploy(object):
 
     def setupUi(self, Deploy):
         self.childDialog = Deploy
+        Deploy.setWindowFlags(Qt.WindowMinMaxButtonsHint | Qt.WindowCloseButtonHint)
         Deploy.setObjectName("Deploy")
         Deploy.resize(800, 620)
         Deploy.setMinimumSize(QtCore.QSize(800, 620))
@@ -431,7 +435,7 @@ class Ui_Deploy(object):
 "}\n"
 "QListView::item:selected{\n"
 "    background-color:transparent;\n"
-"    color:rgb(24, 169, 251);\n"
+"    color:#005BAB;\n"
 "}\n"
 "QListView::item:hover{\n"
 "    background-color:transparent;\n"
@@ -440,7 +444,7 @@ class Ui_Deploy(object):
 )
         self.log_path.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.log_path.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.log_path.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        # self.log_path.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.log_path.setObjectName("log_path")
         self.label_26 = QtWidgets.QLabel(self.groupBox)
         self.label_26.setGeometry(QtCore.QRect(477, 52, 20, 20))
@@ -477,7 +481,7 @@ class Ui_Deploy(object):
         self.label_7.setText(_translate("Deploy", "MD5："))
         self.deploy.setText(_translate("Deploy", "部署|更新"))
         self.label_9.setText(_translate("Deploy", "Copyright © 2021 苏州德姆斯信息技术有限公司出品"))
-        self.connect_status.setText(_translate("Deploy", "ADB已连接"))
+        self.connect_status.setText(_translate("Deploy", f"{self.protocol_name[self.protocol]}已连接"))
         self.label.setText(_translate("Deploy", "可视化诊断服务"))
 
         self.get_info = GetInformationThread(self.client, 1)
@@ -487,12 +491,12 @@ class Ui_Deploy(object):
         self.deploy.clicked.connect(self.chooseFile)
         self.back.clicked.connect(self.backToMainWindow)
 
-        self.message.setMaximumWidth(291)
+        self.message.setMaximumWidth(442)
         self.message.setMinimumHeight(30)
         self.showMessage({"message": "登录成功！", "type": 0})
         self.showInfo()
 
-        self.alter_profile.clicked.connect(self.showTextEdit)
+        self.alter_profile.clicked.connect(lambda :self.showTextEdit("profile.json"))
         self.alter_conf.clicked.connect(self.alterConf)
         self.service_conf.returnPressed.connect(self.alterConf)
 
@@ -520,9 +524,9 @@ class Ui_Deploy(object):
             self.upload_thread.result.connect(self.showMessage)
             self.upload_thread.start()
             self.isThreadCreated = True
-        else:
-            message = {"message": "文件路径有误，请重新选择！", "type": 0}
-            self.showMessage(message)
+        # else:
+        #     message = {"message": "文件路径有误，请重新选择！", "type": 0}
+        #     self.showMessage(message)
 
     def alterConf(self):
         if(self.alter_conf.text() == "修改"):
@@ -535,8 +539,8 @@ class Ui_Deploy(object):
             self.service_conf.setStyleSheet("border:transparent;")
             self.service_conf.setReadOnly(True)
 
-    def showMessage(self, messageDict):
-        self.timecount = 3
+    def showMessage(self, messageDict, time=3):
+        self.timecount = time
         self.timer = QTimer()
 
         message = messageDict["message"]
@@ -556,15 +560,16 @@ class Ui_Deploy(object):
             self.message.setStyleSheet("border-radius:2px;background-color:#FFCCC7;")
 
         self.message.adjustSize()
-        if(self.message.width() == 291):
-            self.message.setWordWrap(True)
-        if(len(message) > 22):
-            height = 40
-        else:
-            height = 30
+        # if(self.message.width() == 291):
+        #     self.message.setWordWrap(True)
+        # if(len(message) > 22):
+        #     height = 40
+        # else:
+        #     height = 30
         delta = self.childDialog.width() - self.groupBox.width()
         x = int((self.groupBox.width() - self.message.width() - delta) / 2)
-        self.message.setGeometry(QtCore.QRect(x, self.message.y(), self.message.width() + 3, height))
+        # self.message.setGeometry(QtCore.QRect(x, self.message.y(), self.message.width() + 3, height))
+        self.message.setGeometry(QtCore.QRect(x, self.message.y(), self.message.width() + 5, self.message.height()))
 
         self.message.setHidden(False)
         self.timer.timeout.connect(self.showPrompt)
@@ -613,31 +618,33 @@ class Ui_Deploy(object):
 
         self.get_info.quit()
 
-    def showTextEdit(self):
-        if(Path(consts.PROFILE).is_file()):
+    def showTextEdit(self, file_path, editadle=True):
+        if(Path(consts.CACHE + file_path).is_file()):
             # 子窗口要加self，否则一弹出就会被收回
-            self.editDialog = EditDialog()
-            self.editPage = Ui_edit_file()
+            self.editDialog = EditDialog(editadle)
+            self.editPage = Ui_edit_file(consts.CACHE + file_path)
             self.editPage.setupUi(self.editDialog)
             self.editDialog.show()
             self.editDialog.exec_()
-            result = self.editDialog.result
-            if(result[0] == True):
-                self.uploadFile(consts.PROFILE, type=1)
-                self.showMessage({"message": "修改成功！", "type": 0})
-            elif(result[1] == True):
-                self.showMessage({"message": "取消操作！", "type": 0})
-            else:
-                self.showMessage({"message": "Json格式错误，配置文件已回退，请重新修改！", "type": 0})
+            if(editadle):
+                result = self.editDialog.result
+                if(result[0] == True):
+                    self.uploadFile(consts.PROFILE, type=1)
+                    self.showMessage({"message": "修改成功！", "type": 0})
+                elif(result[1] == True):
+                    self.showMessage({"message": "取消操作！", "type": 0})
+                else:
+                    self.showMessage({"message": "Json格式错误，配置文件已回退，请重新修改！", "type": 0})
 
     def readLog(self, index):
+        self.showMessage({"message":"加载中...", "type":0}, time=1.5)
         self.read_log = ReadLogThread(self.client, self.log_path_list[index.row()])
         self.read_log.result.connect(self.showLog)
         self.read_log.start()
 
-    def showLog(self, log):
-        QtWidgets.QMessageBox.information(self.childDialog, "ListView",log)
+    def showLog(self, log_name):
         self.read_log.quit()
+        self.showTextEdit(log_name, False)
 
     def closeEvent(self, event):
         if(self.isThreadCreated == True):
@@ -655,6 +662,7 @@ class DeployDialog(QtWidgets.QDialog):
                                                QtWidgets.QMessageBox.No)
 
         if reply == QtWidgets.QMessageBox.Yes:
+            os.remove(consts.PROFILE)
             event.accept()
         else:
             event.ignore()
