@@ -434,11 +434,11 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.label_8.setStyleSheet("color:rgb(140, 140, 140);")
         self.label_8.setAlignment(QtCore.Qt.AlignCenter)
         self.label_8.setObjectName("label_8")
-        self.label_3 = QtWidgets.QLabel(self.centralwidget)
-        self.label_3.setGeometry(QtCore.QRect(20, 20, 104, 28))
-        self.label_3.setStyleSheet(f"background:url({consts.IMG_PATH}logo.png);")
-        self.label_3.setText("")
-        self.label_3.setObjectName("label_3")
+        self.logo_label = LogoLabel(self.centralwidget)
+        self.logo_label.setGeometry(QtCore.QRect(20, 20, 104, 28))
+        self.logo_label.setStyleSheet(f"background:url({consts.IMG_PATH}logo.png);")
+        self.logo_label.setText("")
+        self.logo_label.setObjectName("logo_label")
         self.message = QtWidgets.QLabel(self.centralwidget)
         self.message.setGeometry(QtCore.QRect(260, 20, 31, 30))
         # self.message.setGeometry(QtCore.QRect(130, 20, 291, 30))
@@ -508,6 +508,14 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.ssh_username.setText("root")
         self.ssh_password.setText("123456")
         self.ssh_host.setFocus()
+
+        self.logo_label.double_clicked.connect(self.showVersion)
+
+    def showVersion(self):
+        QtWidgets.QMessageBox.information(self.MainWindow,
+                                               '传输单元服务部署工具',
+                                               f"版本：{consts.VERSION}\n\n苏州德姆斯信息技术有限公司出品",
+                                               QtWidgets.QMessageBox.Yes)
 
     def resetStyle(self, lineEdit, label, tip):
         lineEdit.setStyleSheet("border:1px solid black;border-left:0px solid white;")
@@ -710,7 +718,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             self.connectRemoteDevice_thread.result.connect(self.showMessage)
             self.connectRemoteDevice_thread.start()
             self.isRemoteDeviceThreadCreated = True
-            
+    
 if __name__ == '__main__':
     dhms_transunit = QtWidgets.QApplication(sys.argv)
     myWindow = QtWidgets.QMainWindow()

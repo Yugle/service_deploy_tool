@@ -6,6 +6,12 @@ import consts
 from deploy import *
 from transUnit_edit import *
 
+class LogoLabel(QtWidgets.QLabel):
+    double_clicked = QtCore.pyqtSignal()
+
+    def mouseDoubleClickEvent(self, QMouseEvent):
+        self.double_clicked.emit()
+
 class UploadFileAndDeployThread(QtCore.QThread):
     result = QtCore.pyqtSignal(dict)
 
@@ -97,11 +103,12 @@ class Ui_Deploy(object):
 "        color:rgb(24, 169, 251);\n"
 "}")
         self.back.setObjectName("back")
-        self.label_11 = QtWidgets.QLabel(Deploy)
-        self.label_11.setGeometry(QtCore.QRect(40, 30, 104, 28))
-        self.label_11.setStyleSheet(f"border-image:url({consts.IMG_PATH}logo.png);")
-        self.label_11.setText("")
-        self.label_11.setObjectName("label_11")
+        # self.logo_label = QtWidgets.QLabel(Deploy)
+        self.logo_label = LogoLabel(Deploy)
+        self.logo_label.setGeometry(QtCore.QRect(40, 30, 104, 28))
+        self.logo_label.setStyleSheet(f"border-image:url({consts.IMG_PATH}logo.png);")
+        self.logo_label.setText("")
+        self.logo_label.setObjectName("logo_label")
         self.label_25 = QtWidgets.QLabel(Deploy)
         self.label_25.setGeometry(QtCore.QRect(31, 583, 16, 13))
         self.label_25.setStyleSheet(f"background:url({consts.IMG_PATH}back.png);")
@@ -523,6 +530,13 @@ class Ui_Deploy(object):
         # self.log_path.adjustSize()
         self.log_path.setMaximumWidth(401)
 
+        self.logo_label.double_clicked.connect(self.showVersion)
+
+    def showVersion(self):
+        QtWidgets.QMessageBox.information(self.childDialog,
+                                               '传输单元服务部署工具',
+                                               f"版本：{consts.VERSION}\n\n苏州德姆斯信息技术有限公司出品",
+                                               QtWidgets.QMessageBox.Yes)
     def changeService(self, service):
         self.service = service
         self.service_name.setText(consts.SERVICES[self.service])
@@ -696,6 +710,10 @@ class Ui_Deploy(object):
         event.accept()
 
 class DeployDialog(QtWidgets.QDialog):
+    def keyPressEvent(self, event):
+        if(event.key() == Qt.Key_Escape):
+            pass
+
     def closeEvent(self, event):
         reply = QtWidgets.QMessageBox.question(self,
                                                '传输单元服务部署工具',

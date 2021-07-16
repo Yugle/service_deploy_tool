@@ -42,3 +42,5 @@ SHELL = {
     "df -h": "df -h ",
     "cat": "cat "
 }
+
+VERSION = "V0.1"
