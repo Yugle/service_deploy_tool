@@ -584,7 +584,7 @@ class Ui_Deploy(object):
             message = {"message": "使用Telnet部署方式较慢，请耐心等待！", "type": 0}
             self.showMessage(message)
 
-        self.uploadFile(self.filePath)
+        self.uploadFile(self.filePath, type=0)
 
     def uploadFile(self, filePath, type):
         if(type == 0):
@@ -598,9 +598,8 @@ class Ui_Deploy(object):
             self.upload_thread.start()
             self.isThreadCreated = True
         else:
-            pass
-        #     message = {"message": "文件路径有误，请重新选择！", "type": 0}
-        #     self.showMessage(message)
+            message = {"message": "取消操作！", "type": 0}
+            self.showMessage(message)
 
     def alterConf(self):
         if(self.alter_conf.text() == "修改"):
