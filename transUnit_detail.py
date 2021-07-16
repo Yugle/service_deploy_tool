@@ -23,10 +23,9 @@ class UploadFileAndDeployThread(QtCore.QThread):
 
     def run(self):
         try:
-            self.client.uploadFile(self.localFilePath, type=1)
+            self.client.uploadFile(self.localFilePath, self.type)
 
             message = {"message": "操作成功！", "type": self.type}
-
             self.result.emit(message)
         except Exception as e:
             self.result.emit({"message": str(e), "type": self.type})
@@ -587,17 +586,14 @@ class Ui_Deploy(object):
 
         self.uploadFile(self.filePath)
 
-    def uploadFile(self, filePath, type=0):
-        """
-        type为上传部署文件还是配置文件，相应的要在deploy.py上传文件中更改远程路径(todo)
-        """
+    def uploadFile(self, filePath, type):
         if(type == 0):
             self.deploy.setText("部署中...")
             self.deploy.setEnabled(False)
         localFilePath = filePath
 
         if(Path(localFilePath).is_file()):
-            self.upload_thread = UploadFileAndDeployThread(localFilePath, self.client)
+            self.upload_thread = UploadFileAndDeployThread(localFilePath, self.client, type)
             self.upload_thread.result.connect(self.showMessage)
             self.upload_thread.start()
             self.isThreadCreated = True
@@ -656,9 +652,6 @@ class Ui_Deploy(object):
         if(type == 0):
             self.deploy.setText("部署|更新")
             self.deploy.setEnabled(True)
-        elif(type == 1):
-            self.update.setText("更新")
-            self.update.setEnabled(True)
 
     def showPrompt(self):
         self.message.setHidden(True)

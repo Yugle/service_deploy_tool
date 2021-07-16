@@ -163,8 +163,8 @@ class ConnectTransUnitBySSH(object):
 		except Exception as e:
 			pass
 
-	def readFile(self, fiel_path):
-		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["cat"] + fiel_path)
+	def readFile(self, file_path):
+		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["cat"] + file_path)
 		stdout = stdout.read().decode("utf-8")
 
 		return stdout
@@ -280,8 +280,8 @@ class ConnectTransUnitByADB(object):
 		res = subprocess.Popen(pushFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		if("error" in res):
 			raise Exception(res)
-		if(type == 0):
-			self.deploy()
+
+		self.moveFile(filename, type)
 	
 	def deploy(self):
 		testShell = self.adb_shell + "ls"
@@ -395,10 +395,25 @@ class ConnectTransUnitByADB(object):
 		except Exception as e:
 			pass
 
-	def readFile(self, fiel_path):
-		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["cat"] + fiel_path, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+	def readFile(self, file_path):
+		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["cat"] + file_path, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 
 		return stdout
+
+	def moveFile(self, filename, type):
+		file = consts.REMOTE_PATH + filename
+		toFile = consts.PATH_LIST[type] + filename
+		# stdout = subprocess.Popen(self.adb_shell + consts.SHELL["mv -b"] + file + " " + toFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["find"] + toFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+		if("No such file or directory" not in stdout):
+			subprocess.Popen(self.adb_shell + consts.SHELL["cp"] + toFile + " " + toFile + ".bak", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+			stdout = subprocess.Popen(self.adb_shell + consts.SHELL["find"] + toFile + ".bak", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+			if("No such file or directory" in stdout):
+				raise Exception(stdout)
+		
+		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["mv"] + file + " " + toFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+		if("error" in stdout):
+			raise Exception(stdout)
 
 	def restartService(self):
 		pass
