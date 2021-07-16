@@ -64,6 +64,7 @@ class Ui_Deploy(object):
         self.protocol = protocol
         self.protocol_name = ["SSH", "Telnet", "ADB"]
         self.isThreadCreated = False
+        self.service = 1
 
     def setupUi(self, Deploy):
         self.childDialog = Deploy
@@ -442,6 +443,22 @@ class Ui_Deploy(object):
 "    color:rgb(24, 169, 251);\n"
 "}\n"
 )
+        self.log_path.verticalScrollBar().setStyleSheet(  
+        "QScrollBar:vertical\
+        {\
+            width:6px;\
+            background:#E5E5E5;\
+            padding-top:0px;\
+            padding-bottom:0px;\
+        }\
+        QScrollBar::handle:vertical\
+        {\
+            width:6px;\
+            background:#CCCCCC;\
+            border-radius:3px;\
+            min-height:40;\
+        }"
+        )
         self.log_path.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.log_path.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         # self.log_path.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
@@ -484,9 +501,10 @@ class Ui_Deploy(object):
         self.connect_status.setText(_translate("Deploy", f"{self.protocol_name[self.protocol]}已连接"))
         self.label.setText(_translate("Deploy", "可视化诊断服务"))
 
-        self.get_info = GetInformationThread(self.client, 1)
-        self.get_info.result.connect(self.showInfo)
-        self.get_info.start()
+        self.service_name.setText(consts.SERVICES[self.service])
+        self.service_1.clicked.connect(lambda :self.changeService(0))
+
+        self.getInfo()
 
         self.deploy.clicked.connect(self.chooseFile)
         self.back.clicked.connect(self.backToMainWindow)
@@ -501,6 +519,51 @@ class Ui_Deploy(object):
         self.service_conf.returnPressed.connect(self.alterConf)
 
         self.log_path.clicked.connect(self.readLog)
+        # self.log_path.AutoResizeColumns()
+        # self.log_path.adjustSize()
+        self.log_path.setMaximumWidth(401)
+
+    def changeService(self, service):
+        self.service = service
+        self.service_name.setText(consts.SERVICES[self.service])
+        self.getInfo()
+
+    def getInfo(self):
+        self.get_info = GetInformationThread(self.client, self.service)
+        self.get_info.result.connect(self.showInfo)
+        self.get_info.start()
+
+    def showInfo(self, information = 0):
+        if(information == 0):
+            return
+
+        self.service_name.setText(information["service_name"])
+        self.service_version.setText(information["service_version"])
+        self.service_md5.setText(information["service_md5"])
+        self.service_deploy_time.setText(information["service_deploy_time"])
+        self.service_path.setText(information["service_path"])
+        self.service_profile.setText(information["service_profile"])
+        self.service_daemon.setText(information["service_daemon"])
+        self.service_conf.setText(information["service_conf"])
+        self.service_runtime.setText(information["service_runtime"])
+        disk_available = "/log剩余"+information["disk_available"][0]+"，/usr/bin剩余"+information["disk_available"][1] 
+        self.disk_available.setText(disk_available)
+
+        self.log_path_list = information["log_path"]
+        log_list = QStringListModel()
+        log_list.setStringList(self.log_path_list)
+        self.log_path.setModel(log_list)
+
+        list_max_width = 0
+        for item in range(len(self.log_path_list)):
+            width = self.log_path.sizeHintForColumn(0)
+            if(width > list_max_width):
+                list_max_width = width
+        if(len(self.log_path_list) > 3):
+            list_max_width += 30
+        self.log_path.setGeometry(QtCore.QRect(160, 472, list_max_width, 70))
+
+        self.get_info.quit()
 
     def chooseFile(self):
         self.filePath = QFileDialog.getOpenFileName(None, "选择文件", "c:\\", "Service File(*.py)")[0]
@@ -596,28 +659,6 @@ class Ui_Deploy(object):
         self.mainWindow.show()
         # WindowsControl.backToMainWindow(self.mainWindow)
 
-    def showInfo(self, information = 0):
-        if(information == 0):
-            return
-        self.service_name.setText(information["service_name"])
-        self.service_version.setText(information["service_version"])
-        self.service_md5.setText(information["service_md5"])
-        self.service_deploy_time.setText(information["service_deploy_time"])
-        self.service_path.setText(information["service_path"])
-        self.service_profile.setText(information["service_profile"])
-        self.service_daemon.setText(information["service_daemon"])
-        self.service_conf.setText(information["service_conf"])
-        self.service_runtime.setText(information["service_runtime"])
-        disk_available = "/log剩余"+information["disk_available"][0]+"，/usr/bin剩余"+information["disk_available"][1] 
-        self.disk_available.setText(disk_available)
-
-        self.log_path_list = information["log_path"]
-        log_list = QStringListModel()
-        log_list.setStringList(self.log_path_list)
-        self.log_path.setModel(log_list)
-
-        self.get_info.quit()
-
     def showTextEdit(self, file_path, editadle=True):
         if(Path(consts.CACHE + file_path).is_file()):
             # 子窗口要加self，否则一弹出就会被收回
@@ -662,7 +703,11 @@ class DeployDialog(QtWidgets.QDialog):
                                                QtWidgets.QMessageBox.No)
 
         if reply == QtWidgets.QMessageBox.Yes:
-            os.remove(consts.PROFILE)
+            try:
+                os.remove(consts.PROFILE)
+            except Exception as e:
+                pass
+
             event.accept()
         else:
             event.ignore()

@@ -1,9 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QTimer, QDateTime
 from deploy import *
-# from transUnit_deploy import *
 from transUnit_detail import *
-# from transUnit_edit import *
 import re
 import sys
 import consts

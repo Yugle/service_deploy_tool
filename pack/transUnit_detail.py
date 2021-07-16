@@ -380,10 +380,16 @@ class Ui_Deploy(object):
         self.log_path = QtWidgets.QListView(self.groupBox)
         self.log_path.setEnabled(True)
         self.log_path.setGeometry(QtCore.QRect(160, 473, 401, 61))
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.log_path.sizePolicy().hasHeightForWidth())
+        self.log_path.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(11)
         self.log_path.setFont(font)
+        self.log_path.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
         self.log_path.setStyleSheet("QListView{\n"
 "   background-color:transparent;\n"
 "    border:transparent;\n"
@@ -393,7 +399,8 @@ class Ui_Deploy(object):
 "    color:black;\n"
 "}")
         self.log_path.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.log_path.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.log_path.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
+        self.log_path.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.log_path.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.log_path.setObjectName("log_path")
 

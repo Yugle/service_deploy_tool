@@ -20,7 +20,6 @@ class ConnectTransUnitBySSH(object):
 		self.port = 22
 		self.username = username
 		self.password = password
-		self.service_name = ["fastdiag", "sessiongo"]
 
 	def connect(self):
 		self.ssh_client = paramiko.SSHClient()
@@ -73,7 +72,7 @@ class ConnectTransUnitBySSH(object):
 				stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["rm"] + dir + filename)
 
 	def getInfo(self, service):
-		self.service = self.service_name[service]
+		self.service = consts.SERVICES[service]
 		information = {}
 
 		information["service_name"] = self.service
@@ -106,7 +105,12 @@ class ConnectTransUnitBySSH(object):
 			if(version != []):
 				break
 
-		return version[0]
+		try:
+			version = version[0]
+		except Exception as e:
+			version = ""
+
+		return version
 
 	def getDeployTime(self, service):
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["stat"] + consts.SERVICE_PATH + service)
@@ -122,12 +126,14 @@ class ConnectTransUnitBySSH(object):
 		return md5
 
 	def getRuntime(self, service):
-		service = "sessiongo"
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["getRuntime"] + service + "$")
 		res = stdout.read().decode("utf-8").split(" ")
 		etime = res
 		if(len(res) >= 2):
 			etime = res[-2]
+
+		if(isinstance(etime, list)):
+			return ""
 
 		return etime
 
@@ -142,17 +148,20 @@ class ConnectTransUnitBySSH(object):
 
 	def getLogPath(self, service):
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["find"] + f"/log/{service}*")
-		log_list = re.findall(f"{service}\\S+.log", stdout.read().decode("utf-8"))
-		# log_list = re.findall(f"/log/{service}\\S+.log", stdout.read().decode("utf-8"))0
+		log_list = re.findall(f"{service}\\S*.log", stdout.read().decode("utf-8"))
 
 		return log_list
 
 	def saveProfile(self, service):
 		stdout = self.readFile(service)
-		profile_json = json.loads(stdout)
 
-		with open(f"{consts.CACHE}profile.json","w") as profile:
-			json.dump(profile_json, profile)
+		try:
+			profile_json = json.loads(stdout)
+
+			with open(f"{consts.CACHE}profile.json","w") as profile:
+				json.dump(profile_json, profile)
+		except Exception as e:
+			pass
 
 	def readFile(self, fiel_path):
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["cat"] + fiel_path)
@@ -291,16 +300,15 @@ class ConnectTransUnitByADB(object):
 				subprocess.Popen(self.adb_shell + consts.SHELL["rm"] + dir + filename, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
 	def getInfo(self, service):
-		self.service = self.service_name[service]
+		self.service = consts.SERVICES[service]
 		information = {}
 
 		information["service_name"] = self.service
-		# information["service_version"] = self.getServiceVersion()
-		information["service_version"] = "v1.0"
 		information["service_md5"] = self.getMD5(self.service)
 		information["service_deploy_time"] = self.getDeployTime(self.service)
 		# information["service_path"] = self.getServicePath()
 		information["service_path"] = consts.SERVICE_PATH + self.service
+		information["service_version"] = self.getVersion(information["service_path"])
 		# information["service_profile"] = self.getServiceProfile()
 		information["service_profile"] = "/private/conf/test_conf.json"
 		# information["service_daemon"] = self.getServiceDaemon()
@@ -314,47 +322,84 @@ class ConnectTransUnitByADB(object):
 
 		return information
 
+	def getVersion(self, service_path):
+		params = [" -v", " --version"]
+
+		for param in params:
+			# 使用service_path加参数，因为paramiko使用非交互式shell，不能拿环境变量
+			stdout = subprocess.Popen(self.adb_shell + service_path + " " + param, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+			version = re.findall(r"v\d.*", stdout)
+			if(version != []):
+				break
+		try:
+			version = version[0]
+		except Exception as e:
+			version = ""
+
+		return version
+
 	def getDeployTime(self, service):
 		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["stat"] + consts.SERVICE_PATH + service, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		change_time = stdout.split(": ")[-1].split(".")[0]
-		
+		if("No such file or directory" in change_time):
+			change_time = ""
+
 		return change_time
 
 	def getMD5(self, service):
-		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["md5sum"] + consts.SERVICE_PATH + service, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout
-		md5 = stdout.read().decode("utf-8").split(" ")[0]
+		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["md5sum"] + consts.SERVICE_PATH + service, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+		if("No such file or directory" in stdout):
+			md5 = ""
+		else:
+			md5 = stdout.split(" ")[0]
 
 		return md5
 
 	def getRuntime(self, service):
-		service = "sessiongo"
-		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["getRuntime"] + service + "$", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout
-		res = stdout.read().decode("utf-8").split(" ")
+		shell = consts.SHELL["getRuntime"] + service + "$"
+		stdout = subprocess.Popen(self.adb_shell + f'"{shell}"', stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+		res = stdout.split(" ")
 		etime = res
 		if(len(res) >= 2):
 			etime = res[-2]
 
+		if(isinstance(etime, list)):
+			return ""
+
 		return etime
 
 	def getDiskAvailableSpace(self):
-		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["df -h"] + "/log", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout
-		log_available = stdout.readlines()[-1].split(" ")[-4]
+		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["df -h"] + "/log", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+		log_available = stdout.split(" ")[-4]
 
-		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["df -h"] + "/usr/bin", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout
-		usr_bin_available = stdout.readlines()[-1].split(" ")[-4]
+		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["df -h"] + "/usr/bin", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+		usr_bin_available = stdout.split(" ")[-4]
 
 		return [log_available, usr_bin_available]
 
 	def getLogPath(self, service):
-		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["find"] + f"/log/{service}*", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout
-		log_list = re.findall(f"{service}\\S+.log", stdout.read().decode("utf-8"))
-		# log_list = re.findall(f"/log/{service}\\S+.log", stdout.read().decode("utf-8"))0
+		shell = consts.SHELL["find"] + f"/log/{service}*"
+		stdout = subprocess.Popen(self.adb_shell + f'"{shell}"', stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+		log_list = re.findall(f"{service}\\S*.log", stdout)
+		# log_list = re.findall(f"/log/{service}\\S+.log", stdout.read().decode("utf-8"))
 
 		return log_list
 
 	def saveProfile(self, service):
-		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["cat"] + service, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout
-		profile_json = json.loads(stdout.read().decode("utf-8"))
+		stdout = self.readFile(service)
+		try:
+			profile_json = json.loads(stdout)
 
-		with open(f"{consts.CACHE}profile.json","w") as profile:
-			json.dump(profile_json, profile)
+			with open(f"{consts.CACHE}profile.json","w") as profile:
+				json.dump(profile_json, profile)
+		except Exception as e:
+			pass
+
+	def readFile(self, fiel_path):
+		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["cat"] + fiel_path, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+
+		return stdout
+
+	def restartService(self):
+		pass
+
