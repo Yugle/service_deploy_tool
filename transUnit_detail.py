@@ -587,7 +587,8 @@ class Ui_Deploy(object):
             self.upload_thread.result.connect(self.showMessage)
             self.upload_thread.start()
             self.isThreadCreated = True
-        # else:
+        else:
+            pass
         #     message = {"message": "文件路径有误，请重新选择！", "type": 0}
         #     self.showMessage(message)
 
