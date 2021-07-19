@@ -282,10 +282,10 @@ class ConnectTransUnitByADB(object):
 			raise Exception(res)
 		subprocess.Popen(self.adb_shell + consts.SHELL["dos2unix"] + remoteFilePath + filename, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
-		if(type == 0):
-			self.deploy()
-		else:
-			self.moveFile(filename, type)
+		# if(type == 0):
+		# 	self.deploy()
+		# else:
+		# 	self.moveFile(filename, type)
 	
 	def deploy(self):
 		pass
@@ -421,5 +421,10 @@ class ConnectTransUnitByADB(object):
 			raise Exception(stdout)
 
 	def restartService(self):
-		pass
+		# stdout = subprocess.Popen(self.adb_shell + consts.SHELL["mv"] + fromFile + " " + toFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+		print("重启服务")
 
+	def submit(self, actions):
+		print(actions)
+		for action, filename in actions.items():
+			self.moveFile(filename, action)

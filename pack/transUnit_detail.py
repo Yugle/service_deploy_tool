@@ -315,7 +315,7 @@ class Ui_Deploy(object):
         self.service_path.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.service_path.setObjectName("service_path")
         self.deploy = QtWidgets.QPushButton(self.groupBox)
-        self.deploy.setGeometry(QtCore.QRect(467, 107, 91, 31))
+        self.deploy.setGeometry(QtCore.QRect(467, 144, 91, 31))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(10)
@@ -403,6 +403,21 @@ class Ui_Deploy(object):
         self.log_path.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.log_path.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.log_path.setObjectName("log_path")
+        self.submit = QtWidgets.QPushButton(self.groupBox)
+        self.submit.setGeometry(QtCore.QRect(467, 107, 91, 31))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(10)
+        self.submit.setFont(font)
+        self.submit.setStyleSheet("QPushButton{\n"
+"        text-align:center;\n"
+"        color:white;\n"
+"        background-color:rgb(0, 91, 171);\n"
+"}\n"
+"QPushButton:hover{A\n"
+"        background-color:rgb(24, 91, 171);\n"
+"}")
+        self.submit.setObjectName("submit")
 
         self.retranslateUi(Deploy)
         QtCore.QMetaObject.connectSlotsByName(Deploy)
@@ -430,3 +445,4 @@ class Ui_Deploy(object):
         self.label_9.setText(_translate("Deploy", "Copyright © 2021 苏州德姆斯信息技术有限公司出品"))
         self.connect_status.setText(_translate("Deploy", "ADB已连接"))
         self.label.setText(_translate("Deploy", "可视化诊断服务"))
+        self.submit.setText(_translate("Deploy", "提交修改"))

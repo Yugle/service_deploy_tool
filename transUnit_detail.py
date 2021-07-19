@@ -15,20 +15,29 @@ class LogoLabel(QtWidgets.QLabel):
 class UploadFileAndDeployThread(QtCore.QThread):
     result = QtCore.pyqtSignal(dict)
 
-    def __init__(self, localFilePath, client, type=0):
+    def __init__(self, client):
         super().__init__()
-        self.localFilePath = localFilePath
         self.client = client
-        self.type = type
+        self.actions = {}
+
+    def uploadFile(self, localFilePath, type):
+        try:
+            filename = re.split(r'[/|\\]', localFilePath)[-1]        
+            self.actions[type] = filename
+            self.client.uploadFile(localFilePath, type)
+
+        except Exception as e:
+            self.result.emit({"message": str(e), "type": type})
 
     def run(self):
         try:
-            self.client.uploadFile(self.localFilePath, self.type)
+            self.client.submit(self.actions)
 
-            message = {"message": "操作成功！", "type": self.type}
+            message = {"message": "操作成功！", "type": 0}
+
             self.result.emit(message)
         except Exception as e:
-            self.result.emit({"message": str(e), "type": self.type})
+            self.result.emit({"message": str(e), "type": 0})
 
 class GetInformationThread(QtCore.QThread):
     result = QtCore.pyqtSignal(dict)
@@ -377,7 +386,7 @@ class Ui_Deploy(object):
         self.service_path.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.service_path.setObjectName("service_path")
         self.deploy = QtWidgets.QPushButton(self.groupBox)
-        self.deploy.setGeometry(QtCore.QRect(467, 107, 91, 31))
+        self.deploy.setGeometry(QtCore.QRect(467, 144, 91, 31))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(10)
@@ -479,6 +488,21 @@ class Ui_Deploy(object):
         self.message.setStyleSheet("")
         self.message.setText("")
         self.message.setObjectName("message")
+        self.submit = QtWidgets.QPushButton(self.groupBox)
+        self.submit.setGeometry(QtCore.QRect(467, 107, 91, 31))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(10)
+        self.submit.setFont(font)
+        self.submit.setStyleSheet("QPushButton{\n"
+"        text-align:center;\n"
+"        color:white;\n"
+"        background-color:rgb(0, 91, 171);\n"
+"}\n"
+"QPushButton:hover{A\n"
+"        background-color:rgb(24, 91, 171);\n"
+"}")
+        self.submit.setObjectName("submit")
 
         self.retranslateUi(Deploy)
         QtCore.QMetaObject.connectSlotsByName(Deploy)
@@ -506,6 +530,7 @@ class Ui_Deploy(object):
         self.label_9.setText(_translate("Deploy", "Copyright © 2021 苏州德姆斯信息技术有限公司出品"))
         self.connect_status.setText(_translate("Deploy", f"{self.protocol_name[self.protocol]}已连接"))
         self.label.setText(_translate("Deploy", "可视化诊断服务"))
+        self.submit.setText(_translate("Deploy", "提交修改"))
 
         self.service_name.setText(consts.SERVICES[self.service])
         self.service_1.clicked.connect(lambda :self.changeService(0))
@@ -530,6 +555,13 @@ class Ui_Deploy(object):
         self.log_path.setMaximumWidth(401)
 
         self.logo_label.double_clicked.connect(self.showVersion)
+
+        self.submit.clicked.connect(self.submitAll)
+        
+        self.upload_thread = UploadFileAndDeployThread(self.client)
+        self.upload_thread.result.connect(self.showMessage)
+
+        self.isThreadCreated = True
 
     def showVersion(self):
         QtWidgets.QMessageBox.information(self.childDialog,
@@ -593,10 +625,11 @@ class Ui_Deploy(object):
         localFilePath = filePath
 
         if(Path(localFilePath).is_file()):
-            self.upload_thread = UploadFileAndDeployThread(localFilePath, self.client, type)
-            self.upload_thread.result.connect(self.showMessage)
-            self.upload_thread.start()
-            self.isThreadCreated = True
+            # self.upload_thread = UploadFileAndDeployThread(localFilePath, self.client, type)
+            # self.upload_thread.result.connect(self.showMessage)
+            # self.upload_thread.start()
+            self.upload_thread.uploadFile(localFilePath, type)
+            # self.isThreadCreated = True
         else:
             message = {"message": "取消操作！", "type": 0}
             self.showMessage(message)
@@ -612,22 +645,19 @@ class Ui_Deploy(object):
             self.service_conf.setStyleSheet("border:transparent;")
             self.service_conf.setReadOnly(True)
 
-    def showMessage(self, messageDict, time=3):
+    def showMessage(self, message, time=3):
         self.timecount = time
         self.timer = QTimer()
 
-        message = messageDict["message"]
-        type = messageDict["type"]
-
         self.message.setWordWrap(False)
 
-        if(message in ["操作成功！", "登录成功！", "修改成功！", "取消操作！"]):
+        if(message in ["操作成功！", "登录成功！", "修改成功！", "取消操作！", "提交成功！"]):
             self.message.setText(" ✅ " + message)
             self.message.setStyleSheet("border-radius:2px;background-color:#65c294;color:white;")
 
-            if(self.isThreadCreated == True):
-                self.upload_thread.quit()
-                self.isThreadCreated = False
+            # if(self.isThreadCreated == True):
+            #     self.upload_thread.quit()
+            #     self.isThreadCreated = False
         else:
             self.message.setText(" ⚠️ " + message)
             self.message.setStyleSheet("border-radius:2px;background-color:#FFCCC7;")
@@ -647,10 +677,6 @@ class Ui_Deploy(object):
         self.message.setHidden(False)
         self.timer.timeout.connect(self.showPrompt)
         self.timer.start(self.timecount*1000)
-
-        if(type == 0):
-            self.deploy.setText("部署|更新")
-            self.deploy.setEnabled(True)
 
     def showPrompt(self):
         self.message.setHidden(True)
@@ -693,6 +719,12 @@ class Ui_Deploy(object):
     def showLog(self, log_name):
         self.read_log.quit()
         self.showTextEdit(log_name, False)
+
+    def submitAll(self):
+        if(self.isThreadCreated):
+            self.upload_thread.start()
+        else:
+            self.showMessage({"message": "未执行任何修改！", "type": 0})
 
     def closeEvent(self, event):
         if(self.isThreadCreated == True):

@@ -761,7 +761,7 @@ QPushButton:hover{A
     <property name="geometry">
      <rect>
       <x>467</x>
-      <y>107</y>
+      <y>144</y>
       <width>91</width>
       <height>31</height>
      </rect>
@@ -959,6 +959,35 @@ QListView::item:hover{
     </property>
     <property name="editTriggers">
      <set>QAbstractItemView::NoEditTriggers</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="submit">
+    <property name="geometry">
+     <rect>
+      <x>467</x>
+      <y>107</y>
+      <width>91</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>微软雅黑</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+        text-align:center;
+        color:white;
+        background-color:rgb(0, 91, 171);
+}
+QPushButton:hover{A
+        background-color:rgb(24, 91, 171);
+}</string>
+    </property>
+    <property name="text">
+     <string>提交修改</string>
     </property>
    </widget>
   </widget>
