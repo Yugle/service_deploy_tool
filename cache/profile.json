@@ -1,0 +1,3709 @@
+{
+  "config_test_1": [
+    {
+      "deviceId": 363,
+      "input": [
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:306-i:2",
+          "offset": 16843269,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.306.6",
+              "isUnsigned": true,
+              "method": "function main(d); return d/100.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s149"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:305-i:2",
+          "offset": 16843010,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.305.4",
+              "isUnsigned": true,
+              "method": "function main(d); return d*175.72/65536-46.85 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s148"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:307-i:2",
+          "offset": 16843525,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.307.6",
+              "isUnsigned": true,
+              "method": "function main(d); return d/100.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s150"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:305-i:2",
+          "offset": 16843011,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.305.5",
+              "isUnsigned": true,
+              "method": "function main(d); return d/1000.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s148"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 60000,
+          "isBigEndian": true,
+          "length": 16500,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "length",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 100,
+              "id": "compressFlag",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 102,
+          "name": "c:304-s:307-i:1",
+          "offset": 196608,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 6,
+              "id": "a.307.1",
+              "isUnsigned": true,
+              "method": "function main(d); return 1/(d*0.1/1000000.0) ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 8,
+              "id": "a.307.2",
+              "isUnsigned": true,
+              "method": "function main(d); return d*0.01/1000.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            },
+            {
+              "bitOffset": 0,
+              "bits": 131072,
+              "byteOffset": 102,
+              "id": "a.307.3",
+              "isUnsigned": false,
+              "method": "indexArray={\"a.307.2\"}; function main(d,a); return (((d*2.99)/32768)/a[0])*9.8 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "indexArray={\"a.307.1\"}; function main(a); return a[0] ;end",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s150"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:307-i:2",
+          "offset": 16843522,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.307.4",
+              "isUnsigned": true,
+              "method": "function main(d); return d*175.72/65536-46.85 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s150"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 60000,
+          "isBigEndian": true,
+          "length": 16500,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "length",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 100,
+              "id": "compressFlag",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 102,
+          "name": "c:304-s:305-i:1",
+          "offset": 65536,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 6,
+              "id": "a.305.1",
+              "isUnsigned": true,
+              "method": "function main(d); return 1/(d*0.1/1000000.0) ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 8,
+              "id": "a.305.2",
+              "isUnsigned": true,
+              "method": "function main(d); return d*0.01/1000.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            },
+            {
+              "bitOffset": 0,
+              "bits": 131072,
+              "byteOffset": 102,
+              "id": "a.305.3",
+              "isUnsigned": false,
+              "method": "indexArray={\"a.305.2\"}; function main(d,a); return (((d*2.99)/32768)/a[0])*9.8 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "indexArray={\"a.305.1\"}; function main(a); return a[0] ;end",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s148"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:306-i:2",
+          "offset": 16843266,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.306.4",
+              "isUnsigned": true,
+              "method": "function main(d); return d*175.72/65536-46.85 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s149"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:305-i:2",
+          "offset": 16843013,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.305.6",
+              "isUnsigned": true,
+              "method": "function main(d); return d/100.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s148"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:306-i:2",
+          "offset": 16843267,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.306.5",
+              "isUnsigned": true,
+              "method": "function main(d); return d/1000.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s149"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 60000,
+          "isBigEndian": true,
+          "length": 16500,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "length",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 100,
+              "id": "compressFlag",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 102,
+          "name": "c:304-s:306-i:1",
+          "offset": 131072,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 6,
+              "id": "a.306.1",
+              "isUnsigned": true,
+              "method": "function main(d); return 1/(d*0.1/1000000.0) ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 8,
+              "id": "a.306.2",
+              "isUnsigned": true,
+              "method": "function main(d); return d*0.01/1000.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            },
+            {
+              "bitOffset": 0,
+              "bits": 131072,
+              "byteOffset": 102,
+              "id": "a.306.3",
+              "isUnsigned": false,
+              "method": "indexArray={\"a.306.2\"}; function main(d,a); return (((d*2.99)/32768)/a[0])*9.8 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "indexArray={\"a.306.1\"}; function main(a); return a[0] ;end",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s149"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:307-i:2",
+          "offset": 16843523,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.307.5",
+              "isUnsigned": true,
+              "method": "function main(d); return d/1000.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s150"
+          ]
+        }
+      ],
+      "output": [
+        {
+          "args": [
+            "a.305.4"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2467",
+          "name": "\u6e29\u5ea6",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "trend"
+          ],
+          "threshold": [],
+          "type": "data",
+          "unit": 5,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.307.3"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2474",
+          "name": "\u632f\u52a8\u52a0\u901f\u5ea6",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "vib-anlysis",
+            "trend"
+          ],
+          "threshold": [],
+          "type": "analysis",
+          "unit": 23,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.307.6"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2477",
+          "name": "\u901f\u5ea6\u5747\u65b9\u6839",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "trend"
+          ],
+          "threshold": [],
+          "type": "data",
+          "unit": 2,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.305.6"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2469",
+          "name": "\u901f\u5ea6\u5747\u65b9\u6839",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "trend"
+          ],
+          "threshold": [],
+          "type": "data",
+          "unit": 2,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.306.5"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2472",
+          "name": "\u7535\u538b",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [],
+          "threshold": [],
+          "type": "data",
+          "unit": 10,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.305.5"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2468",
+          "name": "\u7535\u538b",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [],
+          "threshold": [],
+          "type": "data",
+          "unit": 10,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.306.4"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2471",
+          "name": "\u6e29\u5ea6",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "trend"
+          ],
+          "threshold": [],
+          "type": "data",
+          "unit": 5,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.306.3"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2470",
+          "name": "\u632f\u52a8\u52a0\u901f\u5ea6",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "vib-anlysis",
+            "trend"
+          ],
+          "threshold": [],
+          "type": "analysis",
+          "unit": 23,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.307.4"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2475",
+          "name": "\u6e29\u5ea6",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "trend"
+          ],
+          "threshold": [],
+          "type": "data",
+          "unit": 5,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.307.5"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2476",
+          "name": "\u7535\u538b",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [],
+          "threshold": [],
+          "type": "data",
+          "unit": 10,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.305.3"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2466",
+          "name": "\u632f\u52a8\u52a0\u901f\u5ea6",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "vib-anlysis",
+            "trend"
+          ],
+          "threshold": [],
+          "type": "analysis",
+          "unit": 23,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.306.6"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2473",
+          "name": "\u901f\u5ea6\u5747\u65b9\u6839",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "trend"
+          ],
+          "threshold": [],
+          "type": "data",
+          "unit": 2,
+          "validator": ""
+        }
+      ]
+    },
+    {
+      "deviceId": 364,
+      "input": [
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:310-i:2",
+          "offset": 16844290,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.310.4",
+              "isUnsigned": true,
+              "method": "function main(d); return d*175.72/65536-46.85 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s153"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 60000,
+          "isBigEndian": true,
+          "length": 16500,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "length",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 100,
+              "id": "compressFlag",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 102,
+          "name": "c:304-s:308-i:1",
+          "offset": 262144,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 6,
+              "id": "a.308.1",
+              "isUnsigned": true,
+              "method": "function main(d); return 1/(d*0.1/1000000.0) ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 8,
+              "id": "a.308.2",
+              "isUnsigned": true,
+              "method": "function main(d); return d*0.01/1000.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            },
+            {
+              "bitOffset": 0,
+              "bits": 131072,
+              "byteOffset": 102,
+              "id": "a.308.3",
+              "isUnsigned": false,
+              "method": "indexArray={\"a.308.2\"}; function main(d,a); return (((d*2.99)/32768)/a[0])*9.8 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "indexArray={\"a.308.1\"}; function main(a); return a[0] ;end",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s151"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:310-i:2",
+          "offset": 16844291,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.310.5",
+              "isUnsigned": true,
+              "method": "function main(d); return d/1000.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s153"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:309-i:2",
+          "offset": 16844035,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.309.5",
+              "isUnsigned": true,
+              "method": "function main(d); return d/1000.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s152"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:308-i:2",
+          "offset": 16843781,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.308.6",
+              "isUnsigned": true,
+              "method": "function main(d); return d/100.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s151"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:309-i:2",
+          "offset": 16844034,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.309.4",
+              "isUnsigned": true,
+              "method": "function main(d); return d*175.72/65536-46.85 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s152"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 60000,
+          "isBigEndian": true,
+          "length": 16500,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "length",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 100,
+              "id": "compressFlag",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 102,
+          "name": "c:304-s:310-i:1",
+          "offset": 393216,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 6,
+              "id": "a.310.1",
+              "isUnsigned": true,
+              "method": "function main(d); return 1/(d*0.1/1000000.0) ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 8,
+              "id": "a.310.2",
+              "isUnsigned": true,
+              "method": "function main(d); return d*0.01/1000.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            },
+            {
+              "bitOffset": 0,
+              "bits": 131072,
+              "byteOffset": 102,
+              "id": "a.310.3",
+              "isUnsigned": false,
+              "method": "indexArray={\"a.310.2\"}; function main(d,a); return (((d*2.99)/32768)/a[0])*9.8 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "indexArray={\"a.310.1\"}; function main(a); return a[0] ;end",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s153"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:310-i:2",
+          "offset": 16844293,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.310.6",
+              "isUnsigned": true,
+              "method": "function main(d); return d/100.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s153"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:308-i:2",
+          "offset": 16843779,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.308.5",
+              "isUnsigned": true,
+              "method": "function main(d); return d/1000.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s151"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:309-i:2",
+          "offset": 16844037,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.309.6",
+              "isUnsigned": true,
+              "method": "function main(d); return d/100.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s152"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 60000,
+          "isBigEndian": true,
+          "length": 16500,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "length",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 100,
+              "id": "compressFlag",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 102,
+          "name": "c:304-s:309-i:1",
+          "offset": 327680,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 6,
+              "id": "a.309.1",
+              "isUnsigned": true,
+              "method": "function main(d); return 1/(d*0.1/1000000.0) ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 8,
+              "id": "a.309.2",
+              "isUnsigned": true,
+              "method": "function main(d); return d*0.01/1000.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            },
+            {
+              "bitOffset": 0,
+              "bits": 131072,
+              "byteOffset": 102,
+              "id": "a.309.3",
+              "isUnsigned": false,
+              "method": "indexArray={\"a.309.2\"}; function main(d,a); return (((d*2.99)/32768)/a[0])*9.8 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "indexArray={\"a.309.1\"}; function main(a); return a[0] ;end",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s152"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:308-i:2",
+          "offset": 16843778,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.308.4",
+              "isUnsigned": true,
+              "method": "function main(d); return d*175.72/65536-46.85 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s151"
+          ]
+        }
+      ],
+      "output": [
+        {
+          "args": [
+            "a.309.6"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2485",
+          "name": "\u901f\u5ea6\u5747\u65b9\u6839",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "trend"
+          ],
+          "threshold": [],
+          "type": "data",
+          "unit": 2,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.310.6"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2489",
+          "name": "\u901f\u5ea6\u5747\u65b9\u6839",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "trend"
+          ],
+          "threshold": [],
+          "type": "data",
+          "unit": 2,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.309.5"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2484",
+          "name": "\u7535\u538b",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [],
+          "threshold": [],
+          "type": "data",
+          "unit": 10,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.308.5"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2480",
+          "name": "\u7535\u538b",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [],
+          "threshold": [],
+          "type": "data",
+          "unit": 10,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.309.3"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2482",
+          "name": "\u632f\u52a8\u52a0\u901f\u5ea6",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "vib-anlysis",
+            "trend"
+          ],
+          "threshold": [],
+          "type": "analysis",
+          "unit": 23,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.309.4"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2483",
+          "name": "\u6e29\u5ea6",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "trend"
+          ],
+          "threshold": [],
+          "type": "data",
+          "unit": 5,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.308.3"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2478",
+          "name": "\u632f\u52a8\u52a0\u901f\u5ea6",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "vib-anlysis",
+            "trend"
+          ],
+          "threshold": [],
+          "type": "analysis",
+          "unit": 23,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.310.5"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2488",
+          "name": "\u7535\u538b",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [],
+          "threshold": [],
+          "type": "data",
+          "unit": 10,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.308.4"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2479",
+          "name": "\u6e29\u5ea6",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "trend"
+          ],
+          "threshold": [],
+          "type": "data",
+          "unit": 5,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.310.3"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2486",
+          "name": "\u632f\u52a8\u52a0\u901f\u5ea6",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "vib-anlysis",
+            "trend"
+          ],
+          "threshold": [],
+          "type": "analysis",
+          "unit": 23,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.308.6"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2481",
+          "name": "\u901f\u5ea6\u5747\u65b9\u6839",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "trend"
+          ],
+          "threshold": [],
+          "type": "data",
+          "unit": 2,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.310.4"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2487",
+          "name": "\u6e29\u5ea6",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "trend"
+          ],
+          "threshold": [],
+          "type": "data",
+          "unit": 5,
+          "validator": ""
+        }
+      ]
+    },
+    {
+      "deviceId": 365,
+      "input": [
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 60000,
+          "isBigEndian": true,
+          "length": 16500,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "length",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 100,
+              "id": "compressFlag",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 102,
+          "name": "c:304-s:311-i:1",
+          "offset": 458752,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 6,
+              "id": "a.311.1",
+              "isUnsigned": true,
+              "method": "function main(d); return 1/(d*0.1/1000000.0) ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 8,
+              "id": "a.311.2",
+              "isUnsigned": true,
+              "method": "function main(d); return d*0.01/1000.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            },
+            {
+              "bitOffset": 0,
+              "bits": 131072,
+              "byteOffset": 102,
+              "id": "a.311.3",
+              "isUnsigned": false,
+              "method": "indexArray={\"a.311.2\"}; function main(d,a); return (((d*2.99)/32768)/a[0])*9.8 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "indexArray={\"a.311.1\"}; function main(a); return a[0] ;end",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s154"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:312-i:2",
+          "offset": 16844805,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.312.6",
+              "isUnsigned": true,
+              "method": "function main(d); return d/100.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s155"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:311-i:2",
+          "offset": 16844546,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.311.4",
+              "isUnsigned": true,
+              "method": "function main(d); return d*175.72/65536-46.85 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s154"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:311-i:2",
+          "offset": 16844549,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.311.6",
+              "isUnsigned": true,
+              "method": "function main(d); return d/100.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s154"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:312-i:2",
+          "offset": 16844803,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.312.5",
+              "isUnsigned": true,
+              "method": "function main(d); return d/1000.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s155"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 60000,
+          "isBigEndian": true,
+          "length": 16500,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "length",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 100,
+              "id": "compressFlag",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 102,
+          "name": "c:304-s:312-i:1",
+          "offset": 524288,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 6,
+              "id": "a.312.1",
+              "isUnsigned": true,
+              "method": "function main(d); return 1/(d*0.1/1000000.0) ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 8,
+              "id": "a.312.2",
+              "isUnsigned": true,
+              "method": "function main(d); return d*0.01/1000.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            },
+            {
+              "bitOffset": 0,
+              "bits": 131072,
+              "byteOffset": 102,
+              "id": "a.312.3",
+              "isUnsigned": false,
+              "method": "indexArray={\"a.312.2\"}; function main(d,a); return (((d*2.99)/32768)/a[0])*9.8 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "indexArray={\"a.312.1\"}; function main(a); return a[0] ;end",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s155"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:311-i:2",
+          "offset": 16844547,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.311.5",
+              "isUnsigned": true,
+              "method": "function main(d); return d/1000.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s154"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:312-i:2",
+          "offset": 16844802,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.312.4",
+              "isUnsigned": true,
+              "method": "function main(d); return d*175.72/65536-46.85 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s155"
+          ]
+        }
+      ],
+      "output": [
+        {
+          "args": [
+            "a.311.4"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2491",
+          "name": "\u6e29\u5ea6",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "trend"
+          ],
+          "threshold": [],
+          "type": "data",
+          "unit": 5,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.311.6"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2493",
+          "name": "\u901f\u5ea6\u5747\u65b9\u6839",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "trend"
+          ],
+          "threshold": [],
+          "type": "data",
+          "unit": 2,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.312.3"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2494",
+          "name": "\u632f\u52a8\u52a0\u901f\u5ea6",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "vib-anlysis",
+            "trend"
+          ],
+          "threshold": [],
+          "type": "analysis",
+          "unit": 23,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.311.5"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2492",
+          "name": "\u7535\u538b",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [],
+          "threshold": [],
+          "type": "data",
+          "unit": 10,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.312.4"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2495",
+          "name": "\u6e29\u5ea6",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "trend"
+          ],
+          "threshold": [],
+          "type": "data",
+          "unit": 5,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.312.6"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2497",
+          "name": "\u901f\u5ea6\u5747\u65b9\u6839",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "trend"
+          ],
+          "threshold": [],
+          "type": "data",
+          "unit": 2,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.311.3"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2490",
+          "name": "\u632f\u52a8\u52a0\u901f\u5ea6",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "vib-anlysis",
+            "trend"
+          ],
+          "threshold": [],
+          "type": "analysis",
+          "unit": 23,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.312.5"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2496",
+          "name": "\u7535\u538b",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [],
+          "threshold": [],
+          "type": "data",
+          "unit": 10,
+          "validator": ""
+        }
+      ]
+    },
+    {
+      "deviceId": 366,
+      "input": [
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:313-i:2",
+          "offset": 16845061,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.313.6",
+              "isUnsigned": true,
+              "method": "function main(d); return d/100.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s156"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:314-i:2",
+          "offset": 16845317,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.314.6",
+              "isUnsigned": true,
+              "method": "function main(d); return d/100.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s157"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 60000,
+          "isBigEndian": true,
+          "length": 16500,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "length",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 100,
+              "id": "compressFlag",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 102,
+          "name": "c:304-s:314-i:1",
+          "offset": 655360,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 6,
+              "id": "a.314.1",
+              "isUnsigned": true,
+              "method": "function main(d); return 1/(d*0.1/1000000.0) ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 8,
+              "id": "a.314.2",
+              "isUnsigned": true,
+              "method": "function main(d); return d*0.01/1000.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            },
+            {
+              "bitOffset": 0,
+              "bits": 131072,
+              "byteOffset": 102,
+              "id": "a.314.3",
+              "isUnsigned": false,
+              "method": "indexArray={\"a.314.2\"}; function main(d,a); return (((d*2.99)/32768)/a[0])*9.8 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "indexArray={\"a.314.1\"}; function main(a); return a[0] ;end",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s157"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:313-i:2",
+          "offset": 16845058,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.313.4",
+              "isUnsigned": true,
+              "method": "function main(d); return d*175.72/65536-46.85 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s156"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:314-i:2",
+          "offset": 16845315,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.314.5",
+              "isUnsigned": true,
+              "method": "function main(d); return d/1000.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s157"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 60000,
+          "isBigEndian": true,
+          "length": 16500,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "length",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 100,
+              "id": "compressFlag",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 102,
+          "name": "c:304-s:313-i:1",
+          "offset": 589824,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 6,
+              "id": "a.313.1",
+              "isUnsigned": true,
+              "method": "function main(d); return 1/(d*0.1/1000000.0) ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 8,
+              "id": "a.313.2",
+              "isUnsigned": true,
+              "method": "function main(d); return d*0.01/1000.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            },
+            {
+              "bitOffset": 0,
+              "bits": 131072,
+              "byteOffset": 102,
+              "id": "a.313.3",
+              "isUnsigned": false,
+              "method": "indexArray={\"a.313.2\"}; function main(d,a); return (((d*2.99)/32768)/a[0])*9.8 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "indexArray={\"a.313.1\"}; function main(a); return a[0] ;end",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s156"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:313-i:2",
+          "offset": 16845059,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.313.5",
+              "isUnsigned": true,
+              "method": "function main(d); return d/1000.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s156"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:314-i:2",
+          "offset": 16845314,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.314.4",
+              "isUnsigned": true,
+              "method": "function main(d); return d*175.72/65536-46.85 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s157"
+          ]
+        }
+      ],
+      "output": [
+        {
+          "args": [
+            "a.313.5"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2500",
+          "name": "\u7535\u538b",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [],
+          "threshold": [],
+          "type": "data",
+          "unit": 10,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.313.6"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2501",
+          "name": "\u901f\u5ea6\u5747\u65b9\u6839",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "trend"
+          ],
+          "threshold": [],
+          "type": "data",
+          "unit": 2,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.314.3"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2502",
+          "name": "\u632f\u52a8\u52a0\u901f\u5ea6",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "vib-anlysis",
+            "trend"
+          ],
+          "threshold": [],
+          "type": "analysis",
+          "unit": 23,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.313.3"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2498",
+          "name": "\u632f\u52a8\u52a0\u901f\u5ea6",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "vib-anlysis",
+            "trend"
+          ],
+          "threshold": [],
+          "type": "analysis",
+          "unit": 23,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.314.5"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2504",
+          "name": "\u7535\u538b",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [],
+          "threshold": [],
+          "type": "data",
+          "unit": 10,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.314.4"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2503",
+          "name": "\u6e29\u5ea6",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "trend"
+          ],
+          "threshold": [],
+          "type": "data",
+          "unit": 5,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.313.4"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2499",
+          "name": "\u6e29\u5ea6",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "trend"
+          ],
+          "threshold": [],
+          "type": "data",
+          "unit": 5,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.314.6"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2505",
+          "name": "\u901f\u5ea6\u5747\u65b9\u6839",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "trend"
+          ],
+          "threshold": [],
+          "type": "data",
+          "unit": 2,
+          "validator": ""
+        }
+      ]
+    },
+    {
+      "deviceId": 367,
+      "input": [
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:315-i:2",
+          "offset": 16845570,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.315.4",
+              "isUnsigned": true,
+              "method": "function main(d); return d*175.72/65536-46.85 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s158"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 60000,
+          "isBigEndian": true,
+          "length": 16500,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "length",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 100,
+              "id": "compressFlag",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 102,
+          "name": "c:304-s:316-i:1",
+          "offset": 786432,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 6,
+              "id": "a.316.1",
+              "isUnsigned": true,
+              "method": "function main(d); return 1/(d*0.1/1000000.0) ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 8,
+              "id": "a.316.2",
+              "isUnsigned": true,
+              "method": "function main(d); return d*0.01/1000.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            },
+            {
+              "bitOffset": 0,
+              "bits": 131072,
+              "byteOffset": 102,
+              "id": "a.316.3",
+              "isUnsigned": false,
+              "method": "indexArray={\"a.316.2\"}; function main(d,a); return (((d*2.99)/32768)/a[0])*9.8 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "indexArray={\"a.316.1\"}; function main(a); return a[0] ;end",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s159"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:316-i:2",
+          "offset": 16845826,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.316.4",
+              "isUnsigned": true,
+              "method": "function main(d); return d*175.72/65536-46.85 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s159"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:316-i:2",
+          "offset": 16845827,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.316.5",
+              "isUnsigned": true,
+              "method": "function main(d); return d/1000.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s159"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:315-i:2",
+          "offset": 16845571,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.315.5",
+              "isUnsigned": true,
+              "method": "function main(d); return d/1000.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s158"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 60000,
+          "isBigEndian": true,
+          "length": 16500,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "length",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 100,
+              "id": "compressFlag",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 102,
+          "name": "c:304-s:315-i:1",
+          "offset": 720896,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 6,
+              "id": "a.315.1",
+              "isUnsigned": true,
+              "method": "function main(d); return 1/(d*0.1/1000000.0) ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 8,
+              "id": "a.315.2",
+              "isUnsigned": true,
+              "method": "function main(d); return d*0.01/1000.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            },
+            {
+              "bitOffset": 0,
+              "bits": 131072,
+              "byteOffset": 102,
+              "id": "a.315.3",
+              "isUnsigned": false,
+              "method": "indexArray={\"a.315.2\"}; function main(d,a); return (((d*2.99)/32768)/a[0])*9.8 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "indexArray={\"a.315.1\"}; function main(a); return a[0] ;end",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s158"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:315-i:2",
+          "offset": 16845573,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.315.6",
+              "isUnsigned": true,
+              "method": "function main(d); return d/100.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s158"
+          ]
+        },
+        {
+          "address": 5,
+          "category": "WSNC-150s",
+          "id": "longkouhuashuichejian001",
+          "inputCategory": "",
+          "intervalFormula": 6000,
+          "isBigEndian": true,
+          "length": 6,
+          "mpage_header": [
+            {
+              "bitOffset": 0,
+              "bits": 32,
+              "byteOffset": 0,
+              "id": "timestamp",
+              "method": "read"
+            },
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "nc",
+              "method": "read"
+            }
+          ],
+          "mpage_header_len": 6,
+          "name": "c:304-s:316-i:2",
+          "offset": 16845829,
+          "param": [
+            {
+              "bitOffset": 0,
+              "bits": 16,
+              "byteOffset": 4,
+              "id": "a.316.6",
+              "isUnsigned": true,
+              "method": "function main(d); return d/100.0 ;end",
+              "repeat": 0,
+              "repeatOffset": 0,
+              "singlePrecisionFloat": false
+            }
+          ],
+          "sampleRate": "",
+          "type": "modbus",
+          "input_device_levels": [
+            "c26",
+            "s159"
+          ]
+        }
+      ],
+      "output": [
+        {
+          "args": [
+            "a.315.6"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2509",
+          "name": "\u901f\u5ea6\u5747\u65b9\u6839",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "trend"
+          ],
+          "threshold": [],
+          "type": "data",
+          "unit": 2,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.316.4"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2511",
+          "name": "\u6e29\u5ea6",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "trend"
+          ],
+          "threshold": [],
+          "type": "data",
+          "unit": 5,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.315.4"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2507",
+          "name": "\u6e29\u5ea6",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "trend"
+          ],
+          "threshold": [],
+          "type": "data",
+          "unit": 5,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.315.5"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2508",
+          "name": "\u7535\u538b",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [],
+          "threshold": [],
+          "type": "data",
+          "unit": 10,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.316.6"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2513",
+          "name": "\u901f\u5ea6\u5747\u65b9\u6839",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "trend"
+          ],
+          "threshold": [],
+          "type": "data",
+          "unit": 2,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.315.3"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2506",
+          "name": "\u632f\u52a8\u52a0\u901f\u5ea6",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "vib-anlysis",
+            "trend"
+          ],
+          "threshold": [],
+          "type": "analysis",
+          "unit": 23,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.316.5"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2512",
+          "name": "\u7535\u538b",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [],
+          "threshold": [],
+          "type": "data",
+          "unit": 10,
+          "validator": ""
+        },
+        {
+          "args": [
+            "a.316.3"
+          ],
+          "boundary_lower": "",
+          "boundary_upper": "",
+          "faultType": [],
+          "groupKey": "",
+          "interval": "10000",
+          "metric": "m.2510",
+          "name": "\u632f\u52a8\u52a0\u901f\u5ea6",
+          "parseType": "simple",
+          "precision": 3,
+          "source": "",
+          "tags": [
+            "vib-anlysis",
+            "trend"
+          ],
+          "threshold": [],
+          "type": "analysis",
+          "unit": 23,
+          "validator": ""
+        }
+      ]
+    }
+  ],
+  "interval": 1000,
+  "modbus": {
+    "baud_rate": 115200,
+    "data_bit": 8,
+    "master": true,
+    "parity": "NONE",
+    "path": "/dev/ttyS3",
+    "slaveAddr": 0,
+    "slaveLength": 0,
+    "stop_bit": 1
+  },
+  "network": {
+    "type": "mobile",
+    "mobile": "unicom"
+  },
+  "productCode": "1",
+  "tuId": 309,
+  "tumId": 229,
+  "tumName": "\u9f99\u53e3\u5316\u6c34\u8f66\u95f4",
+  "uploadInterval": 300,
+  "version": "2020-08-28T21:47:09.052163293+08:00",
+  "config_version": "3.0.0"
+}

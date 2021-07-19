@@ -49,6 +49,7 @@ SHELL = {
     "mv": "mv ",
     "mv -b": "mv -b ",
     "cp": "cp ",
+    "dos2unix": "dos2unix ",
 }
 
 VERSION = "V0.1"

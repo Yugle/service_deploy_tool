@@ -258,7 +258,7 @@ class ConnectTransUnitByADB(object):
 		self.device_id = device_id
 		self.adb_port = adb_port
 		self.adb = consts.ADB_PATH
-		self.adb_shell = consts.ADB_PATH + "shell "
+		self.adb_shell = consts.ADB_PATH + "-s " + self.device_id + " shell "
 
 	def connect(self):
 		if((":" in self.device_id) or ("." not in self.device_id)):
@@ -280,24 +280,35 @@ class ConnectTransUnitByADB(object):
 		res = subprocess.Popen(pushFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		if("error" in res):
 			raise Exception(res)
+		subprocess.Popen(self.adb_shell + consts.SHELL["dos2unix"] + remoteFilePath + filename, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
-		self.moveFile(filename, type)
+		if(type == 0):
+			self.deploy()
+		else:
+			self.moveFile(filename, type)
 	
 	def deploy(self):
-		testShell = self.adb_shell + "ls"
-		res = subprocess.Popen(testShell, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
-
+		pass
+		
 	def disconnect(self):
 		pass
 
-	def checkDirAndFile(self, dir, filename):
+	def checkDirAndFile(self, dir, filename, bak=False):
+		toFile = dir + filename
+
 		res = subprocess.Popen(self.adb_shell + consts.SHELL["cd"] + dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		if("No such file or directory" in res):
 			subprocess.Popen(self.adb_shell + consts.SHELL["mkdir -p"] + dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 		else:
-			res = subprocess.Popen(self.adb_shell + consts.SHELL["find"] + dir + filename, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+			res = subprocess.Popen(self.adb_shell + consts.SHELL["find"] + toFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 			if("No such file or directory" not in res):
-				subprocess.Popen(self.adb_shell + consts.SHELL["rm"] + dir + filename, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+				if(bak):
+					subprocess.Popen(self.adb_shell + consts.SHELL["cp"] + toFile + " " + toFile + ".bak", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+					stdout = subprocess.Popen(self.adb_shell + consts.SHELL["find"] + toFile + ".bak", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+					if("No such file or directory" in stdout):
+						raise Exception("备份源配置文件失败！")
+				else:
+					subprocess.Popen(self.adb_shell + consts.SHELL["rm"] + toFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
 	def getInfo(self, service):
 		self.service = consts.SERVICES[service]
@@ -401,17 +412,11 @@ class ConnectTransUnitByADB(object):
 		return stdout
 
 	def moveFile(self, filename, type):
-		file = consts.REMOTE_PATH + filename
+		fromFile = consts.REMOTE_PATH + filename
 		toFile = consts.PATH_LIST[type] + filename
-		# stdout = subprocess.Popen(self.adb_shell + consts.SHELL["mv -b"] + file + " " + toFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
-		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["find"] + toFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
-		if("No such file or directory" not in stdout):
-			subprocess.Popen(self.adb_shell + consts.SHELL["cp"] + toFile + " " + toFile + ".bak", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
-			stdout = subprocess.Popen(self.adb_shell + consts.SHELL["find"] + toFile + ".bak", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
-			if("No such file or directory" in stdout):
-				raise Exception(stdout)
+		self.checkDirAndFile(consts.PATH_LIST[type], filename, True)
 		
-		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["mv"] + file + " " + toFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["mv"] + fromFile + " " + toFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		if("error" in stdout):
 			raise Exception(stdout)
 
