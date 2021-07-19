@@ -425,6 +425,7 @@ class ConnectTransUnitByADB(object):
 		print("重启服务")
 
 	def submit(self, actions):
-		print(actions)
 		for action, filename in actions.items():
 			self.moveFile(filename, action)
+
+		self.restartService()

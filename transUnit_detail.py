@@ -18,7 +18,7 @@ class UploadFileAndDeployThread(QtCore.QThread):
     def __init__(self, client):
         super().__init__()
         self.client = client
-        self.actions = {}
+        self.resetActions()
 
     def uploadFile(self, localFilePath, type):
         try:
@@ -29,13 +29,16 @@ class UploadFileAndDeployThread(QtCore.QThread):
         except Exception as e:
             self.result.emit({"message": str(e), "type": type})
 
+    def resetActions(self):
+        self.actions = {}
+
     def run(self):
         try:
             self.client.submit(self.actions)
 
             message = {"message": "操作成功！", "type": 0}
-
             self.result.emit(message)
+            self.resetActions()
         except Exception as e:
             self.result.emit({"message": str(e), "type": 0})
 
@@ -645,9 +648,12 @@ class Ui_Deploy(object):
             self.service_conf.setStyleSheet("border:transparent;")
             self.service_conf.setReadOnly(True)
 
-    def showMessage(self, message, time=3):
+    def showMessage(self, messageDict, time=3):
         self.timecount = time
         self.timer = QTimer()
+
+        message = messageDict["message"]
+        type = messageDict["type"]
 
         self.message.setWordWrap(False)
 
@@ -677,6 +683,10 @@ class Ui_Deploy(object):
         self.message.setHidden(False)
         self.timer.timeout.connect(self.showPrompt)
         self.timer.start(self.timecount*1000)
+
+        if(type == 0):
+            self.deploy.setText("部署|更新")
+            self.deploy.setEnabled(True)
 
     def showPrompt(self):
         self.message.setHidden(True)
@@ -721,7 +731,7 @@ class Ui_Deploy(object):
         self.showTextEdit(log_name, False)
 
     def submitAll(self):
-        if(self.isThreadCreated):
+        if(len(self.upload_thread.actions) > 0):
             self.upload_thread.start()
         else:
             self.showMessage({"message": "未执行任何修改！", "type": 0})
