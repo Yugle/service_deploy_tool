@@ -44,7 +44,7 @@ class ConnectTransUnitByTelnet(object):
 		outputFile = localFilePath + "_encode"
 		uu.encode(localFilePath, outputFile)
 
-		remoteFilePath = consts.REMOTE_PATH
+		remoteFilePath = consts.TMP_PATH
 		filename = re.split(r'[/|\\]', localFilePath)[-1]
 		self.checkDirAndFile(remoteFilePath, filename)
 
@@ -236,7 +236,7 @@ class ConnectTransUnitByTelnet(object):
 		return stdout
 
 	def moveFile(self, filename, type):
-		fromFile = consts.REMOTE_PATH + filename
+		fromFile = consts.TMP_PATH + filename
 		toFile = consts.PATH_LIST[type] + filename
 		self.checkDirAndFile(consts.PATH_LIST[type], filename, True)
 		

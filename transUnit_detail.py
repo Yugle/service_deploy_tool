@@ -14,25 +14,78 @@ class LogoLabel(QtWidgets.QLabel):
     def mouseDoubleClickEvent(self, QMouseEvent):
         self.double_clicked.emit()
 
+# class UploadFileThread(QtCore.QThread):
+#     # result = QtCore.pyqtSignal(bool)
+#     def __init__(self, client, localFilePath, type):
+#         super().__init__()
+#         self.client = client
+#         self.localFilePath = localFilePath
+#         self.type = type
+
+#     def run(self):
+#         self.client.uploadFile(self.localFilePath, self.type)
+        # self.result.emit(True)
+
+
+# class UploadFileAndDeployThread(QtCore.QThread):
+#     result = QtCore.pyqtSignal(dict)
+
+#     def __init__(self, client):
+#         super().__init__()
+#         self.client = client
+#         self.resetActions()
+
+#     def uploadFile(self, localFilePath, type):
+#         try:
+#             filename = re.split(r'[/|\\]', localFilePath)[-1]        
+#             self.actions[type] = filename
+#             # self.uploadFileThread = UploadFileThread(self.client, localFilePath, type)
+#             self.client.uploadFile(localFilePath, type)
+#             # self.uploadFileThread.start()
+
+#             self.result.emit({"message": "操作成功！", "type": type})
+#         except Exception as e:
+#             self.result.emit({"message": str(e), "type": type})
+
+#     def resetActions(self):
+#         self.actions = {}
+
+#     def run(self):
+#         try:
+#             self.client.submit(self.actions)
+
+#             message = {"message": "操作成功！", "type": 0}
+#             self.result.emit(message)
+#             self.resetActions()
+#         except Exception as e:
+#             self.result.emit({"message": str(e), "type": 0})
+
 class UploadFileAndDeployThread(QtCore.QThread):
     result = QtCore.pyqtSignal(dict)
 
-    def __init__(self, client):
+    def __init__(self, client, localFilePath, type):
         super().__init__()
         self.client = client
-        self.resetActions()
+        self.localFilePath = localFilePath
+        self.type = type
 
-    def uploadFile(self, localFilePath, type):
+    def run(self):
         try:
-            filename = re.split(r'[/|\\]', localFilePath)[-1]        
-            self.actions[type] = filename
-            self.client.uploadFile(localFilePath, type)
+            # filename = re.split(r'[/|\\]', localFilePath)[-1]
+            self.client.uploadFile(self.localFilePath, self.type)
 
+            message = {"message": "上传成功！", "type": 0}
+            self.result.emit(message)
         except Exception as e:
-            self.result.emit({"message": str(e), "type": type})
+            self.result.emit({"message": str(e), "type": 0})
 
-    def resetActions(self):
-        self.actions = {}
+class SubmitThread(QtCore.QThread):
+    result = QtCore.pyqtSignal(dict)
+
+    def __init__(self, client, actions):
+        super().__init__()
+        self.client = client
+        self.actions = actions
 
     def run(self):
         try:
@@ -40,7 +93,6 @@ class UploadFileAndDeployThread(QtCore.QThread):
 
             message = {"message": "操作成功！", "type": 0}
             self.result.emit(message)
-            self.resetActions()
         except Exception as e:
             self.result.emit({"message": str(e), "type": 0})
 
@@ -86,6 +138,7 @@ class Ui_Deploy(object):
         self.protocol = protocol
         self.protocol_name = ["SSH", "Telnet", "ADB"]
         self.isThreadCreated = False
+        self.actions = {}
         self.service = 1
 
     def setupUi(self, Deploy):
@@ -565,10 +618,10 @@ class Ui_Deploy(object):
 
         self.submit.clicked.connect(self.submitAll)
         
-        self.upload_thread = UploadFileAndDeployThread(self.client)
-        self.upload_thread.result.connect(self.showMessage)
+        # self.upload_thread = UploadFileAndDeployThread(self.client)
+        # self.upload_thread.result.connect(self.showMessage)
 
-        self.isThreadCreated = True
+        # self.isThreadCreated = True
 
     def showVersion(self):
         QtWidgets.QMessageBox.information(self.childDialog,
@@ -619,7 +672,7 @@ class Ui_Deploy(object):
         self.get_info.quit()
 
     def chooseFile(self):
-        self.filePath = QFileDialog.getOpenFileName(None, "选择文件", "c:\\", "Service File(*.py)")[0]
+        self.filePath = QFileDialog.getOpenFileName(None, "选择文件", "c:\\", "Service File(*.tar)")[0]
         if(self.protocol == 1):
             message = {"message": "使用Telnet部署方式较慢，请耐心等待！", "type": 0}
             self.showMessage(message)
@@ -627,17 +680,22 @@ class Ui_Deploy(object):
         self.uploadFile(self.filePath, type=0)
 
     def uploadFile(self, filePath, type):
+        filename = re.split(r"[/|\\]", filePath)[-1]
+        self.actions[type] = filename
+
         if(type == 0):
             self.deploy.setText("部署中...")
             self.deploy.setEnabled(False)
         localFilePath = filePath
 
         if(Path(localFilePath).is_file()):
-            # self.upload_thread = UploadFileAndDeployThread(localFilePath, self.client, type)
-            # self.upload_thread.result.connect(self.showMessage)
-            # self.upload_thread.start()
-            self.upload_thread.uploadFile(localFilePath, type)
-            # self.isThreadCreated = True
+            self.upload_thread = UploadFileAndDeployThread(self.client, localFilePath, type)
+            self.upload_thread.result.connect(self.showMessage)
+            self.upload_thread.start()
+            # self.upload_thread.uploadFile(localFilePath, type)
+            self.isThreadCreated = True
+            message = {"message": "文件上传中，请耐心等待！", "type": 0}
+            self.showMessage(message, 5)
         else:
             message = {"message": "取消操作！", "type": 0}
             self.showMessage(message)
@@ -664,13 +722,13 @@ class Ui_Deploy(object):
 
         print(message)
         
-        if(message in ["操作成功！", "登录成功！", "修改成功！", "取消操作！", "提交成功！"]):
+        if("成功" in message):
             self.message.setText(" ✅ " + message)
             self.message.setStyleSheet("border-radius:2px;background-color:#65c294;color:white;")
 
-            # if(self.isThreadCreated == True):
-            #     self.upload_thread.quit()
-            #     self.isThreadCreated = False
+            if(self.isThreadCreated == True):
+                self.upload_thread.quit()
+                self.isThreadCreated = False
         else:
             self.message.setText(" ⚠️ " + message)
             self.message.setStyleSheet("border-radius:2px;background-color:#FFCCC7;")
@@ -723,8 +781,8 @@ class Ui_Deploy(object):
             if(editadle):
                 result = self.editDialog.result
                 if(result[0] == True):
-                    self.uploadFile(consts.PROFILE, type=1)
                     self.showMessage({"message": "修改成功！", "type": 0})
+                    self.uploadFile(consts.PROFILE, type=1)
                 elif(result[1] == True):
                     self.showMessage({"message": "取消操作！", "type": 0})
                 else:
@@ -741,10 +799,16 @@ class Ui_Deploy(object):
         self.showTextEdit(log_name, False)
 
     def submitAll(self):
-        if(len(self.upload_thread.actions) > 0):
-            self.upload_thread.start()
+        if(self.isThreadCreated):
+            message = {"message": "文件还在上传中，请耐心等待！", "type": 0}
+            self.showMessage(message)
         else:
-            self.showMessage({"message": "未执行任何修改！", "type": 0})
+            if(len(self.actions) > 0):
+                self.submit_thread = SubmitThread(self.client, self.actions)
+                self.submit_thread.result.connect(self.showMessage)
+                self.submit_thread.start()
+            else:
+                self.showMessage({"message": "未执行任何修改！", "type": 0})
 
     def closeEvent(self, event):
         if(self.isThreadCreated == True):

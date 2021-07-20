@@ -32,11 +32,13 @@ class ConnectTransUnitBySSH(object):
 			timeout = 5
 		)
 
+		self.checkDirAndFile(consts.TMP_PATH, "", False, True)
+
 	def uploadFile(self, localFilePath, type):
-		remoteFilePath = consts.REMOTE_PATH
+		remoteFilePath = consts.TMP_PATH
 		filename = re.split(r'[/|\\]', localFilePath)[-1]
 
-		self.checkDirAndFile(remoteFilePath, filename)
+		self.checkDirAndFile(remoteFilePath, filename, False, False)
 
 		sftp_client = paramiko.SFTPClient.from_transport(self.ssh_client.get_transport())
 		sftp_client.put(localFilePath, remoteFilePath + filename, confirm=True)
@@ -46,8 +48,6 @@ class ConnectTransUnitBySSH(object):
 		error = stderr.read().decode()
 		if(error != ""):
 			raise Exception(error)
-		if(type == 0):
-			self.deploy()
 
 	def deploy(self):
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["ls"])
@@ -56,7 +56,7 @@ class ConnectTransUnitBySSH(object):
 	def disconnect(self):
 		self.ssh_client.close()
 
-	def checkDirAndFile(self, dir, filename, bak=False):
+	def checkDirAndFile(self, dir, filename, bak=False, clear=False):
 		toFile = dir + filename
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["cd"] + dir)
 		error = stderr.read().decode()
@@ -67,18 +67,21 @@ class ConnectTransUnitBySSH(object):
 			else:
 				raise Exception(error)
 		else:
-			stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["find"] + dir + filename)
-			error = stderr.read().decode()
+			if(clear):
+				stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["rm -rf"] + dir)
+			else:
+				stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["find"] + toFile)
+				error = stderr.read().decode()
 
-			if(error == ""):
-				if(bak):
-					stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["cp"] + toFile + " " + toFile + ".bak")
-					stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["find"] + toFile + ".bak")
-					error = stderr.read().decode()
-					if(error != ""):
-						raise Exception("备份源配置文件失败！")
-				else:
-					stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["rm"] + toFile)
+				if(error == ""):
+					if(bak):
+						stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["cp"] + toFile + " " + toFile + ".bak")
+						stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["find"] + toFile + ".bak")
+						error = stderr.read().decode()
+						if(error != ""):
+							raise Exception("备份源配置文件失败！")
+					else:
+						stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["rm"] + toFile)
 
 	def getInfo(self, service):
 		self.service = consts.SERVICES[service]
@@ -178,21 +181,51 @@ class ConnectTransUnitBySSH(object):
 		return stdout
 
 	def moveFile(self, filename, type):
-		fromFile = consts.REMOTE_PATH + filename
+		fromFile = consts.TMP_PATH + filename
 		toFile = consts.PATH_LIST[type] + filename
-		self.checkDirAndFile(consts.PATH_LIST[type], filename, True)
-		
-		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["mv"] + fromFile + " " + toFile)
+		if(type == 0):
+			self.unCompressAndMove(filename)
+		else:
+			filename = filename.split("/")
+			if(len(filename)):
+				self.checkDirAndFile(consts.PATH_LIST[type] + filename[0], filename[1], True)
+
+			stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["mv"] + fromFile + " " + toFile)
+			error = stderr.read().decode("utf-8")
+			if(error != ""):
+				raise Exception(error)
+
+	def restartService(self, service):
+		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["kill"] + service + " )")
+		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SERVICE_PATH + service)
 		error = stderr.read().decode("utf-8")
 		if(error != ""):
 			raise Exception(error)
-
-	def restartService(self):
-		# stdout = subprocess.Popen(self.adb_shell + consts.SHELL["mv"] + fromFile + " " + toFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
-		print("重启服务")
 
 	def submit(self, actions):
 		for action, filename in actions.items():
 			self.moveFile(filename, action)
 
-		self.restartService()
+		self.restartService(consts.SERVICES[self.service])
+
+		return "部署成功！"
+		
+	def unCompressAndMove(self, filename):
+		fromFile = consts.TMP_PATH + filename
+		files = []
+		type = 0
+
+		if(re.findall(r"tar\s*$", filename) != []):
+			stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["tar xvf"] + fromFile + " -C " + consts.TMP_PATH)
+			# stdout = stdout.read().decode("utf-8")
+			# print(stdout)
+			files = stdout.readlines()
+
+		for file in files:
+			file = file.split("\n")[0]
+			if(file[-1] == "/"):
+				continue
+
+			self.moveFile(self, filename, 1)
+
+

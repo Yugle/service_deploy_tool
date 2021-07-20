@@ -23,7 +23,7 @@ class ConnectTransUnitByADB(object):
 				raise Exception("设备拒绝连接，请检查IP或先开启设备远程端口！")
 
 	def uploadFile(self, localFilePath, type):
-		remoteFilePath = consts.REMOTE_PATH
+		remoteFilePath = consts.TMP_PATH
 		filename = re.split(r'[/|\\]', localFilePath)[-1]
 		self.checkDirAndFile(remoteFilePath, filename)
 
@@ -163,7 +163,7 @@ class ConnectTransUnitByADB(object):
 		return stdout
 
 	def moveFile(self, filename, type):
-		fromFile = consts.REMOTE_PATH + filename
+		fromFile = consts.TMP_PATH + filename
 		toFile = consts.PATH_LIST[type] + filename
 		self.checkDirAndFile(consts.PATH_LIST[type], filename, True)
 		

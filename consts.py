@@ -27,12 +27,10 @@ if(not os.path.exists(CACHE)):
 
 SERVICES = ["fastdiag", "sessiongo"]
 
-REMOTE_PATH = "/root/phil_test/upload_test/"
-TMP_PATH = REMOTE_PATH
 TMP_PATH = "/root/temple/"
 SERVICE_PATH = "/system/bin/"
 CONF_PATH = "/private/conf/"
-PATH_LIST = [TMP_PATH, TMP_PATH, SERVICE_PATH, CONF_PATH]
+PATH_LIST = [SERVICE_PATH, TMP_PATH, CONF_PATH]
 
 SHELL = {
     "test_login": "test_login",
@@ -41,6 +39,7 @@ SHELL = {
     "find": "find ",
     "mkdir -p": "mkdir -p ",
     "rm": "rm ",
+    "rm -rf": "rm -rf ",
     "stat": "stat ",
     "md5sum": "md5sum ",
     "getRuntime": "ps -eo pid,comm,etime | grep ",
@@ -50,6 +49,9 @@ SHELL = {
     "mv -b": "mv -b ",
     "cp": "cp ",
     "dos2unix": "dos2unix ",
+    "tar xvf": "tar xvf ",
+    "kill": "kill -9 $(pidof "
+
 }
 
 VERSION = "V0.1"
