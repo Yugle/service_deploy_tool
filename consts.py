@@ -53,3 +53,4 @@ SHELL = {
 }
 
 VERSION = "V0.1"
+TELNET_INTERVAL = 0.5

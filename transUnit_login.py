@@ -1,6 +1,8 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QTimer, QDateTime
-from deploy import *
+from deploy.ssh import *
+from deploy.telnet import *
+from deploy.adb import *
 from transUnit_detail import *
 import re
 import sys
@@ -451,7 +453,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.connectMethod.setCurrentIndex(0)
+        self.connectMethod.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -504,10 +506,10 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.connect_remote_ip.clicked.connect(self.connectRemoteDeviceByADB)
 
         # for test
-        self.ssh_host.setText("192.168.1.146")
-        self.ssh_username.setText("root")
-        self.ssh_password.setText("123456")
-        self.ssh_host.setFocus()
+        # self.ssh_host.setText("192.168.1.99")
+        # self.ssh_username.setText("root")
+        # self.ssh_password.setText("123456")
+        # self.ssh_host.setFocus()
 
         self.logo_label.double_clicked.connect(self.showVersion)
 

@@ -2,9 +2,11 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtCore import QTimer, QDateTime, QStringListModel, Qt
 from pathlib import Path
-import consts
-from deploy import *
+from deploy.ssh import *
+from deploy.telnet import *
+from deploy.adb import *
 from transUnit_edit import *
+import consts
 
 class LogoLabel(QtWidgets.QLabel):
     double_clicked = QtCore.pyqtSignal()
@@ -52,8 +54,11 @@ class GetInformationThread(QtCore.QThread):
 
     def run(self):
         # try:
+        #     information = self.client.getInfo(self.service)
+        #     self.result.emit(information)
+        # except Exception as e:
+        #     self.result.emit({"error":"读取失败！"})
         information = self.client.getInfo(self.service)
-        # print(information)
         self.result.emit(information)
 
 class ReadLogThread(QtCore.QThread):
@@ -68,6 +73,7 @@ class ReadLogThread(QtCore.QThread):
     def run(self):
         try:
             log = self.client.readFile(self.log_path)
+            print(log)
             with open(consts.CACHE + self.log_name, "w") as log_file:
                 log_file.write(log)
             self.result.emit(self.log_name)
@@ -546,7 +552,6 @@ class Ui_Deploy(object):
         self.message.setMaximumWidth(442)
         self.message.setMinimumHeight(30)
         self.showMessage({"message": "登录成功！", "type": 0})
-        self.showInfo()
 
         self.alter_profile.clicked.connect(lambda :self.showTextEdit("profile.json"))
         self.alter_conf.clicked.connect(self.alterConf)
@@ -581,8 +586,9 @@ class Ui_Deploy(object):
         self.get_info.result.connect(self.showInfo)
         self.get_info.start()
 
-    def showInfo(self, information = 0):
-        if(information == 0):
+    def showInfo(self, information):
+        if(information["error"] != ""):
+            self.showMessage({"message":information["error"], "type":0})
             return
 
         self.service_name.setText(information["service_name"])
@@ -657,6 +663,8 @@ class Ui_Deploy(object):
 
         self.message.setWordWrap(False)
 
+        print(message)
+        
         if(message in ["操作成功！", "登录成功！", "修改成功！", "取消操作！", "提交成功！"]):
             self.message.setText(" ✅ " + message)
             self.message.setStyleSheet("border-radius:2px;background-color:#65c294;color:white;")
@@ -698,8 +706,11 @@ class Ui_Deploy(object):
             self.isThreadCreated = False
         self.client.disconnect()
         self.childDialog.hide()
-        os.remove(consts.PROFILE)
         self.mainWindow.show()
+        try:
+            os.remove(consts.PROFILE)
+        except Exception as e:
+            pass
         # WindowsControl.backToMainWindow(self.mainWindow)
 
     def showTextEdit(self, file_path, editadle=True):
