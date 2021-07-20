@@ -135,8 +135,8 @@ class ConnectTransUnitBySSH(object):
 		return md5
 
 	def getRuntime(self, service):
-		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["getRuntime"] + service + "$")
-		res = stdout.read().decode("utf-8").split(" ")
+		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["getRuntime"] + service)
+		res = re.split(r"\s", stdout.read().decode("utf-8"))
 		etime = res
 		if(len(res) >= 2):
 			etime = res[-2]

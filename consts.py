@@ -43,7 +43,7 @@ SHELL = {
     "rm": "rm ",
     "stat": "stat ",
     "md5sum": "md5sum ",
-    "getRuntime": "ps -ef pid,name,etime | grep ",
+    "getRuntime": "ps -eo pid,comm,etime | grep ",
     "df -h": "df -h ",
     "cat": "cat ",
     "mv": "mv ",

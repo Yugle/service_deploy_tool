@@ -73,7 +73,7 @@ class ReadLogThread(QtCore.QThread):
     def run(self):
         try:
             log = self.client.readFile(self.log_path)
-            print(log)
+            
             with open(consts.CACHE + self.log_name, "w") as log_file:
                 log_file.write(log)
             self.result.emit(self.log_name)

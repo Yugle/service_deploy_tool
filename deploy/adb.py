@@ -118,12 +118,12 @@ class ConnectTransUnitByADB(object):
 		return md5
 
 	def getRuntime(self, service):
-		shell = consts.SHELL["getRuntime"] + service + "$"
+		shell = consts.SHELL["getRuntime"] + service
 		stdout = subprocess.Popen(self.adb_shell + f'"{shell}"', stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
-		res = stdout.split(" ")
+		res = re.split(r"\s", stdout)
 		etime = res
 		if(len(res) >= 2):
-			etime = res[-2]
+			etime = res[-4]
 
 		if(isinstance(etime, list)):
 			return ""

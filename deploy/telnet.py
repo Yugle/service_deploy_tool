@@ -33,7 +33,7 @@ class ConnectTransUnitByTelnet(object):
 		self.telnet.write(b"test_login\n")
 		time.sleep(2)
 		# 获取登录结果
-		command_result = self.telnet.read_some().decode('ascii')
+		command_result = self.telnet.read_very_eager().decode('ascii')
 		if(re.findall("test_login", command_result) == []):
 			if(isInit == True):
 				raise Exception("登录失败，请检查IP地址、用户名或密码！")
@@ -174,17 +174,16 @@ class ConnectTransUnitByTelnet(object):
 		return md5
 
 	def getRuntime(self, service):
-		shell = consts.SHELL["getRuntime"] + service + "$"
+		shell = consts.SHELL["getRuntime"] + service
 		self.telnet.write(shell.encode("ascii") + b"\n")
 
 		time.sleep(consts.TELNET_INTERVAL)
 		stdout = self.telnet.read_very_eager().decode('utf-8')
-		res = stdout.split(" ")
-		if(len(res) >= 2):
-			etime = res[-4]
-
-		if(isinstance(etime, list)):
-			return ""
+		res = re.split(r"\s", stdout)
+		if(res[-6] != "grep"):
+			etime = res[-5]
+		else:
+			etime = ""
 
 		return etime
 
