@@ -209,7 +209,7 @@ class ConnectTransUnitBySSH(object):
 		self.restartService(consts.SERVICES[self.service])
 
 		return "部署成功！"
-		
+
 	def unCompressAndMove(self, filename):
 		fromFile = consts.TMP_PATH + filename
 		files = []
@@ -226,6 +226,6 @@ class ConnectTransUnitBySSH(object):
 			if(file[-1] == "/"):
 				continue
 
-			self.moveFile(self, filename, 1)
+			self.moveFile(filename, 1)
 
 
