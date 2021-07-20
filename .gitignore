@@ -5,3 +5,4 @@ out
 build
 dist
 todo.py
+pack/*.py

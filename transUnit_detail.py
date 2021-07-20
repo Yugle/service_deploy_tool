@@ -53,13 +53,12 @@ class GetInformationThread(QtCore.QThread):
         self.client = client
 
     def run(self):
-        # try:
-        #     information = self.client.getInfo(self.service)
-        #     self.result.emit(information)
-        # except Exception as e:
-        #     self.result.emit({"error":"读取失败！"})
-        information = self.client.getInfo(self.service)
-        self.result.emit(information)
+        try:
+            information = self.client.getInfo(self.service)
+            self.result.emit(information)
+        except Exception as e:
+            self.result.emit({"error":"读取失败！"})
+            print(str(e))
 
 class ReadLogThread(QtCore.QThread):
     result = QtCore.pyqtSignal(str)
@@ -73,7 +72,7 @@ class ReadLogThread(QtCore.QThread):
     def run(self):
         try:
             log = self.client.readFile(self.log_path)
-            
+
             with open(consts.CACHE + self.log_name, "w") as log_file:
                 log_file.write(log)
             self.result.emit(self.log_name)
@@ -93,9 +92,9 @@ class Ui_Deploy(object):
         self.childDialog = Deploy
         Deploy.setWindowFlags(Qt.WindowMinMaxButtonsHint | Qt.WindowCloseButtonHint)
         Deploy.setObjectName("Deploy")
-        Deploy.resize(800, 620)
-        Deploy.setMinimumSize(QtCore.QSize(800, 620))
-        Deploy.setMaximumSize(QtCore.QSize(800, 620))
+        Deploy.resize(800, 660)
+        Deploy.setMinimumSize(QtCore.QSize(800, 660))
+        Deploy.setMaximumSize(QtCore.QSize(800, 660))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         Deploy.setFont(font)
@@ -104,7 +103,7 @@ class Ui_Deploy(object):
         Deploy.setWindowIcon(icon)
         Deploy.setStyleSheet("background-color:rgb(240,240,240);")
         self.back = QtWidgets.QPushButton(Deploy)
-        self.back.setGeometry(QtCore.QRect(27, 578, 71, 21))
+        self.back.setGeometry(QtCore.QRect(27, 613, 71, 21))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(11)
@@ -127,7 +126,7 @@ class Ui_Deploy(object):
         self.logo_label.setText("")
         self.logo_label.setObjectName("logo_label")
         self.label_25 = QtWidgets.QLabel(Deploy)
-        self.label_25.setGeometry(QtCore.QRect(31, 583, 16, 13))
+        self.label_25.setGeometry(QtCore.QRect(31, 618, 16, 13))
         self.label_25.setStyleSheet(f"background:url({consts.IMG_PATH}back.png);")
         self.label_25.setText("")
         self.label_25.setObjectName("label_25")
@@ -160,7 +159,7 @@ class Ui_Deploy(object):
 "}")
         self.service_2.setObjectName("service_2")
         self.groupBox = QtWidgets.QGroupBox(Deploy)
-        self.groupBox.setGeometry(QtCore.QRect(180, 0, 621, 621))
+        self.groupBox.setGeometry(QtCore.QRect(180, 0, 621, 681))
         self.groupBox.setStyleSheet("background-color:white;")
         self.groupBox.setTitle("")
         self.groupBox.setObjectName("groupBox")
@@ -395,7 +394,7 @@ class Ui_Deploy(object):
         self.service_path.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.service_path.setObjectName("service_path")
         self.deploy = QtWidgets.QPushButton(self.groupBox)
-        self.deploy.setGeometry(QtCore.QRect(467, 144, 91, 31))
+        self.deploy.setGeometry(QtCore.QRect(467, 110, 91, 31))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(10)
@@ -410,7 +409,7 @@ class Ui_Deploy(object):
 "}")
         self.deploy.setObjectName("deploy")
         self.label_9 = QtWidgets.QLabel(self.groupBox)
-        self.label_9.setGeometry(QtCore.QRect(130, 578, 311, 21))
+        self.label_9.setGeometry(QtCore.QRect(150, 618, 311, 21))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -498,7 +497,7 @@ class Ui_Deploy(object):
         self.message.setText("")
         self.message.setObjectName("message")
         self.submit = QtWidgets.QPushButton(self.groupBox)
-        self.submit.setGeometry(QtCore.QRect(467, 107, 91, 31))
+        self.submit.setGeometry(QtCore.QRect(230, 560, 151, 41))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(10)

@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>620</height>
+    <height>660</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>800</width>
-    <height>620</height>
+    <height>660</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>800</width>
-    <height>620</height>
+    <height>660</height>
    </size>
   </property>
   <property name="font">
@@ -41,7 +41,7 @@
    <property name="geometry">
     <rect>
      <x>27</x>
-     <y>578</y>
+     <y>613</y>
      <width>71</width>
      <height>21</height>
     </rect>
@@ -88,7 +88,7 @@ QPushButton:hover{
    <property name="geometry">
     <rect>
      <x>31</x>
-     <y>583</y>
+     <y>618</y>
      <width>16</width>
      <height>13</height>
     </rect>
@@ -162,7 +162,7 @@ QPushButton:hover{
      <x>180</x>
      <y>0</y>
      <width>621</width>
-     <height>621</height>
+     <height>681</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -761,7 +761,7 @@ QPushButton:hover{A
     <property name="geometry">
      <rect>
       <x>467</x>
-      <y>144</y>
+      <y>110</y>
       <width>91</width>
       <height>31</height>
      </rect>
@@ -789,8 +789,8 @@ QPushButton:hover{A
    <widget class="QLabel" name="label_9">
     <property name="geometry">
      <rect>
-      <x>130</x>
-      <y>578</y>
+      <x>150</x>
+      <y>618</y>
       <width>311</width>
       <height>21</height>
      </rect>
@@ -964,10 +964,10 @@ QListView::item:hover{
    <widget class="QPushButton" name="submit">
     <property name="geometry">
      <rect>
-      <x>467</x>
-      <y>107</y>
-      <width>91</width>
-      <height>31</height>
+      <x>230</x>
+      <y>556</y>
+      <width>151</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="font">
@@ -987,7 +987,7 @@ QPushButton:hover{A
 }</string>
     </property>
     <property name="text">
-     <string>提交修改</string>
+     <string>保存</string>
     </property>
    </widget>
   </widget>

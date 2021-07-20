@@ -297,7 +297,11 @@ class Ui_MainWindow(object):
         font.setFamily("微软雅黑")
         font.setPointSize(10)
         self.device_id.setFont(font)
-        self.device_id.setStyleSheet("QComboBox::drop-down {\n"
+        self.device_id.setStyleSheet("QComboBox {\n"
+"    border:1px solid rgb(122,122,122);\n"
+"   font-size:14px;\n"
+"}\n"
+"   QComboBox::drop-down {\n"
 "     subcontrol-origin: padding;\n"
 "     subcontrol- position :  top  right ;\n"
 "     width :  20px ;\n"
@@ -311,7 +315,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.device_id.setEditable(True)
         self.device_id.setObjectName("device_id")
         self.open_port = QtWidgets.QPushButton(self.ADB)
-        self.open_port.setGeometry(QtCore.QRect(330, 85, 101, 38))
+        self.open_port.setGeometry(QtCore.QRect(330, 93, 101, 38))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(10)
@@ -341,7 +345,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
 "}")
         self.read_devices.setObjectName("read_devices")
         self.adb_port = QtWidgets.QSpinBox(self.ADB)
-        self.adb_port.setGeometry(QtCore.QRect(180, 85, 141, 40))
+        self.adb_port.setGeometry(QtCore.QRect(180, 92, 141, 40))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(10)
@@ -352,12 +356,12 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.adb_port.setProperty("value", 5555)
         self.adb_port.setObjectName("adb_port")
         self.label = QtWidgets.QLabel(self.ADB)
-        self.label.setGeometry(QtCore.QRect(120, 100, 13, 13))
+        self.label.setGeometry(QtCore.QRect(120, 107, 13, 13))
         self.label.setStyleSheet(f"background:url({consts.IMG_PATH}port.png);")
         self.label.setText("")
         self.label.setObjectName("label")
         self.label_2 = QtWidgets.QLabel(self.ADB)
-        self.label_2.setGeometry(QtCore.QRect(140, 90, 31, 31))
+        self.label_2.setGeometry(QtCore.QRect(140, 97, 31, 31))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(10)
@@ -406,6 +410,25 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.adb_ip_label.setFont(font)
         self.adb_ip_label.setStyleSheet("color:red;")
         self.adb_ip_label.setObjectName("adb_ip_label")
+        self.line = QtWidgets.QFrame(self.ADB)
+        self.line.setGeometry(QtCore.QRect(120, 68, 131, 16))
+        self.line.setStyleSheet("color:red;")
+        self.line.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line.setObjectName("line")
+        self.label_11 = QtWidgets.QLabel(self.ADB)
+        self.label_11.setGeometry(QtCore.QRect(250, 69, 54, 12))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        self.label_11.setFont(font)
+        self.label_11.setStyleSheet("background:transparent;color:#999999")
+        self.label_11.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_11.setObjectName("label_11")
+        self.line_2 = QtWidgets.QFrame(self.ADB)
+        self.line_2.setGeometry(QtCore.QRect(300, 70, 131, 10))
+        self.line_2.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line_2.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_2.setObjectName("line_2")
         self.connectMethod.addTab(self.ADB, "")
         self.loginBtn = QtWidgets.QPushButton(self.centralwidget)
         self.loginBtn.setGeometry(QtCore.QRect(150, 356, 252, 40))
@@ -479,6 +502,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.device_ip.setPlaceholderText(_translate("MainWindow", "请输入传输单元IP地址"))
         self.connect_remote_ip.setText(_translate("MainWindow", "无线连接"))
         self.connectMethod.setTabText(self.connectMethod.indexOf(self.ADB), _translate("MainWindow", "ADB"))
+        self.label_11.setText(_translate("MainWindow", "选填"))
         self.loginBtn.setText(_translate("MainWindow", "登录"))
         self.label_8.setText(_translate("MainWindow", "Copyright © 2021 苏州德姆斯信息技术有限公司出品"))
 
@@ -570,7 +594,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             device_id = self.device_id.currentText()
             deviceList = self.readADBDevices(False)
             if(device_id not in deviceList):
-                self.showMessage("登录失败，设备列表已刷新，请重新操作！")
+                self.showMessage("登录失败，请刷新设备列表后重新操作！")
                 flag = False
 
         if(flag == False):        
@@ -588,7 +612,6 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         if(self.currentTabIndex == 2):
             if(self.checkInput(False)):
                 self.client = ConnectTransUnitByADB(self.device_id.currentText(), self.adb_port.value())
-
                 self.connect_thread = ConnectTransUnitThread(self.currentTabIndex, self.client)
                 self.connect_thread.result.connect(self.showMessage)
                 self.connect_thread.start()
@@ -667,8 +690,6 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             self.deployDialog.show()
 
     def readADBDevices(self, toShowMessage=True):
-        self.device_id.clear()
-
         readDevices = consts.ADB_PATH + "devices"
         res = re.split("\t|\n", subprocess.getoutput(readDevices))[1:]
 
@@ -690,10 +711,11 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         
         else:
             if(toShowMessage == True):
+                self.device_id.clear()
                 self.showMessage("读取设备成功！", True)
-            for deviceNum in range(len(deviceList)):
-                self.device_id.addItem("")
-                self.device_id.setItemText(deviceNum, deviceList[deviceNum])
+                for deviceNum in range(len(deviceList)):
+                    self.device_id.addItem("")
+                    self.device_id.setItemText(deviceNum, deviceList[deviceNum])
         
         return deviceList
     
