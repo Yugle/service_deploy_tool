@@ -76,9 +76,11 @@ class ConnectTransUnitBySSH(object):
 				if(error == ""):
 					if(bak):
 						stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["cp"] + toFile + " " + toFile + ".bak")
+						time.sleep(consts.TELNET_INTERVAL)
 						stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["find"] + toFile + ".bak")
 						error = stderr.read().decode()
 						if(error != ""):
+							print(error)
 							raise Exception("备份源配置文件失败！")
 					else:
 						stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["rm"] + toFile)
@@ -180,15 +182,18 @@ class ConnectTransUnitBySSH(object):
 
 		return stdout
 
-	def moveFile(self, filename, type):
+	def moveFile(self, filename, type ,toUncompress=False):
 		fromFile = consts.TMP_PATH + filename
 		toFile = consts.PATH_LIST[type] + filename
-		if(type == 0):
+		if(toUncompress):
 			self.unCompressAndMove(filename)
 		else:
 			filename = filename.split("/")
-			if(len(filename)):
+			if(len(filename) > 1):
 				self.checkDirAndFile(consts.PATH_LIST[type] + filename[0], filename[1], True)
+			else:
+				print("check:" + consts.PATH_LIST[type] + filename[0])
+				self.checkDirAndFile(consts.PATH_LIST[type], filename[0], True)
 
 			stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["mv"] + fromFile + " " + toFile)
 			error = stderr.read().decode("utf-8")
@@ -196,17 +201,23 @@ class ConnectTransUnitBySSH(object):
 				raise Exception(error)
 
 	def restartService(self, service):
+		service = "transportdiag"
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["kill"] + service + " )")
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SERVICE_PATH + service)
+		print(stdout.read().decode("utf-8"))
+		print("部署成功！")
 		error = stderr.read().decode("utf-8")
 		if(error != ""):
 			raise Exception(error)
 
 	def submit(self, actions):
 		for action, filename in actions.items():
-			self.moveFile(filename, action)
+			if(action == 0):
+				self.moveFile(filename, action, True)
+			else:
+				self.moveFile(filename, action, False)
 
-		self.restartService(consts.SERVICES[self.service])
+		self.restartService(self.service)
 
 		return "部署成功！"
 
@@ -220,12 +231,14 @@ class ConnectTransUnitBySSH(object):
 			# stdout = stdout.read().decode("utf-8")
 			# print(stdout)
 			files = stdout.readlines()
+			stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["rm"] + fromFile)
 
 		for file in files:
 			file = file.split("\n")[0]
+			print(file)
 			if(file[-1] == "/"):
 				continue
 
-			self.moveFile(filename, 1)
+			self.moveFile(file, 0, False)
 
 

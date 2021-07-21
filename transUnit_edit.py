@@ -11,8 +11,8 @@ class Ui_edit_file(object):
 
     def setupUi(self, edit_file):
         self.edit_file = edit_file
-        # 设置窗口模态：该窗口弹出后母窗口无法操作
         edit_file.setWindowFlags(Qt.WindowMinMaxButtonsHint | Qt.WindowCloseButtonHint)
+        # 设置窗口模态：该窗口弹出后母窗口无法操作
         edit_file.setWindowModality(QtCore.Qt.ApplicationModal)
         edit_file.setObjectName("edit_file")
         edit_file.resize(600, 480)

@@ -29,7 +29,7 @@ SERVICES = ["fastdiag", "sessiongo"]
 
 TMP_PATH = "/root/temple/"
 SERVICE_PATH = "/system/bin/"
-CONF_PATH = "/private/conf/"
+CONF_PATH = "/system/bin/etc/"
 PATH_LIST = [SERVICE_PATH, TMP_PATH, CONF_PATH]
 
 SHELL = {

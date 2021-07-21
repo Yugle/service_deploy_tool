@@ -88,13 +88,16 @@ class SubmitThread(QtCore.QThread):
         self.actions = actions
 
     def run(self):
-        try:
-            self.client.submit(self.actions)
+        # try:
+        #     self.client.submit(self.actions)
 
-            message = {"message": "操作成功！", "type": 0}
-            self.result.emit(message)
-        except Exception as e:
-            self.result.emit({"message": str(e), "type": 0})
+        #     message = {"message": "操作成功！", "type": 0}
+        #     self.result.emit(message)
+        # except Exception as e:
+        #     self.result.emit({"message": str(e), "type": 0})
+
+        self.client.submit(self.actions)
+    
 
 class GetInformationThread(QtCore.QThread):
     result = QtCore.pyqtSignal(dict)
