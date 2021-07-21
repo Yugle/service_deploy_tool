@@ -14,6 +14,12 @@ class LogoLabel(QtWidgets.QLabel):
     def mouseDoubleClickEvent(self, QMouseEvent):
         self.double_clicked.emit()
 
+# class FocusLineEdit(QtWidgets.QLineEdit):
+#     focus_out = QtCore.pyqtSignal(bool)
+
+#     def focusOutEvent(self, event):
+#         self.focus_out.emit(False)
+
 class UploadFileAndDeployThread(QtCore.QThread):
     result = QtCore.pyqtSignal(dict)
 
@@ -54,18 +60,20 @@ class SubmitThread(QtCore.QThread):
         # message = {"message": "部署成功！", "type": 0}
         # self.result.emit(message)
     
-
 class GetInformationThread(QtCore.QThread):
     result = QtCore.pyqtSignal(dict)
 
-    def __init__(self, client, service):
+    def __init__(self, client, service, showMessage):
         super().__init__()
         self.service = service
         self.client = client
+        self.showMessage = showMessage
 
     def run(self):
         try:
             information = self.client.getInfo(self.service)
+
+            information["showMessage"] = self.showMessage
             self.result.emit(information)
         except Exception as e:
             self.result.emit({"error":"读取失败！"})
@@ -386,6 +394,7 @@ class Ui_Deploy(object):
         self.service_profile.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.service_profile.setObjectName("service_profile")
         self.service_conf = QtWidgets.QLineEdit(self.groupBox)
+        # self.service_conf = FocusLineEdit(self.groupBox)
         self.service_conf.setGeometry(QtCore.QRect(160, 363, 280, 25))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
@@ -449,7 +458,7 @@ class Ui_Deploy(object):
         self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line.setObjectName("line")
         self.label = QtWidgets.QLabel(self.groupBox)
-        self.label.setGeometry(QtCore.QRect(40, 42, 161, 31))
+        self.label.setGeometry(QtCore.QRect(40, 42, 311, 31))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(12)
@@ -566,6 +575,8 @@ class Ui_Deploy(object):
 
         self.alter_conf.clicked.connect(self.alterConf)
         self.service_conf.returnPressed.connect(self.alterConf)
+        # self.service_conf.focus_out.connect(self.focusOut)
+        # self.responseToAlterConf = True
 
         self.log_path.clicked.connect(self.readLog)
         # self.log_path.AutoResizeColumns()
@@ -581,6 +592,9 @@ class Ui_Deploy(object):
 
         # self.isThreadCreated = True
 
+        self.alter_conf.hide()
+        self.alter_profile.hide()
+
     def showVersion(self):
         QtWidgets.QMessageBox.information(self.childDialog,
                                                '传输单元服务部署工具',
@@ -591,8 +605,8 @@ class Ui_Deploy(object):
         self.service_name.setText(consts.SERVICES[self.service])
         self.getInfo()
 
-    def getInfo(self):
-        self.get_info = GetInformationThread(self.client, self.service)
+    def getInfo(self, showMessage=True):
+        self.get_info = GetInformationThread(self.client, self.service, showMessage)
         self.get_info.result.connect(self.showInfo)
         self.get_info.start()
 
@@ -600,6 +614,16 @@ class Ui_Deploy(object):
         if(information["error"] != ""):
             self.showMessage({"message":information["error"], "type":0})
             return
+
+        if(information["showMessage"]):
+            self.showMessage({"message":"加载中...", "type":0})
+
+        if(information["service_md5"] == ""):
+            self.serviceNotExist()
+            return
+
+        self.alter_conf.show()
+        self.alter_profile.show()
 
         self.service_name.setText(information["service_name"])
         self.service_version.setText(information["service_version"])
@@ -633,6 +657,13 @@ class Ui_Deploy(object):
             filename = re.split(r'[/|\\]', self.service_profile.text())[-1]
             self.alter_profile.clicked.connect(lambda :self.showTextEdit(filename))
 
+        if(information["showMessage"]):
+            self.showMessage({"message":"加载成功！", "type":0})
+
+    def serviceNotExist(self):
+        self.label.setText(self.label.text() + " ⚠️")
+        self.showMessage({"message":"服务未部署", "type":0})
+
     def chooseFile(self):
         self.filePath = QFileDialog.getOpenFileName(None, "选择文件", "c:\\", "Service File(*.tar)")[0]
         if(self.protocol == 1):
@@ -661,17 +692,33 @@ class Ui_Deploy(object):
         else:
             message = {"message": "取消操作！", "type": 0}
             self.showMessage(message)
+            self.deploy.setText("部署|更新")
+            self.deploy.setEnabled(True)
 
     def alterConf(self):
+        # if(self.responseToAlterConf == False):
+        #     if(self.alter_conf.text() == "修改"):
+        #         self.responseToAlterConf = True
+        #         return
+
+        # self.responseToAlterConf = True
+        # print(self.alter_conf.hasFocus())
+
         if(self.alter_conf.text() == "修改"):
             self.alter_conf.setText("保存")
-            self.service_conf.setStyleSheet("")
+            self.service_conf.setStyleSheet("QLineEdit{border:1px solid #999999;}QLineEdit::hover{border-color:rgb(0, 120, 215);}")
             self.service_conf.setReadOnly(False)
             self.service_conf.setFocus()
         else:
             self.alter_conf.setText("修改")
             self.service_conf.setStyleSheet("border:transparent;")
             self.service_conf.setReadOnly(True)
+
+    # def focusOut(self):
+    #     self.alter_conf.setText("修改")
+    #     self.service_conf.setStyleSheet("border:transparent;")
+    #     self.service_conf.setReadOnly(True)
+    #     self.responseToAlterConf = False
 
     def showMessage(self, messageDict, time=3):
         self.timecount = time
@@ -715,7 +762,8 @@ class Ui_Deploy(object):
         self.timer.timeout.connect(self.showPrompt)
         self.timer.start(self.timecount*1000)
 
-
+        self.submit.setText("提交修改")
+        self.submit.setEnabled(True)
 
     def showPrompt(self):
         self.message.setHidden(True)
@@ -762,6 +810,10 @@ class Ui_Deploy(object):
         self.read_log.quit()
         self.showTextEdit(log_name, False)
 
+    def reGetInfo(self, message):
+        self.showMessage(message)
+        self.getInfo(False)
+
     def submitAll(self):
         if(self.isThreadCreated):
             message = {"message": "文件还在上传中，请耐心等待！", "type": 0}
@@ -769,9 +821,13 @@ class Ui_Deploy(object):
         else:
             if(len(self.actions) > 0):
                 self.submit_thread = SubmitThread(self.client, self.actions)
-                self.submit_thread.result.connect(self.showMessage)
+                self.submit_thread.result.connect(self.reGetInfo)
                 self.submit_thread.start()
                 self.actions = {}
+
+                self.submit.setText("修改中...")
+                self.submit.setEnabled(False)
+
             else:
                 self.showMessage({"message": "未执行任何修改！", "type": 0})
 

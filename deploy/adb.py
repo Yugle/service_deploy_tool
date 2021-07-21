@@ -31,7 +31,9 @@ class ConnectTransUnitByADB(object):
 		res = subprocess.Popen(pushFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		if("error" in res):
 			raise Exception(res)
-		subprocess.Popen(self.adb_shell + consts.SHELL["dos2unix"] + remoteFilePath + filename, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+
+		if(type == 1):
+			subprocess.Popen(self.adb_shell + consts.SHELL["dos2unix"] + remoteFilePath + filename, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
 		# if(type == 0):
 		# 	self.deploy()
@@ -80,7 +82,7 @@ class ConnectTransUnitByADB(object):
 		information["service_runtime"] = self.getRuntime(self.service)
 		information["disk_available"] = self.getDiskAvailableSpace()
 		information["log_path"] = self.getLogPath(self.service)
-		self.saveProfile("/private/conf/test_conf.json")
+		self.saveProfile(information["service_profile"])
 
 		return information
 
@@ -90,11 +92,15 @@ class ConnectTransUnitByADB(object):
 		for param in params:
 			# 使用service_path加参数，因为paramiko使用非交互式shell，不能拿环境变量
 			stdout = subprocess.Popen(self.adb_shell + service_path + " " + param, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+			print(stdout)
 			version = re.findall(r"v\S*\s*\d.*", stdout)
 			if(version != []):
 				break
 		try:
 			version = version[0]
+
+			if(len(version) > 15):
+				version = ""
 		except Exception as e:
 			version = ""
 
@@ -147,12 +153,13 @@ class ConnectTransUnitByADB(object):
 
 		return log_list
 
-	def saveProfile(self, service):
-		stdout = self.readFile(service)
+	def saveProfile(self, file_path):
+		filename = re.split(r'[/|\\]', file_path)[-1]
+		stdout = self.readFile(file_path)
 		try:
 			profile_json = json.loads(stdout)
 
-			with open(f"{consts.CACHE}profile.json","w") as profile:
+			with open(consts.CACHE + filename, "w") as profile:
 				json.dump(profile_json, profile)
 		except Exception as e:
 			pass
@@ -162,21 +169,58 @@ class ConnectTransUnitByADB(object):
 
 		return stdout
 
-	def moveFile(self, filename, type):
+	def moveFile(self, filename, type, toUncompres=False):
 		fromFile = consts.TMP_PATH + filename
 		toFile = consts.PATH_LIST[type] + filename
-		self.checkDirAndFile(consts.PATH_LIST[type], filename, True)
-		
-		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["mv"] + fromFile + " " + toFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+		if(toUncompres):
+			self.unCompressAndMove(filename)
+		else:
+			filename = filename.split("/")
+			if(len(filename) > 1):
+				self.checkDirAndFile(consts.PATH_LIST[type] + filename[0], filename[1], True)
+			else:
+				self.checkDirAndFile(consts.PATH_LIST[type], filename[0], True)
+
+			stdout = subprocess.Popen(self.adb_shell + consts.SHELL["mv"] + fromFile + " " + toFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+			if("error" in stdout):
+				raise Exception(stdout)
+
+	def restartService(self, service):
+		service = "transportdiag"
+		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["kill"] + service + " )", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+
+		time.sleep(consts.TELNET_INTERVAL)
+		stdout = subprocess.Popen(self.adb_shell + consts.SERVICE_PATH + service, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+
+		print(stdout)
 		if("error" in stdout):
 			raise Exception(stdout)
 
-	def restartService(self):
-		# stdout = subprocess.Popen(self.adb_shell + consts.SHELL["mv"] + fromFile + " " + toFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
-		print("重启服务")
-
 	def submit(self, actions):
 		for action, filename in actions.items():
-			self.moveFile(filename, action)
+			if(action == 0):
+				self.moveFile(filename, action, True)
+			else:
+				self.moveFile(filename, action, False)
 
-		self.restartService()
+		self.restartService(self.service)
+
+	def unCompressAndMove(self, filename):
+		fromFile = consts.TMP_PATH + filename
+		files = []
+		type = 0
+
+		if(re.findall(r"tar\s*$", filename) != []):
+			stdout = subprocess.Popen(self.adb_shell + consts.SHELL["tar xvf"] + fromFile + " -C " + consts.TMP_PATH, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+			files = re.split(r"\s", stdout)
+
+			stdout = subprocess.Popen(self.adb_shell + consts.SHELL["rm"] + fromFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+
+		for file in files:
+			if(file != ""):
+				file = file.split("\n")[0]
+				print(file)
+				if(file[-1] == "/"):
+					continue
+
+				self.moveFile(file, 0, False)

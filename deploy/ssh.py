@@ -220,8 +220,6 @@ class ConnectTransUnitBySSH(object):
 
 		self.restartService(self.service)
 
-		return "部署成功！"
-
 	def unCompressAndMove(self, filename):
 		fromFile = consts.TMP_PATH + filename
 		files = []
@@ -229,9 +227,8 @@ class ConnectTransUnitBySSH(object):
 
 		if(re.findall(r"tar\s*$", filename) != []):
 			stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["tar xvf"] + fromFile + " -C " + consts.TMP_PATH)
-			# stdout = stdout.read().decode("utf-8")
-			# print(stdout)
 			files = stdout.readlines()
+
 			stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["rm"] + fromFile)
 
 		for file in files:
@@ -241,5 +238,3 @@ class ConnectTransUnitBySSH(object):
 				continue
 
 			self.moveFile(file, 0, False)
-
-
