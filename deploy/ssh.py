@@ -44,10 +44,11 @@ class ConnectTransUnitBySSH(object):
 		sftp_client.put(localFilePath, remoteFilePath + filename, confirm=True)
 		sftp_client.close()
 
-		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["dos2unix"] + remoteFilePath + filename)
-		error = stderr.read().decode()
-		if(error != ""):
-			raise Exception(error)
+		if(type == 1):
+			stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["dos2unix"] + remoteFilePath + filename)
+			error = stderr.read().decode()
+			if(error != ""):
+				raise Exception(error)
 
 	def deploy(self):
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["ls"])

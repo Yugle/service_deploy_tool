@@ -51,6 +51,7 @@ class SubmitThread(QtCore.QThread):
         #     self.result.emit({"message": str(e), "type": 0})
 
         self.client.submit(self.actions)
+        message = {"message": "部署成功！", "type": 0}
     
 
 class GetInformationThread(QtCore.QThread):
@@ -637,14 +638,14 @@ class Ui_Deploy(object):
             message = {"message": "使用Telnet部署方式较慢，请耐心等待！", "type": 0}
             self.showMessage(message)
 
-        self.uploadFile(self.filePath, type=0)
+        self.uploadFile(self.filePath, 0)
 
     def uploadFile(self, filePath, type):
         filename = re.split(r"[/|\\]", filePath)[-1]
         self.actions[type] = filename
 
         if(type == 0):
-            self.deploy.setText("部署中...")
+            self.deploy.setText("上传中...")
             self.deploy.setEnabled(False)
         localFilePath = filePath
 
@@ -689,6 +690,10 @@ class Ui_Deploy(object):
             if(self.isThreadCreated == True):
                 self.upload_thread.quit()
                 self.isThreadCreated = False
+
+            if(type == 0):
+                self.deploy.setText("部署|更新")
+                self.deploy.setEnabled(True)
         else:
             self.message.setText(" ⚠️ " + message)
             self.message.setStyleSheet("border-radius:2px;background-color:#FFCCC7;")
@@ -709,9 +714,7 @@ class Ui_Deploy(object):
         self.timer.timeout.connect(self.showPrompt)
         self.timer.start(self.timecount*1000)
 
-        if(type == 0):
-            self.deploy.setText("部署|更新")
-            self.deploy.setEnabled(True)
+
 
     def showPrompt(self):
         self.message.setHidden(True)
