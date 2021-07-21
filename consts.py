@@ -21,7 +21,7 @@ else:
     ADB_PATH = "adb "
 
 CACHE = "./cache/"
-PROFILE = CACHE + "profile.json"
+PROFILE = CACHE + "DHMSConf.json"
 if(not os.path.exists(CACHE)):
     os.mkdir(CACHE)
 
@@ -29,8 +29,9 @@ SERVICES = ["fastdiag", "sessiongo"]
 
 TMP_PATH = "/root/temple/"
 SERVICE_PATH = "/system/bin/"
-CONF_PATH = "/system/bin/etc/"
-PATH_LIST = [SERVICE_PATH, TMP_PATH, CONF_PATH]
+# CONF_PATH = "/private/DHMSConf.json"
+CONF_PATH = "/private/"
+PATH_LIST = [SERVICE_PATH, CONF_PATH]
 
 SHELL = {
     "test_login": "test_login",

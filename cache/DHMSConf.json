@@ -1,0 +1,21 @@
+{
+  "PING_HOST": "180.76.76.76",
+  "LOG_PATH": "/log",
+  "APP_PATH": "/system/bin",
+  "CERT_PATH": "/private/certs",
+  "PARSER_FILE": "/private/conf/parser.json",
+  "MQ_URL-18": "tcp://192.168.1.18:1883",
+  "MQ_URL": "ssl://mqtt.dhms.net:8883",
+  "TUM_LOG_POST_URL": "https://api.dhms.net/tum_logs",
+  "TUM_LOG_DMSG_SERVER_URL": "www.dhms.net:8765",
+  "CACHE_HOST": "127.0.0.1:6379",
+  "TUM_REDIS_DUMP_DIR": "/tmp",
+  "TUM_PRODUCER_JSON": "/private/conf/parser.json",
+  "UPLOAD_URL": "http://localhost:33445/vibdata_upload",
+  "UPLOAD_URL18": "http://192.168.1.18:33445/vibdata_upload",
+  "UPLOAD_URLpvz": "http://pvzdev.dhms.net/vibdata_upload",
+  "UPLOAD_URL--": "https://api.dhms.net/vibdata_upload",
+  "TUM_VIBCONSUMER_CONF_DIR": "/etc/vib.conf",
+  "TUM_APPS_LOG_BASE": "/var/log",
+  "test": "test"
+}

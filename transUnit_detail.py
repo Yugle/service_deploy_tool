@@ -14,52 +14,6 @@ class LogoLabel(QtWidgets.QLabel):
     def mouseDoubleClickEvent(self, QMouseEvent):
         self.double_clicked.emit()
 
-# class UploadFileThread(QtCore.QThread):
-#     # result = QtCore.pyqtSignal(bool)
-#     def __init__(self, client, localFilePath, type):
-#         super().__init__()
-#         self.client = client
-#         self.localFilePath = localFilePath
-#         self.type = type
-
-#     def run(self):
-#         self.client.uploadFile(self.localFilePath, self.type)
-        # self.result.emit(True)
-
-
-# class UploadFileAndDeployThread(QtCore.QThread):
-#     result = QtCore.pyqtSignal(dict)
-
-#     def __init__(self, client):
-#         super().__init__()
-#         self.client = client
-#         self.resetActions()
-
-#     def uploadFile(self, localFilePath, type):
-#         try:
-#             filename = re.split(r'[/|\\]', localFilePath)[-1]        
-#             self.actions[type] = filename
-#             # self.uploadFileThread = UploadFileThread(self.client, localFilePath, type)
-#             self.client.uploadFile(localFilePath, type)
-#             # self.uploadFileThread.start()
-
-#             self.result.emit({"message": "操作成功！", "type": type})
-#         except Exception as e:
-#             self.result.emit({"message": str(e), "type": type})
-
-#     def resetActions(self):
-#         self.actions = {}
-
-#     def run(self):
-#         try:
-#             self.client.submit(self.actions)
-
-#             message = {"message": "操作成功！", "type": 0}
-#             self.result.emit(message)
-#             self.resetActions()
-#         except Exception as e:
-#             self.result.emit({"message": str(e), "type": 0})
-
 class UploadFileAndDeployThread(QtCore.QThread):
     result = QtCore.pyqtSignal(dict)
 
@@ -608,7 +562,6 @@ class Ui_Deploy(object):
         self.message.setMinimumHeight(30)
         self.showMessage({"message": "登录成功！", "type": 0})
 
-        self.alter_profile.clicked.connect(lambda :self.showTextEdit("profile.json"))
         self.alter_conf.clicked.connect(self.alterConf)
         self.service_conf.returnPressed.connect(self.alterConf)
 
@@ -673,6 +626,10 @@ class Ui_Deploy(object):
         self.log_path.setGeometry(QtCore.QRect(160, 472, list_max_width, 70))
 
         self.get_info.quit()
+
+        if(self.service_profile.text() != ""):
+            filename = re.split(r'[/|\\]', self.service_profile.text())[-1]
+            self.alter_profile.clicked.connect(lambda :self.showTextEdit(filename))
 
     def chooseFile(self):
         self.filePath = QFileDialog.getOpenFileName(None, "选择文件", "c:\\", "Service File(*.tar)")[0]
@@ -785,7 +742,7 @@ class Ui_Deploy(object):
                 result = self.editDialog.result
                 if(result[0] == True):
                     self.showMessage({"message": "修改成功！", "type": 0})
-                    self.uploadFile(consts.PROFILE, type=1)
+                    self.uploadFile(consts.CACHE + file_path, type=1)
                 elif(result[1] == True):
                     self.showMessage({"message": "取消操作！", "type": 0})
                 else:

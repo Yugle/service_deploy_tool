@@ -72,7 +72,7 @@ class ConnectTransUnitByADB(object):
 		information["service_path"] = consts.SERVICE_PATH + self.service
 		information["service_version"] = self.getVersion(information["service_path"])
 		# information["service_profile"] = self.getServiceProfile()
-		information["service_profile"] = "/private/conf/test_conf.json"
+		information["service_profile"] = "/private/DHMSConf.json"
 		# information["service_daemon"] = self.getServiceDaemon()
 		information["service_daemon"] = "/private/daemon.ini"
 		# information["service_conf"] = self.getServiceConf()

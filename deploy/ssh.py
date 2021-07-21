@@ -96,7 +96,7 @@ class ConnectTransUnitBySSH(object):
 		information["service_path"] = consts.SERVICE_PATH + self.service
 		information["service_version"] = self.getVersion(information["service_path"])
 		# information["service_profile"] = self.getServiceProfile()
-		information["service_profile"] = "/private/conf/test_conf.json"
+		information["service_profile"] = "/private/DHMSConf.json"
 		# information["service_daemon"] = self.getServiceDaemon()
 		information["service_daemon"] = "/private/daemon.ini"
 		# information["service_conf"] = self.getServiceConf()
@@ -104,7 +104,7 @@ class ConnectTransUnitBySSH(object):
 		information["service_runtime"] = self.getRuntime(self.service)
 		information["disk_available"] = self.getDiskAvailableSpace()
 		information["log_path"] = self.getLogPath(self.service)
-		self.saveProfile("/private/conf/test_conf.json")
+		self.saveProfile(information["service_profile"])
 
 		return information
 
@@ -166,12 +166,13 @@ class ConnectTransUnitBySSH(object):
 
 		return log_list
 
-	def saveProfile(self, service):
-		stdout = self.readFile(service)
+	def saveProfile(self, file_path):
+		filename = re.split(r'[/|\\]', file_path)[-1]
+		stdout = self.readFile(file_path)
 		try:
 			profile_json = json.loads(stdout)
 
-			with open(f"{consts.CACHE}profile.json","w") as profile:
+			with open(consts.CACHE + filename, "w") as profile:
 				json.dump(profile_json, profile)
 		except Exception as e:
 			pass
