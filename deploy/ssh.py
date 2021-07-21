@@ -116,7 +116,7 @@ class ConnectTransUnitBySSH(object):
 			# 使用service_path加参数，因为paramiko使用非交互式shell，不能拿环境变量
 			stdin,stdout,stderr = self.ssh_client.exec_command(service_path + " " + param)
 			stdout = stdout.read().decode("utf-8")
-			version = re.findall(r"v\d.*", stdout)
+			version = re.findall(r"v\S*\s*\d.*", stdout)
 			if(version != []):
 				break
 
@@ -194,7 +194,6 @@ class ConnectTransUnitBySSH(object):
 			if(len(filename) > 1):
 				self.checkDirAndFile(consts.PATH_LIST[type] + filename[0], filename[1], True)
 			else:
-				print("check:" + consts.PATH_LIST[type] + filename[0])
 				self.checkDirAndFile(consts.PATH_LIST[type], filename[0], True)
 
 			stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["mv"] + fromFile + " " + toFile)
@@ -205,9 +204,9 @@ class ConnectTransUnitBySSH(object):
 	def restartService(self, service):
 		service = "transportdiag"
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["kill"] + service + " )")
+		time.sleep(consts.TELNET_INTERVAL)
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SERVICE_PATH + service)
 		print(stdout.read().decode("utf-8"))
-		print("部署成功！")
 		error = stderr.read().decode("utf-8")
 		if(error != ""):
 			raise Exception(error)

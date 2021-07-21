@@ -42,16 +42,17 @@ class SubmitThread(QtCore.QThread):
         self.actions = actions
 
     def run(self):
-        # try:
-        #     self.client.submit(self.actions)
+        try:
+            self.client.submit(self.actions)
 
-        #     message = {"message": "操作成功！", "type": 0}
-        #     self.result.emit(message)
-        # except Exception as e:
-        #     self.result.emit({"message": str(e), "type": 0})
+            message = {"message": "操作成功！", "type": 0}
+            self.result.emit(message)
+        except Exception as e:
+            self.result.emit({"message": str(e), "type": 0})
 
-        self.client.submit(self.actions)
-        message = {"message": "部署成功！", "type": 0}
+        # self.client.submit(self.actions)
+        # message = {"message": "部署成功！", "type": 0}
+        # self.result.emit(message)
     
 
 class GetInformationThread(QtCore.QThread):
@@ -97,7 +98,7 @@ class Ui_Deploy(object):
         self.protocol_name = ["SSH", "Telnet", "ADB"]
         self.isThreadCreated = False
         self.actions = {}
-        self.service = 1
+        self.service = 0
 
     def setupUi(self, Deploy):
         self.childDialog = Deploy
@@ -770,6 +771,7 @@ class Ui_Deploy(object):
                 self.submit_thread = SubmitThread(self.client, self.actions)
                 self.submit_thread.result.connect(self.showMessage)
                 self.submit_thread.start()
+                self.actions = {}
             else:
                 self.showMessage({"message": "未执行任何修改！", "type": 0})
 

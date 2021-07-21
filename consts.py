@@ -25,7 +25,7 @@ PROFILE = CACHE + "DHMSConf.json"
 if(not os.path.exists(CACHE)):
     os.mkdir(CACHE)
 
-SERVICES = ["fastdiag", "sessiongo"]
+SERVICES = ["transportdiag", "sessiongo"]
 
 TMP_PATH = "/root/temple/"
 SERVICE_PATH = "/system/bin/"
