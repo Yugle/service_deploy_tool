@@ -558,7 +558,7 @@ class Ui_Deploy(object):
         self.deploy.setText(_translate("Deploy", "部署|更新"))
         self.label_9.setText(_translate("Deploy", "Copyright © 2021 苏州德姆斯信息技术有限公司出品"))
         self.connect_status.setText(_translate("Deploy", f"{self.protocol_name[self.protocol]}已连接"))
-        self.label.setText(_translate("Deploy", "可视化诊断服务"))
+        self.label.setText(_translate("Deploy", consts.SERVICE_NAME[self.service]))
         self.submit.setText(_translate("Deploy", "提交修改"))
 
         self.service_name.setText(consts.SERVICES[self.service])
@@ -622,6 +622,7 @@ class Ui_Deploy(object):
             self.serviceNotExist()
             return
 
+        self.label.setText(consts.SERVICE_NAME[self.service])
         self.alter_conf.show()
         self.alter_profile.show()
 
@@ -661,7 +662,7 @@ class Ui_Deploy(object):
             self.showMessage({"message":"加载成功！", "type":0})
 
     def serviceNotExist(self):
-        self.label.setText(self.label.text() + " ⚠️")
+        self.label.setText(consts.SERVICE_NAME[self.service] + " ⚠️")
         self.showMessage({"message":"服务未部署", "type":0})
 
     def chooseFile(self):

@@ -26,6 +26,7 @@ if(not os.path.exists(CACHE)):
     os.mkdir(CACHE)
 
 SERVICES = ["transportdiag", "sessiongo"]
+SERVICE_NAME = ["可视化诊断服务", "sessiongo"]
 
 TMP_PATH = "/root/temple/"
 SERVICE_PATH = "/system/bin/"
