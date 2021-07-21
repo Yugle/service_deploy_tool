@@ -14,12 +14,6 @@ class LogoLabel(QtWidgets.QLabel):
     def mouseDoubleClickEvent(self, QMouseEvent):
         self.double_clicked.emit()
 
-# class FocusLineEdit(QtWidgets.QLineEdit):
-#     focus_out = QtCore.pyqtSignal(bool)
-
-#     def focusOutEvent(self, event):
-#         self.focus_out.emit(False)
-
 class UploadFileAndDeployThread(QtCore.QThread):
     result = QtCore.pyqtSignal(dict)
 
@@ -611,6 +605,9 @@ class Ui_Deploy(object):
         self.get_info.start()
 
     def showInfo(self, information):
+        # 断开button的所有信号连接，否则当多次showInfo导致多次连接槽函数时，点击一次会执行多次槽函数
+        self.alter_profile.disconnect()
+
         if(information["error"] != ""):
             self.showMessage({"message":information["error"], "type":0})
             return
@@ -656,6 +653,7 @@ class Ui_Deploy(object):
 
         if(self.service_profile.text() != ""):
             filename = re.split(r'[/|\\]', self.service_profile.text())[-1]
+            # 连接多次后必须disconnect，否则会执行多次槽函数
             self.alter_profile.clicked.connect(lambda :self.showTextEdit(filename))
 
         if(information["showMessage"]):
@@ -666,7 +664,7 @@ class Ui_Deploy(object):
         self.showMessage({"message":"服务未部署", "type":0})
 
     def chooseFile(self):
-        self.filePath = QFileDialog.getOpenFileName(None, "选择文件", "c:\\", "Service File(*.tar)")[0]
+        self.filePath = QFileDialog.getOpenFileName(None, "选择服务部署文件", "c:\\", "Service File(*.tar)")[0]
         if(self.protocol == 1):
             message = {"message": "使用Telnet部署方式较慢，请耐心等待！", "type": 0}
             self.showMessage(message)
@@ -697,14 +695,6 @@ class Ui_Deploy(object):
             self.deploy.setEnabled(True)
 
     def alterConf(self):
-        # if(self.responseToAlterConf == False):
-        #     if(self.alter_conf.text() == "修改"):
-        #         self.responseToAlterConf = True
-        #         return
-
-        # self.responseToAlterConf = True
-        # print(self.alter_conf.hasFocus())
-
         if(self.alter_conf.text() == "修改"):
             self.alter_conf.setText("保存")
             self.service_conf.setStyleSheet("QLineEdit{border:1px solid #999999;}QLineEdit::hover{border-color:rgb(0, 120, 215);}")
@@ -714,12 +704,6 @@ class Ui_Deploy(object):
             self.alter_conf.setText("修改")
             self.service_conf.setStyleSheet("border:transparent;")
             self.service_conf.setReadOnly(True)
-
-    # def focusOut(self):
-    #     self.alter_conf.setText("修改")
-    #     self.service_conf.setStyleSheet("border:transparent;")
-    #     self.service_conf.setReadOnly(True)
-    #     self.responseToAlterConf = False
 
     def showMessage(self, messageDict, time=3):
         self.timecount = time
@@ -789,8 +773,9 @@ class Ui_Deploy(object):
             self.editDialog = EditDialog(editadle)
             self.editPage = Ui_edit_file(consts.CACHE + file_path)
             self.editPage.setupUi(self.editDialog)
-            self.editDialog.show()
+            # self.editDialog.show()
             self.editDialog.exec_()
+            
             if(editadle):
                 result = self.editDialog.result
                 if(result[0] == True):

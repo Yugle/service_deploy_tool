@@ -129,11 +129,13 @@ class Ui_edit_file(object):
 
     def backToParentDialog(self):
         self.edit_file.updateMember(self.json_edit.toPlainText(), result=[False, True])
-        self.edit_file.accept()
+        self.edit_file.close()
 
 class EditDialog(QtWidgets.QDialog):
     def __init__(self, editable=True):
         super().__init__()
+        print("窗口创建")
+
         self.json = ""
         self.result = [False, True] #是否保存，是否取消
         self.editable = editable
@@ -170,5 +172,5 @@ class EditDialog(QtWidgets.QDialog):
                         self.result = [False, False]
                 else:
                     self.result = [False, True]
-
+        print("窗口退出")
         event.accept()
