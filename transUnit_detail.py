@@ -45,10 +45,10 @@ class SubmitThread(QtCore.QThread):
         try:
             self.client.submit(self.actions)
 
-            message = {"message": "操作成功！", "type": 0}
+            message = {"message": "操作成功！", "type": 2}
             self.result.emit(message)
         except Exception as e:
-            self.result.emit({"message": str(e), "type": 0})
+            self.result.emit({"message": str(e), "type": 2})
 
         # self.client.submit(self.actions)
         # message = {"message": "部署成功！", "type": 0}
@@ -216,7 +216,7 @@ class Ui_Deploy(object):
         self.service_name.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.service_name.setObjectName("service_name")
         self.alter_conf = QtWidgets.QPushButton(self.groupBox)
-        self.alter_conf.setGeometry(QtCore.QRect(470, 359, 91, 31))
+        self.alter_conf.setGeometry(QtCore.QRect(470, 359, 101, 31))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(10)
@@ -249,7 +249,7 @@ class Ui_Deploy(object):
         self.label_5.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_5.setObjectName("label_5")
         self.alter_profile = QtWidgets.QPushButton(self.groupBox)
-        self.alter_profile.setGeometry(QtCore.QRect(470, 287, 91, 31))
+        self.alter_profile.setGeometry(QtCore.QRect(470, 287, 101, 31))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(10)
@@ -409,7 +409,7 @@ class Ui_Deploy(object):
         self.service_path.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.service_path.setObjectName("service_path")
         self.deploy = QtWidgets.QPushButton(self.groupBox)
-        self.deploy.setGeometry(QtCore.QRect(467, 110, 91, 31))
+        self.deploy.setGeometry(QtCore.QRect(467, 110, 101, 31))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(10)
@@ -549,11 +549,11 @@ class Ui_Deploy(object):
         self.label_20.setText(_translate("Deploy", "运行时间："))
         self.label_15.setText(_translate("Deploy", "程序路径："))
         self.label_7.setText(_translate("Deploy", "MD5："))
-        self.deploy.setText(_translate("Deploy", "部署|更新"))
+        self.deploy.setText(_translate("Deploy", "上传部署文件"))
         self.label_9.setText(_translate("Deploy", "Copyright © 2021 苏州德姆斯信息技术有限公司出品"))
         self.connect_status.setText(_translate("Deploy", f"{self.protocol_name[self.protocol]}已连接"))
         self.label.setText(_translate("Deploy", consts.SERVICE_NAME[self.service]))
-        self.submit.setText(_translate("Deploy", "提交修改"))
+        self.submit.setText(_translate("Deploy", "提交并重启服务"))
 
         self.service_name.setText(consts.SERVICES[self.service])
         self.service_1.clicked.connect(lambda :self.changeService(0))
@@ -666,7 +666,7 @@ class Ui_Deploy(object):
     def chooseFile(self):
         self.filePath = QFileDialog.getOpenFileName(None, "选择服务部署文件", "c:\\", "Service File(*.tar)")[0]
         if(self.protocol == 1):
-            message = {"message": "使用Telnet部署方式较慢，请耐心等待！", "type": 0}
+            message = {"message": "使用Telnet部署方式较慢，请耐心等待！", "type": 1}
             self.showMessage(message)
 
         self.uploadFile(self.filePath, 0)
@@ -691,7 +691,7 @@ class Ui_Deploy(object):
         else:
             message = {"message": "取消操作！", "type": 0}
             self.showMessage(message)
-            self.deploy.setText("部署|更新")
+            self.deploy.setText("上传部署文件")
             self.deploy.setEnabled(True)
 
     def alterConf(self):
@@ -724,9 +724,6 @@ class Ui_Deploy(object):
                 self.upload_thread.quit()
                 self.isThreadCreated = False
 
-            if(type == 0):
-                self.deploy.setText("部署|更新")
-                self.deploy.setEnabled(True)
         else:
             self.message.setText(" ⚠️ " + message)
             self.message.setStyleSheet("border-radius:2px;background-color:#FFCCC7;")
@@ -747,8 +744,12 @@ class Ui_Deploy(object):
         self.timer.timeout.connect(self.showPrompt)
         self.timer.start(self.timecount*1000)
 
-        self.submit.setText("提交修改")
+        self.submit.setText("提交并重启服务")
         self.submit.setEnabled(True)
+
+        if(type == 0 and message != "文件上传中，请耐心等待！"):
+            self.deploy.setText("上传部署文件")
+            self.deploy.setEnabled(True)
 
     def showPrompt(self):
         self.message.setHidden(True)
@@ -779,15 +780,15 @@ class Ui_Deploy(object):
             if(editadle):
                 result = self.editDialog.result
                 if(result[0] == True):
-                    self.showMessage({"message": "修改成功！", "type": 0})
+                    self.showMessage({"message": "修改成功！", "type": 1})
                     self.uploadFile(consts.CACHE + file_path, type=1)
                 elif(result[1] == True):
-                    self.showMessage({"message": "取消操作！", "type": 0})
+                    self.showMessage({"message": "取消操作！", "type": 1})
                 else:
-                    self.showMessage({"message": "Json格式错误，配置文件已回退，请重新修改！", "type": 0})
+                    self.showMessage({"message": "Json格式错误，配置文件已回退，请重新修改！", "type": 1})
 
     def readLog(self, index):
-        self.showMessage({"message":"加载中...", "type":0}, time=1.5)
+        self.showMessage({"message":"加载中...", "type": 2}, time=1.5)
         self.read_log = ReadLogThread(self.client, self.log_path_list[index.row()])
         self.read_log.result.connect(self.showLog)
         self.read_log.start()
@@ -802,7 +803,7 @@ class Ui_Deploy(object):
 
     def submitAll(self):
         if(self.isThreadCreated):
-            message = {"message": "文件还在上传中，请耐心等待！", "type": 0}
+            message = {"message": "文件还在上传中，请耐心等待！", "type": 2}
             self.showMessage(message)
         else:
             if(len(self.actions) > 0):
@@ -811,11 +812,11 @@ class Ui_Deploy(object):
                 self.submit_thread.start()
                 self.actions = {}
 
-                self.submit.setText("修改中...")
+                self.submit.setText("执行中...")
                 self.submit.setEnabled(False)
 
             else:
-                self.showMessage({"message": "未执行任何修改！", "type": 0})
+                self.showMessage({"message": "未执行任何修改！", "type": 2})
 
     def closeEvent(self, event):
         if(self.isThreadCreated == True):

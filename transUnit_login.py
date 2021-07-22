@@ -692,6 +692,8 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
     def readADBDevices(self, toShowMessage=True):
         readDevices = consts.ADB_PATH + "devices"
         res = re.split("\t|\n", subprocess.getoutput(readDevices))[1:]
+        if(res[0] == "* daemon started successfully"):
+            res = res[2:]
 
         # 清洗命令执行结果，拿到device list
         resLength = len(res)

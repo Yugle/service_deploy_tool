@@ -13,7 +13,7 @@ class ConnectTransUnitByADB(object):
 
 	def connect(self):
 		if((":" in self.device_id) or ("." not in self.device_id)):
-			pass
+			self.checkDirAndFile(consts.TMP_PATH, "", False, True)
 		else:
 			connectRemoteIp = self.adb + "connect " + self.device_id + ":" + str(self.adb_port)
 			res = subprocess.Popen(connectRemoteIp, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
@@ -46,22 +46,27 @@ class ConnectTransUnitByADB(object):
 	def disconnect(self):
 		pass
 
-	def checkDirAndFile(self, dir, filename, bak=False):
+	def checkDirAndFile(self, dir, filename, bak=False, clear=False):
 		toFile = dir + filename
 
 		res = subprocess.Popen(self.adb_shell + consts.SHELL["cd"] + dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		if("No such file or directory" in res):
-			subprocess.Popen(self.adb_shell + consts.SHELL["mkdir -p"] + dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+			stdout = subprocess.Popen(self.adb_shell + consts.SHELL["mkdir -p"] + dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+			if("No space left on device" in stdout):
+				raise Exception("该传输单元/root目录已满，请清理后再操作！")
 		else:
-			res = subprocess.Popen(self.adb_shell + consts.SHELL["find"] + toFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
-			if("No such file or directory" not in res):
-				if(bak):
-					subprocess.Popen(self.adb_shell + consts.SHELL["cp"] + toFile + " " + toFile + ".bak", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
-					stdout = subprocess.Popen(self.adb_shell + consts.SHELL["find"] + toFile + ".bak", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
-					if("No such file or directory" in stdout):
-						raise Exception("备份源配置文件失败！")
-				else:
-					subprocess.Popen(self.adb_shell + consts.SHELL["rm"] + toFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+			if(clear):
+				res = subprocess.Popen(self.adb_shell + consts.SHELL["rm -rf"] + dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+			else:
+				res = subprocess.Popen(self.adb_shell + consts.SHELL["find"] + toFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+				if("No such file or directory" not in res):
+					if(bak):
+						subprocess.Popen(self.adb_shell + consts.SHELL["cp"] + toFile + " " + toFile + ".bak", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+						stdout = subprocess.Popen(self.adb_shell + consts.SHELL["find"] + toFile + ".bak", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+						if("No such file or directory" in stdout):
+							raise Exception("备份源配置文件失败！")
+					else:
+						subprocess.Popen(self.adb_shell + consts.SHELL["rm"] + toFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
 	def getInfo(self, service):
 		self.service = consts.SERVICES[service]

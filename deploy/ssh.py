@@ -65,6 +65,8 @@ class ConnectTransUnitBySSH(object):
 		if(error != ''):
 			if("No such file or directory" in error):
 				stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["mkdir -p"] + dir)
+				if("No space left on device" in stderr.read().decode("utf-8")):
+					raise Exception("该传输单元/root目录已满，请清理后再操作！")
 			else:
 				raise Exception(error)
 		else:
