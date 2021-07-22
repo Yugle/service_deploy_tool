@@ -154,6 +154,7 @@ class Ui_Deploy(object):
 "        background-color:rgb(0, 91, 171);\n"
 "        color:white;\n"
 "        text-align:left;\n"
+"        border:0px solid white;\n"
 "}\n"
 "QPushButton:hover{\n"
 "        background-color:rgb(11,105,184);\n"
@@ -170,6 +171,11 @@ class Ui_Deploy(object):
 "        background-color:transparent;\n"
 "        color:black;\n"
 "        text-align:left;\n"
+"        border:0px solid white;\n"
+"}\n"
+"QPushButton:hover{\n"
+"        background-color:#87CEFA;\n"
+"        color:white;\n"
 "}")
         self.service_2.setObjectName("service_2")
         self.groupBox = QtWidgets.QGroupBox(Deploy)
@@ -535,7 +541,7 @@ class Ui_Deploy(object):
         Deploy.setWindowTitle(_translate("Deploy", "传输单元服务部署工具"))
         self.back.setText(_translate("Deploy", " 返回"))
         self.service_1.setText(_translate("Deploy", "        可视化诊断服务"))
-        self.service_2.setText(_translate("Deploy", "        其他服务"))
+        self.service_2.setText(_translate("Deploy", "        sessiongo"))
         self.label_19.setText(_translate("Deploy", "启动参数："))
         self.label_13.setText(_translate("Deploy", "配置信息："))
         self.alter_conf.setText(_translate("Deploy", "修改"))
@@ -557,6 +563,7 @@ class Ui_Deploy(object):
 
         self.service_name.setText(consts.SERVICES[self.service])
         self.service_1.clicked.connect(lambda :self.changeService(0))
+        self.service_2.clicked.connect(lambda :self.changeService(1))
 
         self.getInfo()
 
@@ -589,6 +596,8 @@ class Ui_Deploy(object):
         self.alter_conf.hide()
         self.alter_profile.hide()
 
+        self.widgets = locals()
+
     def showVersion(self):
         QtWidgets.QMessageBox.information(self.childDialog,
                                                '传输单元服务部署工具',
@@ -596,7 +605,36 @@ class Ui_Deploy(object):
                                                QtWidgets.QMessageBox.Yes)
     def changeService(self, service):
         self.service = service
+        self.label.setText(consts.SERVICE_NAME[self.service])
         self.service_name.setText(consts.SERVICES[self.service])
+
+        service_list = [i for i in self.childDialog.findChildren(QtWidgets.QPushButton) if i not in self.groupBox.findChildren(QtWidgets.QPushButton)]
+
+        for button in service_list:
+            if(consts.SERVICE_NAME[service] in button.text()):
+                button.setStyleSheet("QPushButton{\n"
+"        background-color:rgb(0, 91, 171);\n"
+"        color:white;\n"
+"        text-align:left;\n"
+"        border:0px solid white;\n"
+"}\n"
+"QPushButton:hover{\n"
+"        background-color:rgb(11,105,184);\n"
+"        color:white;\n"
+"}")
+            else:
+                if("返回" not in button.text()):
+                    button.setStyleSheet("QPushButton{\n"
+"        background-color:transparent;\n"
+"        color:black;\n"
+"        text-align:left;\n"
+"        border:0px solid white;\n"
+"}\n"
+"QPushButton:hover{\n"
+"        background-color:#87CEFA;\n"
+"        color:white;\n"
+"}")
+                    
         self.getInfo()
 
     def getInfo(self, showMessage=True):
@@ -606,7 +644,11 @@ class Ui_Deploy(object):
 
     def showInfo(self, information):
         # 断开button的所有信号连接，否则当多次showInfo导致多次连接槽函数时，点击一次会执行多次槽函数
-        self.alter_profile.disconnect()
+        try:
+            self.alter_profile.disconnect()
+        except Exception as e:
+            # 未部署情况下无信号连接然后断开会抛异常
+            pass
 
         if(information["error"] != ""):
             self.showMessage({"message":information["error"], "type":0})
@@ -662,6 +704,7 @@ class Ui_Deploy(object):
     def serviceNotExist(self):
         self.label.setText(consts.SERVICE_NAME[self.service] + " ⚠️")
         self.showMessage({"message":"服务未部署", "type":0})
+        self.submit.setText("部 署")
 
     def chooseFile(self):
         self.filePath = QFileDialog.getOpenFileName(None, "选择服务部署文件", "c:\\", "Service File(*.tar)")[0]

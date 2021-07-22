@@ -476,7 +476,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.connectMethod.setCurrentIndex(0)
+        self.connectMethod.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
