@@ -783,7 +783,7 @@ class Ui_Deploy(object):
                     self.showMessage({"message": "修改成功！", "type": 1})
                     self.uploadFile(consts.CACHE + file_path, type=1)
                 elif(result[1] == True):
-                    self.showMessage({"message": "取消操作！", "type": 1})
+                    self.showMessage({"message": "配置未执行任何修改！", "type": 1})
                 else:
                     self.showMessage({"message": "Json格式错误，配置文件已回退，请重新修改！", "type": 1})
 

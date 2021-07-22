@@ -91,6 +91,8 @@ class Ui_edit_file(object):
         self.json_edit.setPlainText(content)
 
         self.json_edit.textChanged.connect(self.resetStyle)
+        self.isChanged = False
+
         self.edit_file.updateMember(self.json_edit.toPlainText())
 
         if(self.edit_file.editable):
@@ -102,6 +104,7 @@ class Ui_edit_file(object):
 
     def resetStyle(self):
         self.edit_file.setWindowTitle(consts.PROFILE.split("/")[-1] + "-未保存")
+        self.isChanged = True
         self.edit_file.updateMember(self.json_edit.toPlainText(), result=[False, False])
         if(self.error_message.text() != ""):
             self.error_message.setText("")
@@ -120,12 +123,18 @@ class Ui_edit_file(object):
         return False
 
     def saveFile(self):
-        if(self.checkJson()):
-            with open(consts.PROFILE, "w") as f:
-                f.write(self.json_edit.toPlainText())
-            self.edit_file.setWindowTitle(consts.PROFILE.split("/")[-1])
+        if(self.isChanged):
+            if(self.checkJson()):
+                with open(consts.PROFILE, "w") as f:
+                    f.write(self.json_edit.toPlainText())
+                self.edit_file.setWindowTitle(consts.PROFILE.split("/")[-1])
 
-            self.edit_file.updateMember(self.json_edit.toPlainText(), result=[True, True])
+                self.edit_file.updateMember(self.json_edit.toPlainText(), result=[True, True])
+
+                self.edit_file.close()
+        else:
+            self.edit_file.updateMember(self.json_edit.toPlainText(), result=[False, True])
+            self.edit_file.close()
 
     def backToParentDialog(self):
         self.edit_file.updateMember(self.json_edit.toPlainText(), result=[False, True])

@@ -5,7 +5,7 @@
 #define MyAppVersion "0.1"
 #define MyAppPublisher "苏州德姆斯信息技术有限公司"
 #define MyAppURL "https://www.dhms.com.cn/"
-#define MyAppExeName "DHMS_TransUnit.exe"
+#define MyAppExeName "DHMS传输单元服务部署工具.exe"
 #define MyAppAssocName MyAppName + ""
 #define MyAppAssocExt ".myp"
 #define MyAppAssocKey StringChange(MyAppAssocName, " ", "") + MyAppAssocExt
@@ -40,8 +40,8 @@ Name: "chinesesimplified"; MessagesFile: "compiler:Languages\ChineseSimplified.i
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\Phil\Desktop\transunitservicedeploytool\out\DHMS_TransUnit\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Phil\Desktop\transunitservicedeploytool\out\DHMS_TransUnit\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\Phil\Desktop\transunitservicedeploytool\out\DHMS传输单元服务部署工具\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Phil\Desktop\transunitservicedeploytool\out\DHMS传输单元服务部署工具\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]
