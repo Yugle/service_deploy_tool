@@ -212,7 +212,10 @@ class ConnectTransUnitByADB(object):
 	def submit(self, service, actions):
 		for action, filename in actions.items():
 			if(action == 0):
-				self.moveFile(filename, service, action, True)
+				if(self.checkServiceFile(filename)):
+					self.moveFile(filename, service, action, True)
+				else:
+					raise Exception("服务部署文件有误，请检查！")
 			else:
 				self.moveFile(filename, service, action, False)
 
@@ -229,11 +232,23 @@ class ConnectTransUnitByADB(object):
 
 			stdout = subprocess.Popen(self.adb_shell + consts.SHELL["rm"] + fromFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 
+		isRightFile = False
 		for file in files:
-			if(file != ""):
-				file = file.split("\n")[0]
-				print(file)
-				if(file[-1] == "/"):
-					continue
+			if(self.checkServiceFile(file)):
+				isRightFile = True
 
-				self.moveFile(file, service, 0, False)
+		if(isRightFile == False):
+			raise Exception("服务部署文件有误，请检查！")
+
+		for file in files:
+			file = file.split("\n")[0]
+			if(file[-1] == "/"):
+				continue
+
+			self.moveFile(filename, service, 0, False)
+
+	def checkServiceFile(self, filename):
+		if(self.service in filename):
+			return True
+		else:
+			return False
