@@ -634,7 +634,8 @@ class Ui_Deploy(object):
 "        background-color:#87CEFA;\n"
 "        color:white;\n"
 "}")
-                    
+
+        self.hideInfo()
         self.getInfo()
 
     def getInfo(self, showMessage=True):
@@ -642,7 +643,25 @@ class Ui_Deploy(object):
         self.get_info.result.connect(self.showInfo)
         self.get_info.start()
 
-    def showInfo(self, information):
+    def hideInfo(self):
+        self.alter_conf.hide()
+        self.alter_profile.hide()
+
+        self.service_version.setText("")
+        self.service_md5.setText("")
+        self.service_deploy_time.setText("")
+        self.service_path.setText("")
+        self.service_profile.setText("")
+        self.service_daemon.setText("")
+        self.service_conf.setText("")
+        self.service_runtime.setText("")
+
+        self.log_path_list = []
+        log_list = QStringListModel()
+        log_list.setStringList(self.log_path_list)
+        self.log_path.setModel(log_list)
+
+    def showInfo(self, information, showMessage=True):
         # 断开button的所有信号连接，否则当多次showInfo导致多次连接槽函数时，点击一次会执行多次槽函数
         try:
             self.alter_profile.disconnect()
@@ -657,8 +676,12 @@ class Ui_Deploy(object):
         if(information["showMessage"]):
             self.showMessage({"message":"加载中...", "type":0})
 
+        disk_available = "/log剩余"+information["disk_available"][0]+"，/usr/bin剩余"+information["disk_available"][1] 
+        self.disk_available.setText(disk_available)
+        
         if(information["service_md5"] == ""):
-            self.serviceNotExist()
+            if(showMessage):
+                self.serviceNotExist()
             return
 
         self.label.setText(consts.SERVICE_NAME[self.service])
@@ -674,8 +697,6 @@ class Ui_Deploy(object):
         self.service_daemon.setText(information["service_daemon"])
         self.service_conf.setText(information["service_conf"])
         self.service_runtime.setText(information["service_runtime"])
-        disk_available = "/log剩余"+information["disk_available"][0]+"，/usr/bin剩余"+information["disk_available"][1] 
-        self.disk_available.setText(disk_available)
 
         self.log_path_list = information["log_path"]
         log_list = QStringListModel()
