@@ -4,6 +4,7 @@ from deploy.ssh import *
 from deploy.telnet import *
 from deploy.adb import *
 from transUnit_detail import *
+from widgets.widgets import *
 import re
 import sys
 import consts

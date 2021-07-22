@@ -6,13 +6,8 @@ from deploy.ssh import *
 from deploy.telnet import *
 from deploy.adb import *
 from transUnit_edit import *
+from widgets.widgets import *
 import consts
-
-class LogoLabel(QtWidgets.QLabel):
-    double_clicked = QtCore.pyqtSignal()
-
-    def mouseDoubleClickEvent(self, QMouseEvent):
-        self.double_clicked.emit()
 
 class UploadFileAndDeployThread(QtCore.QThread):
     result = QtCore.pyqtSignal(dict)
@@ -644,6 +639,7 @@ class Ui_Deploy(object):
         self.get_info.start()
 
     def hideInfo(self):
+        self.message.hide()
         self.alter_conf.hide()
         self.alter_profile.hide()
 
@@ -655,13 +651,14 @@ class Ui_Deploy(object):
         self.service_daemon.setText("")
         self.service_conf.setText("")
         self.service_runtime.setText("")
+        self.disk_available.setText("")
 
         self.log_path_list = []
         log_list = QStringListModel()
         log_list.setStringList(self.log_path_list)
         self.log_path.setModel(log_list)
 
-    def showInfo(self, information, showMessage=True):
+    def showInfo(self, information):
         # 断开button的所有信号连接，否则当多次showInfo导致多次连接槽函数时，点击一次会执行多次槽函数
         try:
             self.alter_profile.disconnect()
@@ -670,18 +667,17 @@ class Ui_Deploy(object):
             pass
 
         if(information["error"] != ""):
-            self.showMessage({"message":information["error"], "type":0})
+            self.showMessage({"message":information["error"], "type":1})
             return
 
         if(information["showMessage"]):
-            self.showMessage({"message":"加载中...", "type":0})
+            self.showMessage({"message":"加载中...", "type":1})
 
         disk_available = "/log剩余"+information["disk_available"][0]+"，/usr/bin剩余"+information["disk_available"][1] 
         self.disk_available.setText(disk_available)
-        
+
         if(information["service_md5"] == ""):
-            if(showMessage):
-                self.serviceNotExist()
+            self.serviceNotExist()
             return
 
         self.label.setText(consts.SERVICE_NAME[self.service])
