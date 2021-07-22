@@ -79,7 +79,7 @@ class ConnectTransUnitByADB(object):
 		information["service_path"] = consts.SERVICE_PATH + self.service
 		information["service_version"] = self.getVersion(information["service_path"])
 		# information["service_profile"] = self.getServiceProfile()
-		information["service_profile"] = "/private/DHMSConf.json"
+		information["service_profile"] = consts.SERVICE_PROFILE[service]
 		# information["service_daemon"] = self.getServiceDaemon()
 		information["service_daemon"] = "/private/daemon.ini"
 		# information["service_conf"] = self.getServiceConf()
@@ -174,24 +174,32 @@ class ConnectTransUnitByADB(object):
 
 		return stdout
 
-	def moveFile(self, filename, type, toUncompres=False):
+	def moveFile(self, filename, service, action, toUncompres=False):
 		fromFile = consts.TMP_PATH + filename
-		toFile = consts.PATH_LIST[type] + filename
+
 		if(toUncompres):
-			self.unCompressAndMove(filename)
+			self.unCompressAndMove(service, filename)
 		else:
+			if(action == 1):
+				toDir = consts.PATH_LIST[action][service]
+				toFile = consts.PATH_LIST[action][service] + filename
+			else:
+				toDir = consts.PATH_LIST[action]
+				toFile = consts.PATH_LIST[action] + filename
+
 			filename = filename.split("/")
 			if(len(filename) > 1):
-				self.checkDirAndFile(consts.PATH_LIST[type] + filename[0], filename[1], True)
+				self.checkDirAndFile(toDir + "/".join(filename[0:-1]), filename[1], True)
 			else:
-				self.checkDirAndFile(consts.PATH_LIST[type], filename[0], True)
+				self.checkDirAndFile(toDir, filename[0], True)
 
+			print(fromFile)
+			print(toFile)
 			stdout = subprocess.Popen(self.adb_shell + consts.SHELL["mv"] + fromFile + " " + toFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 			if("error" in stdout):
 				raise Exception(stdout)
 
 	def restartService(self, service):
-		service = "transportdiag"
 		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["kill"] + service + " )", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 
 		time.sleep(consts.TELNET_INTERVAL)
@@ -201,16 +209,16 @@ class ConnectTransUnitByADB(object):
 		if("error" in stdout):
 			raise Exception(stdout)
 
-	def submit(self, actions):
+	def submit(self, service, actions):
 		for action, filename in actions.items():
 			if(action == 0):
-				self.moveFile(filename, action, True)
+				self.moveFile(filename, service, action, True)
 			else:
-				self.moveFile(filename, action, False)
+				self.moveFile(filename, service, action, False)
 
 		self.restartService(self.service)
 
-	def unCompressAndMove(self, filename):
+	def unCompressAndMove(self, service, filename):
 		fromFile = consts.TMP_PATH + filename
 		files = []
 		type = 0
@@ -228,4 +236,4 @@ class ConnectTransUnitByADB(object):
 				if(file[-1] == "/"):
 					continue
 
-				self.moveFile(file, 0, False)
+				self.moveFile(file, service, 0, False)

@@ -6,8 +6,9 @@ import re
 import os
 
 class Ui_edit_file(object):
-    def __init__(self, file_path):
+    def __init__(self, file_path, service):
         self.file_path = file_path
+        self.service = service
 
     def setupUi(self, edit_file):
         self.edit_file = edit_file
@@ -103,7 +104,7 @@ class Ui_edit_file(object):
             self.cancel.clicked.connect(self.backToParentDialog)
 
     def resetStyle(self):
-        self.edit_file.setWindowTitle(consts.PROFILE.split("/")[-1] + "-未保存")
+        self.edit_file.setWindowTitle(consts.SERVICE_PROFILE[self.service].split("/")[-1] + "-未保存")
         self.isChanged = True
         self.edit_file.updateMember(self.json_edit.toPlainText(), result=[False, False])
         if(self.error_message.text() != ""):
@@ -123,11 +124,12 @@ class Ui_edit_file(object):
         return False
 
     def saveFile(self):
+        print(self.isChanged)
         if(self.isChanged):
             if(self.checkJson()):
-                with open(consts.PROFILE, "w") as f:
+                with open(consts.CACHE + consts.SERVICE_PROFILE[self.service].split("/")[-1], "w") as f:
                     f.write(self.json_edit.toPlainText())
-                self.edit_file.setWindowTitle(consts.PROFILE.split("/")[-1])
+                self.edit_file.setWindowTitle(consts.SERVICE_PROFILE[self.service].split("/")[-1])
 
                 self.edit_file.updateMember(self.json_edit.toPlainText(), result=[True, True])
 
@@ -143,7 +145,6 @@ class Ui_edit_file(object):
 class EditDialog(QtWidgets.QDialog):
     def __init__(self, editable=True):
         super().__init__()
-        print("窗口创建")
 
         self.json = ""
         self.result = [False, True] #是否保存，是否取消
@@ -161,7 +162,7 @@ class EditDialog(QtWidgets.QDialog):
             return False
 
     def saveFile(self):
-        with open(consts.PROFILE, "w") as f:
+        with open(consts.CACHE + consts.SERVICE_PROFILE[self.service].split("/")[-1], "w") as f:
             f.write(self.json)
 
     def closeEvent(self, event):
@@ -181,5 +182,5 @@ class EditDialog(QtWidgets.QDialog):
                         self.result = [False, False]
                 else:
                     self.result = [False, True]
-        print("窗口退出")
+
         event.accept()

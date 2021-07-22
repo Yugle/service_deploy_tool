@@ -31,21 +31,22 @@ class UploadFileAndDeployThread(QtCore.QThread):
 class SubmitThread(QtCore.QThread):
     result = QtCore.pyqtSignal(dict)
 
-    def __init__(self, client, actions):
+    def __init__(self, client, service, actions):
         super().__init__()
         self.client = client
         self.actions = actions
+        self.service = service
 
     def run(self):
         try:
-            self.client.submit(self.actions)
+            self.client.submit(self.service, self.actions)
 
             message = {"message": "操作成功！", "type": 2}
             self.result.emit(message)
         except Exception as e:
             self.result.emit({"message": str(e), "type": 2})
 
-        # self.client.submit(self.actions)
+        # self.client.submit(self.service, self.actions)
         # message = {"message": "部署成功！", "type": 0}
         # self.result.emit(message)
     
@@ -600,6 +601,7 @@ class Ui_Deploy(object):
                                                QtWidgets.QMessageBox.Yes)
     def changeService(self, service):
         self.service = service
+        self.actions = {}
         self.label.setText(consts.SERVICE_NAME[self.service])
         self.service_name.setText(consts.SERVICES[self.service])
 
@@ -823,7 +825,8 @@ class Ui_Deploy(object):
         self.childDialog.hide()
         self.mainWindow.show()
         try:
-            os.remove(consts.PROFILE)
+            for profile in consts.SERVICE_PROFILE:
+                os.remove(consts.CACHE + profile.split("/")[-1])
         except Exception as e:
             pass
         # WindowsControl.backToMainWindow(self.mainWindow)
@@ -832,7 +835,7 @@ class Ui_Deploy(object):
         if(Path(consts.CACHE + file_path).is_file()):
             # 子窗口要加self，否则一弹出就会被收回
             self.editDialog = EditDialog(editadle)
-            self.editPage = Ui_edit_file(consts.CACHE + file_path)
+            self.editPage = Ui_edit_file(consts.CACHE + file_path, self.service)
             self.editPage.setupUi(self.editDialog)
             # self.editDialog.show()
             self.editDialog.exec_()
@@ -867,7 +870,7 @@ class Ui_Deploy(object):
             self.showMessage(message)
         else:
             if(len(self.actions) > 0):
-                self.submit_thread = SubmitThread(self.client, self.actions)
+                self.submit_thread = SubmitThread(self.client, self.service, self.actions)
                 self.submit_thread.result.connect(self.reGetInfo)
                 self.submit_thread.start()
                 self.actions = {}
@@ -899,7 +902,8 @@ class DeployDialog(QtWidgets.QDialog):
 
         if reply == QtWidgets.QMessageBox.Yes:
             try:
-                os.remove(consts.PROFILE)
+                for profile in consts.SERVICE_PROFILE:
+                    os.remove(consts.CACHE + profile.split("/")[-1])
             except Exception as e:
                 pass
 

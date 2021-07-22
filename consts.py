@@ -28,10 +28,12 @@ if(not os.path.exists(CACHE)):
 SERVICES = ["transportdiag", "sessiongo"]
 SERVICE_NAME = ["可视化诊断服务", "sessiongo"]
 
+SERVICE_PROFILE = ["/private/DHMSConf.json", "/private/conf/parser.json"]
+
 TMP_PATH = "/root/temple/"
 SERVICE_PATH = "/system/bin/"
 # CONF_PATH = "/private/DHMSConf.json"
-CONF_PATH = "/private/"
+CONF_PATH = ["/private/", "/private/conf/"]
 PATH_LIST = [SERVICE_PATH, CONF_PATH]
 
 SHELL = {
