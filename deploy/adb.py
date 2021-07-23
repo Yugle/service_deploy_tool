@@ -27,6 +27,7 @@ class ConnectTransUnitByADB(object):
 		filename = re.split(r'[/|\\]', localFilePath)[-1]
 		self.checkDirAndFile(remoteFilePath, filename)
 
+		# localpath加引号，解决路径带空格问题，adb push若推中文路径下的文件，会丢失文件后缀，所以to file而不是to dir
 		pushFile = consts.ADB_PATH + "-s " + self.device_id + " push " + f'"{localFilePath}"' + " " + remoteFilePath + localFilePath.split("/")[-1]
 		res = subprocess.Popen(pushFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		if("error" in res):
