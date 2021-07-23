@@ -10,6 +10,7 @@ import re
 import sys
 import consts
 import subprocess
+import sys
 
 class JumpToDialog(QtWidgets.QWidget):
     isTimeToJump = QtCore.pyqtSignal(bool)
