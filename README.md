@@ -33,3 +33,6 @@ PrivilegesRequired=admin
 ```  
 
 后进行编译
+
+## 备注
+服务文件要求打包为tar包，且tar包与服务文件在文件名上包含所要部署的服务名
