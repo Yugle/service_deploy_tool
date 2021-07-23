@@ -27,7 +27,7 @@ class ConnectTransUnitByADB(object):
 		filename = re.split(r'[/|\\]', localFilePath)[-1]
 		self.checkDirAndFile(remoteFilePath, filename)
 
-		pushFile = consts.ADB_PATH + "-s " + self.device_id + " push " + localFilePath + " " + remoteFilePath
+		pushFile = consts.ADB_PATH + "-s " + self.device_id + " push " + f'"{localFilePath}"' + " " + remoteFilePath + localFilePath.split("/")[-1]
 		res = subprocess.Popen(pushFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		if("error" in res):
 			raise Exception(res)
