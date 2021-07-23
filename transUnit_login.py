@@ -704,6 +704,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
 
         if(deviceList == []):
             if(toShowMessage == True):
+                self.device_id.clear()
                 self.showMessage("设备列表为空，请检查设备连接！")
         
         else:
