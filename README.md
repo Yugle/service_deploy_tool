@@ -16,14 +16,13 @@ pyinstaller  --distpath .\out .\pack\transUnit.spec
 
 使用[Inno Setup Compiler](https://jrsoftware.org/isdl.php)进行封包，[封包脚本](/pack/封包.iss)
 
-若需要管理员权限  
+若需要管理员权限
 
-- 封包脚本需要在[Setup]项中加入
+- 在[封包脚本](/pack/封包.iss)[Setup]项中加入
 ```
 PrivilegesRequired=admin
 ```
-- 更改Inno Setup Compiler安装目录下的SetupLdr.e32文件
-反编译后将
+- 更改Inno Setup Compiler安装目录下的SetupLdr.e32文件。反编译SetupLdr.e32后，将  
 ```xml
 <requestedExecutionLevel level="asInvoker" uiAccess="false"/></requestedPrivileges>
 ```
