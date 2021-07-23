@@ -12,7 +12,6 @@ class ReadFileThread(threading.Thread):
 		super(ReadFileThread, self).__init__()
 		self.arg = arg
 		
-
 class ConnectTransUnitByTelnet(object):
 	def __init__(self, host, username, password):
 		self.host = host
