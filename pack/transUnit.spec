@@ -18,13 +18,14 @@ a = Analysis([pathex + 'transUnit_login.py'],
              datas=[],
              hiddenimports=[],
              hookspath=[],
+             hooksconfig={},
              runtime_hooks=[],
              excludes=[],
              win_no_prefer_redirects=False,
              win_private_assemblies=False,
              cipher=block_cipher,
              noarchive=False)
-             
+
 def extra_datas(mydir):
     def rec_glob(p, files):
         for d in glob.glob(p):
@@ -42,24 +43,30 @@ def extra_datas(mydir):
 # append the 'config' dir
 a.datas += extra_datas('lib')
 a.datas += extra_datas('resource')
+a.datas += extra_datas('cache')
 
 pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
+
 exe = EXE(pyz,
-          a.scripts,
+          a.scripts, 
           [],
           exclude_binaries=True,
-          name='DHMS_TransUnit',
+          name='DHMS传输单元服务部署工具',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
-          console=False , icon=pathex+'resource\\icon.ico')
+          console=False,
+          disable_windowed_traceback=False,
+          target_arch=None,
+          codesign_identity=None,
+          entitlements_file=None , uac_admin=True, icon=pathex+'resource\\icon.ico')
 coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,
-               a.datas,
+               a.datas, 
                strip=False,
                upx=True,
                upx_exclude=[],
-               name='DHMS_TransUnit')
+               name='DHMS传输单元服务部署工具')
