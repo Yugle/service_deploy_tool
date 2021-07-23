@@ -6,8 +6,8 @@ python transUnit_login.py
 ```
 ## 打包
 ```
-pyinstaller -w -i .\resource\icon.ico --clean .\transUnit_login.py
-pyinstaller --uac-admin --distpath .\out .\pack\transUnit.spec
+pyinstaller --uac-admin -w -i .\resource\icon.ico --clean .\transUnit_login.py
+pyinstaller  --distpath .\out .\pack\transUnit.spec
 ```
 ## 封包
 

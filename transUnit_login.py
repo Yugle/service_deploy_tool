@@ -5,11 +5,11 @@ from deploy.telnet import *
 from deploy.adb import *
 from transUnit_detail import *
 from widgets.widgets import *
+from threads.threads import ConnectTransUnitThread
 import re
 import sys
 import consts
 import subprocess
-import sys
 
 class JumpToDialog(QtWidgets.QWidget):
     isTimeToJump = QtCore.pyqtSignal(bool)
@@ -22,40 +22,6 @@ class JumpToDialog(QtWidgets.QWidget):
         self.flag = flag
         if(self.flag == 1):
             self.isTimeToJump.emit(flag)
-
-# 连接传输单元线程
-class ConnectTransUnitThread(QtCore.QThread):
-    result = QtCore.pyqtSignal(str)
-
-    def __init__(self, currentTabIndex, client):
-        super().__init__()
-        self.currentTabIndex = currentTabIndex
-        self.client = client
-        self.adb_message = 0
-
-    def run(self):
-        try:
-            if(self.currentTabIndex == 0):
-                self.client.connect()
-            elif(self.currentTabIndex == 1):
-                self.client.connect()
-            else:
-                self.adb_message = self.client.connect()
-            
-            if(self.adb_message == 1):
-                self.result.emit("连接远程设备成功！")
-            else:
-                self.result.emit("登录成功！")
-        except Exception as e:
-            e = str(e)
-            if(e == "Authentication failed."):
-                e = "账号或密码错误！"
-            elif(re.findall("(Unable to connect to port)|(timed out)", e) != []):
-                e = "连接失败，请检查网络或传输单元IP地址！"
-            elif("Permission denied" in e):
-                e = "操作失败，无权限操作，请检查IP或权限！"
-
-            self.result.emit(e)
 
 class Ui_MainWindow(object):
     def __init__(self):
