@@ -111,10 +111,8 @@ class ReadLogThread(QtCore.QThread):
 
     def run(self):
         try:
-            log = self.client.readFile(self.log_path)
+            self.client.readAndSaveFile(self.log_path)
 
-            with open(consts.CACHE + self.log_name, "w") as log_file:
-                log_file.write(log)
             self.result.emit(self.log_name)
         except Exception as e:
             self.result.emit("读取失败：" + str(e))

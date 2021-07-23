@@ -676,7 +676,10 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
     def showDialog(self, status):
         if(status == 1):
             self.MainWindow.hide()
-            self.connect_thread.quit()
+            try:
+                self.connect_thread.quit()
+            except Exception as e:
+                pass
             # 子窗口要加self，否则一弹出就会被收回
             self.deployDialog = DeployDialog()
             self.deployPage = Ui_Deploy(self.MainWindow, self.client, self.currentTabIndex)
@@ -705,6 +708,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
 
         if(deviceList == []):
             if(toShowMessage == True):
+                self.device_id.clear()
                 self.showMessage("设备列表为空，请检查设备连接！")
         
         else:

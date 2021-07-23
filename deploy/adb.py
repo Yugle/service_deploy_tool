@@ -27,7 +27,8 @@ class ConnectTransUnitByADB(object):
 		filename = re.split(r'[/|\\]', localFilePath)[-1]
 		self.checkDirAndFile(remoteFilePath, filename)
 
-		pushFile = consts.ADB_PATH + "-s " + self.device_id + " push " + localFilePath + " " + remoteFilePath
+		# localpath加引号，解决路径带空格问题，adb push若推中文路径下的文件，会丢失文件后缀，所以to file而不是to dir
+		pushFile = consts.ADB_PATH + "-s " + self.device_id + " push " + f'"{localFilePath}"' + " " + remoteFilePath + localFilePath.split("/")[-1]
 		res = subprocess.Popen(pushFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		if("error" in res):
 			raise Exception(res)
@@ -87,7 +88,7 @@ class ConnectTransUnitByADB(object):
 		information["service_runtime"] = self.getRuntime(self.service)
 		information["disk_available"] = self.getDiskAvailableSpace()
 		information["log_path"] = self.getLogPath(self.service)
-		self.saveProfile(information["service_profile"])
+		self.readAndSaveFile(information["service_profile"])
 
 		return information
 
@@ -155,21 +156,12 @@ class ConnectTransUnitByADB(object):
 
 		return log_list
 
-	def saveProfile(self, file_path):
-		filename = re.split(r'[/|\\]', file_path)[-1]
-		stdout = self.readFile(file_path)
-		try:
-			profile_json = json.loads(stdout)
-
-			with open(consts.CACHE + filename, "w") as profile:
-				json.dump(profile_json, profile)
-		except Exception as e:
-			pass
-
-	def readFile(self, file_path):
-		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["cat"] + file_path, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
-
-		return stdout
+	def readAndSaveFile(self, file_path):
+		stdout = subprocess.Popen(self.adb + "pull " + file_path + " " + consts.CACHE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+		if("1 file pulled" in stdout):
+			return True
+		else:
+			raise Exception("文件读取失败！")
 
 	def moveFile(self, filename, service, action, toUncompres=False):
 		fromFile = consts.TMP_PATH + filename
