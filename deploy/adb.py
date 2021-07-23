@@ -98,14 +98,11 @@ class ConnectTransUnitByADB(object):
 			# 使用service_path加参数，因为paramiko使用非交互式shell，不能拿环境变量
 			stdout = subprocess.Popen(self.adb_shell + service_path + " " + param, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 			print(stdout)
-			version = re.findall(r"v\S*\s*\d.*", stdout)
+			version = re.findall(r"[version|v]+\s*\d.*", stdout)
 			if(version != []):
 				break
 		try:
 			version = version[0]
-
-			if(len(version) > 15):
-				version = ""
 		except Exception as e:
 			version = ""
 
@@ -193,8 +190,6 @@ class ConnectTransUnitByADB(object):
 			else:
 				self.checkDirAndFile(toDir, filename[0], True)
 
-			print(fromFile)
-			print(toFile)
 			stdout = subprocess.Popen(self.adb_shell + consts.SHELL["mv"] + fromFile + " " + toFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 			if("error" in stdout):
 				raise Exception(stdout)
@@ -205,7 +200,6 @@ class ConnectTransUnitByADB(object):
 		time.sleep(consts.TELNET_INTERVAL)
 		stdout = subprocess.Popen(self.adb_shell + consts.SERVICE_PATH + service, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 
-		print(stdout)
 		if("error" in stdout):
 			raise Exception(stdout)
 
@@ -242,10 +236,11 @@ class ConnectTransUnitByADB(object):
 
 		for file in files:
 			file = file.split("\n")[0]
-			if(file[-1] == "/"):
-				continue
+			if(file != ""):
+				if(file[-1] == "/"):
+					continue
 
-			self.moveFile(filename, service, 0, False)
+				self.moveFile(file, service, 0, False)
 
 	def checkServiceFile(self, filename):
 		if(self.service in filename):

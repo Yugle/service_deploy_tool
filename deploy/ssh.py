@@ -118,7 +118,8 @@ class ConnectTransUnitBySSH(object):
 			# 使用service_path加参数，因为paramiko使用非交互式shell，不能拿环境变量
 			stdin,stdout,stderr = self.ssh_client.exec_command(service_path + " " + param)
 			stdout = stdout.read().decode("utf-8")
-			version = re.findall(r"v\S*\s*\d.*", stdout)
+			# version = re.findall(r"v\S*\s*\d.*", stdout)
+			version = re.findall(r"[version|v]+\s*\d.*", stdout)
 			if(version != []):
 				break
 
@@ -256,7 +257,7 @@ class ConnectTransUnitBySSH(object):
 			if(file[-1] == "/"):
 				continue
 
-			self.moveFile(filename, service, 0, False)
+			self.moveFile(file, service, 0, False)
 
 	def checkServiceFile(self, filename):
 		if(self.service in filename):
