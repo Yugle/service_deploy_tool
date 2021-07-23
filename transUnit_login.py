@@ -313,7 +313,7 @@ class Ui_MainWindow(object):
 "QComboBox::down-arrow {\n"
 f"image:url({consts.IMG_PATH}arrow.png);\n"
 "}")
-        self.device_id.setEditable(True)
+        self.device_id.setEditable(False)
         self.device_id.setObjectName("device_id")
         self.open_port = QtWidgets.QPushButton(self.ADB)
         self.open_port.setGeometry(QtCore.QRect(330, 93, 101, 38))
@@ -538,6 +538,16 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
 
         self.logo_label.double_clicked.connect(self.showVersion)
 
+        self.ip_list = ["192.168.", "172.0.", "0.0.0."]
+        self.setIpCompleter(self.ip_list)
+
+    def setIpCompleter(self, ip_list):
+        completer = QtWidgets.QCompleter(ip_list)
+        completer.setCompletionMode(QtWidgets.QCompleter.InlineCompletion)
+        self.ssh_host.setCompleter(completer)
+        self.telnet_host.setCompleter(completer)
+        self.device_ip.setCompleter(completer)
+
     def showVersion(self):
         QtWidgets.QMessageBox.information(self.MainWindow,
                                                '传输单元服务部署工具',
@@ -584,6 +594,9 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
                     self.labelList[self.labelOffset].setText(self.tips[0] + "格式错误！")
 
                     flag = False
+            if(flag):
+                self.ip_list.append(self.inputList[0].text())
+                self.setIpCompleter(self.ip_list)
 
             for i in range(len(self.inputList)):
                 if(self.inputList[i].text() == ""):
