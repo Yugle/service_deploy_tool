@@ -4,6 +4,7 @@ import consts
 import json
 import re
 import os
+import time
 
 class Ui_edit_file(object):
     def __init__(self, file_path, service):
@@ -80,11 +81,14 @@ class Ui_edit_file(object):
         # self.error_message.setText(_translate("edit_file", "格式错误！"))
         self.json_edit.setReadOnly(True)
 
-        with open(self.file_path, 'r') as file:
+        with open(self.file_path, 'r', encoding = "utf-8") as file:
             if(self.edit_file.editable):
                 content = json.dumps(json.load(file),indent=2)
             else:
                 content = file.read()
+
+        # with open(self.file_path, 'r', encoding='utf-8', errors='ignore') as f:
+        #     self.json_edit.appendPlainText(f.read())
 
         if(not self.edit_file.editable):
             os.remove(self.file_path)
@@ -128,7 +132,6 @@ class Ui_edit_file(object):
 
     # 保存文件
     def saveFile(self):
-        print(self.isChanged)
         if(self.isChanged):
             if(self.checkJson()):
                 with open(consts.CACHE + consts.SERVICE_PROFILE[self.service].split("/")[-1], "w") as f:

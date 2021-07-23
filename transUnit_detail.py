@@ -810,7 +810,7 @@ class Ui_Deploy(object):
         self.read_log.result.connect(self.showLog)
         self.read_log.start()
 
-    # 展示loh
+    # 展示log
     def showLog(self, log_name):
         self.read_log.quit()
         self.showTextEdit(log_name, False)

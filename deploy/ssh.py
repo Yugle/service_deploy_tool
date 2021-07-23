@@ -107,7 +107,7 @@ class ConnectTransUnitBySSH(object):
 		information["service_runtime"] = self.getRuntime(self.service)
 		information["disk_available"] = self.getDiskAvailableSpace()
 		information["log_path"] = self.getLogPath(self.service)
-		self.saveProfile(information["service_profile"])
+		self.readAndSaveFile(information["service_profile"])
 
 		return information
 
@@ -169,22 +169,13 @@ class ConnectTransUnitBySSH(object):
 
 		return log_list
 
-	def saveProfile(self, file_path):
-		filename = re.split(r'[/|\\]', file_path)[-1]
-		stdout = self.readFile(file_path)
-		try:
-			profile_json = json.loads(stdout)
+	def readAndSaveFile(self, file_path):
+		filename = file_path.split("/")[-1]
+		sftp_client = paramiko.SFTPClient.from_transport(self.ssh_client.get_transport())
+		sftp_client.get(file_path, consts.CACHE+filename)
+		sftp_client.close()
 
-			with open(consts.CACHE + filename, "w") as profile:
-				json.dump(profile_json, profile)
-		except Exception as e:
-			pass
-
-	def readFile(self, file_path):
-		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["cat"] + file_path)
-		stdout = stdout.read().decode("utf-8")
-
-		return stdout
+		return True
 
 	def moveFile(self, filename, service, action, toUncompress=False):
 		fromFile = consts.TMP_PATH + filename

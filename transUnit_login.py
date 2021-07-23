@@ -675,7 +675,10 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
     def showDialog(self, status):
         if(status == 1):
             self.MainWindow.hide()
-            self.connect_thread.quit()
+            try:
+                self.connect_thread.quit()
+            except Exception as e:
+                pass
             # 子窗口要加self，否则一弹出就会被收回
             self.deployDialog = DeployDialog()
             self.deployPage = Ui_Deploy(self.MainWindow, self.client, self.currentTabIndex)
