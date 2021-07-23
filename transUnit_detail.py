@@ -242,7 +242,7 @@ class Ui_Deploy(object):
         self.label_24.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_24.setObjectName("label_24")
         self.service_version = QtWidgets.QLabel(self.groupBox)
-        self.service_version.setGeometry(QtCore.QRect(160, 148, 280, 21))
+        self.service_version.setGeometry(QtCore.QRect(160, 148, 300, 21))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(11)
@@ -475,8 +475,9 @@ class Ui_Deploy(object):
         _translate = QtCore.QCoreApplication.translate
         Deploy.setWindowTitle(_translate("Deploy", "传输单元服务部署工具"))
         self.back.setText(_translate("Deploy", " 返回"))
-        self.service_1.setText(_translate("Deploy", "        可视化诊断服务"))
-        self.service_2.setText(_translate("Deploy", "        振动文件上传服务"))
+        self.service_1.setText(_translate("Deploy", f"        {consts.SERVICE_NAME[0]}"))
+        self.service_2.setText(_translate("Deploy", f"        {consts.SERVICE_NAME[1]}"))
+        self.service_3.setText(_translate("Deploy", f"        {consts.SERVICE_NAME[2]}"))
         self.label_19.setText(_translate("Deploy", "启动参数："))
         self.label_13.setText(_translate("Deploy", "配置信息："))
         self.alter_conf.setText(_translate("Deploy", "修改"))
@@ -500,6 +501,7 @@ class Ui_Deploy(object):
         self.service_name.setText(consts.SERVICES[self.service])
         self.service_1.clicked.connect(lambda :self.changeService(0))
         self.service_2.clicked.connect(lambda :self.changeService(1))
+        self.service_3.clicked.connect(lambda :self.changeService(2))
 
         # 获取服务信息
         self.getInfo()

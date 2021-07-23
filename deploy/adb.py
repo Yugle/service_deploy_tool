@@ -97,8 +97,8 @@ class ConnectTransUnitByADB(object):
 		for param in params:
 			# 使用service_path加参数，因为paramiko使用非交互式shell，不能拿环境变量
 			stdout = subprocess.Popen(self.adb_shell + service_path + " " + param, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
-			print(stdout)
-			version = re.findall(r"[version|v]+\s*\d.*", stdout)
+			version = re.findall(r"[version|v]+\s*\d.+", stdout)
+			# [version|v]+\s*(\d+.)+\w\d*
 			if(version != []):
 				break
 		try:
