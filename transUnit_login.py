@@ -23,6 +23,7 @@ class JumpToDialog(QtWidgets.QWidget):
         if(self.flag == 1):
             self.isTimeToJump.emit(flag)
 
+# 连接传输单元线程
 class ConnectTransUnitThread(QtCore.QThread):
     result = QtCore.pyqtSignal(str)
 
@@ -510,10 +511,12 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.message.setMaximumWidth(291)
         self.message.setMinimumHeight(30)
 
+        # 绑定输入框内回车登录动作
         for lineEdit in self.MainWindow.findChildren(QtWidgets.QLineEdit):
             lineEdit.returnPressed.connect(self.connectTransUnit)
             lineEdit.lower()
 
+        # 初始化一些内容
         self.tabs = ["SSH", "Telnet", "ADB"]
         self.tips = ["传输单元IP地址", "用户名", "密码"]
         self.currentTabIndex = 0
@@ -538,9 +541,11 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
 
         self.logo_label.double_clicked.connect(self.showVersion)
 
+        # ip自动补全
         self.ip_list = ["192.168.", "172.0.", "0.0.0."]
         self.setIpCompleter(self.ip_list)
 
+    # ip自动补全
     def setIpCompleter(self, ip_list):
         completer = QtWidgets.QCompleter(ip_list)
         completer.setCompletionMode(QtWidgets.QCompleter.InlineCompletion)
@@ -548,6 +553,8 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.telnet_host.setCompleter(completer)
         self.device_ip.setCompleter(completer)
 
+    # 展示软件版本信息
+    # todo：检测更新功能
     def showVersion(self):
         QtWidgets.QMessageBox.information(self.MainWindow,
                                                '传输单元服务部署工具',
@@ -559,6 +566,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         label.setStyleSheet("border:1px solid rgb(122, 122, 122);border-right:0px solid white;")
         tip.setText("")
 
+    # 定义tab切换时执行的动作
     def tabChanged(self, currentTab):
         self.currentTabIndex = self.connectMethod.currentIndex()
         self.currentTab = getattr(self, self.tabs[self.currentTabIndex])
@@ -575,6 +583,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             self.inputList[i].setText("")
             self.resetStyle(self.inputList[i], self.labelList[i], self.labelList[i+self.labelOffset])
 
+    # 执行连接之前检查输入是否合法
     def checkInput(self, toCheckEmpty=True):
         flag = True
         # 直接循环会出现索引问题
@@ -616,6 +625,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
 
         return flag
         
+    # 连接传输单元，创建连接传输单元的线程
     def connectTransUnit(self):
         self.loginBtn.setText("登录中...")
         self.loginBtn.setEnabled(False)
@@ -640,6 +650,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
                 self.connect_thread.result.connect(self.showMessage)
                 self.connect_thread.start()
 
+    # 弹出提示
     def showMessage(self, message, override=False):
         self.timecount = 3
         self.timer = QTimer()
@@ -680,6 +691,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
 
         self.resetButton()
 
+    # 重置按钮属性
     def resetButton(self):
         if(self.currentTabIndex == 2):
             self.connect_remote_ip.setText("无线连接")
@@ -687,11 +699,13 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
 
         self.loginBtn.setText("登录")
         self.loginBtn.setEnabled(True)
-        
+    
+    # 隐藏提示框
     def showPrompt(self):
         self.message.setHidden(True)
         self.timer.stop()
 
+    # 展示子窗口
     def showDialog(self, status):
         if(status == 1):
             self.MainWindow.hide()
@@ -703,6 +717,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             self.deployPage.setupUi(self.deployDialog)
             self.deployDialog.show()
 
+    # 读adb设备列表
     def readADBDevices(self, toShowMessage=True):
         readDevices = consts.ADB_PATH + "devices"
         res = re.split("\t|\n", subprocess.getoutput(readDevices))[1:]
@@ -735,6 +750,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         
         return deviceList
     
+    # 打开adb设备远程端口
     def openADBRemotePort(self):
         if(self.device_id.currentText() == ""):
             self.showMessage("设备列表为空，请先连接并读取设备！")
@@ -747,6 +763,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         else:
             self.showMessage(f"设备{self.device_id.currentText()}已开启远程端口失败，请重试、检查设备连接或更换端口！")
 
+    # 连接远程adb设备
     def connectRemoteDeviceByADB(self):
         if(self.checkInput()):
             self.connect_remote_ip.setText("连接中...")

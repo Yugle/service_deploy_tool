@@ -9,6 +9,7 @@ from transUnit_edit import *
 from widgets.widgets import *
 import consts
 
+# 上传文件线程
 class UploadFileAndDeployThread(QtCore.QThread):
     result = QtCore.pyqtSignal(dict)
 
@@ -28,6 +29,7 @@ class UploadFileAndDeployThread(QtCore.QThread):
         except Exception as e:
             self.result.emit({"message": str(e), "type": 0})
 
+# 提交后执行动作线程
 class SubmitThread(QtCore.QThread):
     result = QtCore.pyqtSignal(dict)
 
@@ -49,7 +51,8 @@ class SubmitThread(QtCore.QThread):
         # self.client.submit(self.service, self.actions)
         # message = {"message": "部署成功！", "type": 0}
         # self.result.emit(message)
-    
+
+# 读服务信息线程
 class GetInformationThread(QtCore.QThread):
     result = QtCore.pyqtSignal(dict)
 
@@ -69,6 +72,7 @@ class GetInformationThread(QtCore.QThread):
             self.result.emit({"error":"读取失败！"})
             print(str(e))
 
+# 读log线程
 class ReadLogThread(QtCore.QThread):
     result = QtCore.pyqtSignal(str)
 
@@ -95,7 +99,7 @@ class Ui_Deploy(object):
         self.protocol = protocol
         self.protocol_name = ["SSH", "Telnet", "ADB"]
         self.isThreadCreated = False
-        self.actions = {}
+        self.actions = {} # 记录修改动作
         self.service = 0
 
     def setupUi(self, Deploy):
@@ -174,6 +178,23 @@ class Ui_Deploy(object):
 "        color:white;\n"
 "}")
         self.service_2.setObjectName("service_2")
+        self.service_3 = QtWidgets.QPushButton(Deploy)
+        self.service_3.setGeometry(QtCore.QRect(0, 180, 181, 51))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(10)
+        self.service_3.setFont(font)
+        self.service_3.setStyleSheet("QPushButton{\n"
+"        background-color:transparent;\n"
+"        color:black;\n"
+"        text-align:left;\n"
+"        border:0px solid white;\n"
+"}\n"
+"QPushButton:hover{\n"
+"        background-color:#87CEFA;\n"
+"        color:white;\n"
+"}")
+        self.service_3.setObjectName("service_3")
         self.groupBox = QtWidgets.QGroupBox(Deploy)
         self.groupBox.setGeometry(QtCore.QRect(180, 0, 621, 681))
         self.groupBox.setStyleSheet("background-color:white;")
@@ -537,7 +558,7 @@ class Ui_Deploy(object):
         Deploy.setWindowTitle(_translate("Deploy", "传输单元服务部署工具"))
         self.back.setText(_translate("Deploy", " 返回"))
         self.service_1.setText(_translate("Deploy", "        可视化诊断服务"))
-        self.service_2.setText(_translate("Deploy", "        sessiongo"))
+        self.service_2.setText(_translate("Deploy", "        振动文件上传服务"))
         self.label_19.setText(_translate("Deploy", "启动参数："))
         self.label_13.setText(_translate("Deploy", "配置信息："))
         self.alter_conf.setText(_translate("Deploy", "修改"))
@@ -557,10 +578,12 @@ class Ui_Deploy(object):
         self.label.setText(_translate("Deploy", consts.SERVICE_NAME[self.service]))
         self.submit.setText(_translate("Deploy", "提交并重启服务"))
 
+        # 初始化服务名称，链接服务切换动作
         self.service_name.setText(consts.SERVICES[self.service])
         self.service_1.clicked.connect(lambda :self.changeService(0))
         self.service_2.clicked.connect(lambda :self.changeService(1))
 
+        # 获取服务信息
         self.getInfo()
 
         self.deploy.clicked.connect(self.chooseFile)
@@ -570,14 +593,13 @@ class Ui_Deploy(object):
         self.message.setMinimumHeight(30)
         self.showMessage({"message": "登录成功！", "type": 0})
 
+        # 修改参数
         self.alter_conf.clicked.connect(self.alterConf)
         self.service_conf.returnPressed.connect(self.alterConf)
         # self.service_conf.focus_out.connect(self.focusOut)
         # self.responseToAlterConf = True
 
         self.log_path.clicked.connect(self.readLog)
-        # self.log_path.AutoResizeColumns()
-        # self.log_path.adjustSize()
         self.log_path.setMaximumWidth(401)
 
         self.logo_label.double_clicked.connect(self.showVersion)
@@ -589,16 +611,17 @@ class Ui_Deploy(object):
 
         # self.isThreadCreated = True
 
+        # 未加载出信息前隐藏按钮
         self.alter_conf.hide()
         self.alter_profile.hide()
-
-        self.widgets = locals()
 
     def showVersion(self):
         QtWidgets.QMessageBox.information(self.childDialog,
                                                '传输单元服务部署工具',
                                                f"版本：{consts.VERSION}\n\n苏州德姆斯信息技术有限公司出品",
                                                QtWidgets.QMessageBox.Yes)
+
+    # 定义服务切换时动作
     def changeService(self, service):
         self.service = service
         self.actions = {}
@@ -635,11 +658,13 @@ class Ui_Deploy(object):
         self.hideInfo()
         self.getInfo()
 
+    # 获取服务信息
     def getInfo(self, showMessage=True):
         self.get_info = GetInformationThread(self.client, self.service, showMessage)
         self.get_info.result.connect(self.showInfo)
         self.get_info.start()
 
+    # 服务切换清空信息
     def hideInfo(self):
         self.message.hide()
         self.alter_conf.hide()
@@ -660,6 +685,7 @@ class Ui_Deploy(object):
         log_list.setStringList(self.log_path_list)
         self.log_path.setModel(log_list)
 
+    # 展示服务信息
     def showInfo(self, information):
         # 断开button的所有信号连接，否则当多次showInfo导致多次连接槽函数时，点击一次会执行多次槽函数
         try:
@@ -720,11 +746,13 @@ class Ui_Deploy(object):
         if(information["showMessage"]):
             self.showMessage({"message":"加载成功！", "type":0})
 
+    # 定义服务不存在时动作
     def serviceNotExist(self):
         self.label.setText(consts.SERVICE_NAME[self.service] + " ⚠️")
         self.showMessage({"message":"服务未部署", "type":0})
         self.submit.setText("部 署")
 
+    # 调用选择文件对话框
     def chooseFile(self):
         self.filePath = QFileDialog.getOpenFileName(None, "选择服务部署文件", "c:\\", "Service File(*.tar)")[0]
         if(self.protocol == 1):
@@ -733,6 +761,7 @@ class Ui_Deploy(object):
 
         self.uploadFile(self.filePath, 0)
 
+    # 上传文件
     def uploadFile(self, filePath, type):
         filename = re.split(r"[/|\\]", filePath)[-1]
         self.actions[type] = filename
@@ -756,6 +785,7 @@ class Ui_Deploy(object):
             self.deploy.setText("上传部署文件")
             self.deploy.setEnabled(True)
 
+    # 定义修改启动参数的按钮和输入框动作
     def alterConf(self):
         if(self.alter_conf.text() == "修改"):
             self.alter_conf.setText("保存")
@@ -767,6 +797,7 @@ class Ui_Deploy(object):
             self.service_conf.setStyleSheet("border:transparent;")
             self.service_conf.setReadOnly(True)
 
+    # 消息框
     def showMessage(self, messageDict, time=3):
         self.timecount = time
         self.timer = QTimer()
@@ -817,6 +848,7 @@ class Ui_Deploy(object):
         self.message.setHidden(True)
         self.timer.stop()
 
+    # 返回登录页面
     def backToMainWindow(self):
         if(self.isThreadCreated == True):
             self.upload_thread.quit()
@@ -831,6 +863,7 @@ class Ui_Deploy(object):
             pass
         # WindowsControl.backToMainWindow(self.mainWindow)
 
+    # 展示信息窗口，用于编辑profile或展示log
     def showTextEdit(self, file_path, editadle=True):
         if(Path(consts.CACHE + file_path).is_file()):
             # 子窗口要加self，否则一弹出就会被收回
@@ -850,20 +883,24 @@ class Ui_Deploy(object):
                 else:
                     self.showMessage({"message": "Json格式错误，配置文件已回退，请重新修改！", "type": 1})
 
+    # 读取log
     def readLog(self, index):
         self.showMessage({"message":"加载中...", "type": 2}, time=1.5)
         self.read_log = ReadLogThread(self.client, self.log_path_list[index.row()])
         self.read_log.result.connect(self.showLog)
         self.read_log.start()
 
+    # 展示loh
     def showLog(self, log_name):
         self.read_log.quit()
         self.showTextEdit(log_name, False)
 
+    # 提交修改后刷新信息
     def reGetInfo(self, message):
         self.showMessage(message)
         self.getInfo(False)
 
+    # 提交
     def submitAll(self):
         if(self.isThreadCreated):
             message = {"message": "文件还在上传中，请耐心等待！", "type": 2}
@@ -881,6 +918,7 @@ class Ui_Deploy(object):
             else:
                 self.showMessage({"message": "未执行任何修改！", "type": 2})
 
+    # 窗口退出结束进程
     def closeEvent(self, event):
         if(self.isThreadCreated == True):
             self.upload_thread.quit()
@@ -901,6 +939,7 @@ class DeployDialog(QtWidgets.QDialog):
                                                QtWidgets.QMessageBox.No)
 
         if reply == QtWidgets.QMessageBox.Yes:
+            # 清理临时文件
             try:
                 for profile in consts.SERVICE_PROFILE:
                     os.remove(consts.CACHE + profile.split("/")[-1])

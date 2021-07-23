@@ -26,7 +26,7 @@ if(not os.path.exists(CACHE)):
     os.mkdir(CACHE)
 
 SERVICES = ["transportdiag", "sessiongo"]
-SERVICE_NAME = ["可视化诊断服务", "sessiongo"]
+SERVICE_NAME = ["可视化诊断服务", "振动文件上传服务"]
 
 SERVICE_PROFILE = ["/private/DHMSConf.json", "/private/conf/parser.json"]
 

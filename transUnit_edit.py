@@ -96,6 +96,7 @@ class Ui_edit_file(object):
 
         self.edit_file.updateMember(self.json_edit.toPlainText())
 
+        # 区分可编辑(profile)和不可编辑(log)窗口
         if(self.edit_file.editable):
             self.json_edit.setReadOnly(False)
             self.save.setText(_translate("edit_file", "保存"))
@@ -103,6 +104,7 @@ class Ui_edit_file(object):
             self.save.clicked.connect(self.saveFile)
             self.cancel.clicked.connect(self.backToParentDialog)
 
+    # json格式不正确修改后刷新窗口属性
     def resetStyle(self):
         self.edit_file.setWindowTitle(consts.SERVICE_PROFILE[self.service].split("/")[-1] + "-未保存")
         self.isChanged = True
@@ -111,6 +113,7 @@ class Ui_edit_file(object):
             self.error_message.setText("")
             self.json_edit.setStyleSheet("")
 
+    # 检查json格式是否正确
     def checkJson(self):
         try:
             json.loads(self.json_edit.toPlainText())
@@ -123,6 +126,7 @@ class Ui_edit_file(object):
 
         return False
 
+    # 保存文件
     def saveFile(self):
         print(self.isChanged)
         if(self.isChanged):
@@ -138,6 +142,7 @@ class Ui_edit_file(object):
             self.edit_file.updateMember(self.json_edit.toPlainText(), result=[False, True])
             self.edit_file.close()
 
+    # 关闭窗口
     def backToParentDialog(self):
         self.edit_file.updateMember(self.json_edit.toPlainText(), result=[False, True])
         self.edit_file.close()
@@ -150,10 +155,12 @@ class EditDialog(QtWidgets.QDialog):
         self.result = [False, True] #是否保存，是否取消
         self.editable = editable
 
+    # 更新保存/取消属性
     def updateMember(self, json, result=[False, True]):
         self.json = json
         self.result = result
 
+    # check json
     def checkJson(self):
         try:
             json.loads(self.json)
@@ -161,6 +168,7 @@ class EditDialog(QtWidgets.QDialog):
         except Exception as e:
             return False
 
+    # save file
     def saveFile(self):
         with open(consts.CACHE + consts.SERVICE_PROFILE[self.service].split("/")[-1], "w") as f:
             f.write(self.json)
