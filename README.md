@@ -36,7 +36,7 @@ pyinstaller  --distpath .\out .\pack\transUnit.spec
 
     后进行编译
 
-- 可以使用Inno Setup Compiler安装目录下ISCC.exe进行自动打包
+- 可以使用Inno Setup Compiler安装目录下ISCC.exe进行自动封包
 ```
 ISCC.exe xxx.iss
 ```
