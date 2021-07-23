@@ -18,12 +18,12 @@ pyinstaller  --distpath .\out .\pack\transUnit.spec
 
 - 若需要管理员权限
  
-    - 在[封包脚本](/pack/封包.iss)[Setup]项中加入
+    1. 在[封包脚本](/pack/封包.iss)[Setup]项中加入
     ```
     PrivilegesRequired=admin
     ```  
 
-    - 更改Inno Setup Compiler安装目录下的SetupLdr.e32文件。反编译SetupLdr.e32后，将  
+    2. 更改Inno Setup Compiler安装目录下的SetupLdr.e32文件。反编译SetupLdr.e32后，将  
     ```xml
     <requestedExecutionLevel level="asInvoker" uiAccess="false"/></requestedPrivileges>
     ```  
