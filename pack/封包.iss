@@ -32,6 +32,8 @@ SetupIconFile=C:\Users\Phil\Desktop\transunitservicedeploytool\resource\icon.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
+; 权限提升，否则会报错权限不足
+PrivilegesRequired=admin
 
 [Languages]
 Name: "chinesesimplified"; MessagesFile: "compiler:Languages\ChineseSimplified.isl"
