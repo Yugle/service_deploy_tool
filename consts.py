@@ -23,14 +23,14 @@ PROFILE = CACHE + "DHMSConf.json"
 if(not os.path.exists(CACHE)):
     os.mkdir(CACHE)
 
-SERVICES = ["transportdiag", "sessiongo", "tum_producer"]
-SERVICE_NAME = ["可视化诊断服务", "振动文件上传服务", "数据采集服务"]
+SERVICES = ["transportdiag", "sessiongo", "tum_producer", "tum_controller"]
+SERVICE_NAME = ["可视化诊断服务", "振动文件上传服务", "数据采集服务", "tum_controller"]
 
-SERVICE_PROFILE = ["/private/DHMSConf.json", "/private/conf/parser.json", "/private/conf/parser.json"]
+SERVICE_PROFILE = ["/private/DHMSConf.json", "/private/conf/parser.json", "/private/conf/parser.json", "/private/conf/parser.json"]
 
 TMP_PATH = "/root/temple/"
 SERVICE_PATH = "/system/bin/"
-CONF_PATH = ["/private/", "/private/conf/", "/private/conf/"]
+CONF_PATH = ["/private/", "/private/conf/", "/private/conf/", "/private/conf/"]
 PATH_LIST = [SERVICE_PATH, CONF_PATH]
 
 SHELL = {

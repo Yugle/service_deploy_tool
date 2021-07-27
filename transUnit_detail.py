@@ -112,7 +112,23 @@ class Ui_Deploy(object):
 "        background-color:#87CEFA;\n"
 "        color:white;\n"
 "}")
-        self.service_3.setObjectName("service_3")
+        self.service_4 = QtWidgets.QPushButton(Deploy)
+        self.service_4.setGeometry(QtCore.QRect(0, 230, 181, 51))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(10)
+        self.service_4.setFont(font)
+        self.service_4.setStyleSheet("QPushButton{\n"
+"        background-color:transparent;\n"
+"        color:black;\n"
+"        text-align:left;\n"
+"        border:0px solid white;\n"
+"}\n"
+"QPushButton:hover{\n"
+"        background-color:#87CEFA;\n"
+"        color:white;\n"
+"}")
+        self.service_4.setObjectName("service_4")
         self.groupBox = QtWidgets.QGroupBox(Deploy)
         self.groupBox.setGeometry(QtCore.QRect(180, 0, 621, 681))
         self.groupBox.setStyleSheet("background-color:white;")
@@ -478,6 +494,7 @@ class Ui_Deploy(object):
         self.service_1.setText(_translate("Deploy", f"        {consts.SERVICE_NAME[0]}"))
         self.service_2.setText(_translate("Deploy", f"        {consts.SERVICE_NAME[1]}"))
         self.service_3.setText(_translate("Deploy", f"        {consts.SERVICE_NAME[2]}"))
+        self.service_4.setText(_translate("Deploy", f"        {consts.SERVICE_NAME[3]}"))
         self.label_19.setText(_translate("Deploy", "启动参数："))
         self.label_13.setText(_translate("Deploy", "配置信息："))
         self.alter_conf.setText(_translate("Deploy", "修改"))
@@ -502,6 +519,7 @@ class Ui_Deploy(object):
         self.service_1.clicked.connect(lambda :self.changeService(0))
         self.service_2.clicked.connect(lambda :self.changeService(1))
         self.service_3.clicked.connect(lambda :self.changeService(2))
+        self.service_4.clicked.connect(lambda :self.changeService(3))
 
         # 获取服务信息
         self.getInfo()
