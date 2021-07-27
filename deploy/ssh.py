@@ -165,7 +165,7 @@ class ConnectTransUnitBySSH(object):
 
 	def getLogPath(self, service):
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["find"] + f"/log/{service}*")
-		log_list = re.findall(f"{service}\\S*.log", stdout.read().decode("utf-8"))
+		log_list = re.findall(f"{service}\\S*.log\\S*", stdout.read().decode("utf-8"))
 
 		return log_list
 

@@ -19,6 +19,7 @@ class Ui_Deploy(object):
         self.isThreadCreated = False
         self.actions = {} # 记录修改动作
         self.service = 0
+        self.reading_log = False
 
     def setupUi(self, Deploy):
         self.childDialog = Deploy
@@ -795,8 +796,10 @@ class Ui_Deploy(object):
         self.childDialog.hide()
         self.mainWindow.show()
         try:
-            for profile in consts.SERVICE_PROFILE:
-                os.remove(consts.CACHE + profile.split("/")[-1])
+            for root, dirs, files in os.walk(consts.CACHE):
+                for file in files:
+                    if(file != "cache"):
+                        os.remove(consts.CACHE + file)
         except Exception as e:
             pass
         # WindowsControl.backToMainWindow(self.mainWindow)
@@ -824,14 +827,39 @@ class Ui_Deploy(object):
     # 读取log
     def readLog(self, index):
         self.showMessage({"message":"加载中...", "type": 2}, time=1.5)
-        self.read_log = ReadLogThread(self.client, self.log_path_list[index.row()])
-        self.read_log.result.connect(self.showLog)
-        self.read_log.start()
+
+        log_name = self.log_path_list[index.row()]
+        log_path = consts.CACHE + log_name
+
+        if(os.path.exists(log_path) and os.path.getsize(log_path) > 0 and self.reading_log == False):
+            self.showLog(self.log_path_list[index.row()])
+        else:
+            self.read_log = ReadLogThread(self.client, self.log_path_list[index.row()])
+            self.read_log.result.connect(self.showLog)
+            self.read_log.start()
+            # 多个线程下可能会出现问题
+            self.reading_log = True
 
     # 展示log
     def showLog(self, log_name):
-        self.read_log.quit()
-        self.showTextEdit(log_name, False)
+        if(self.reading_log):
+            self.read_log.quit()
+            self.reading_log = False
+
+        if(re.findall(r"\S*(log.gz)$", log_name) != []):
+            desktop = os.path.join(os.path.expanduser('~'), "Desktop")
+            toFile = QFileDialog.getSaveFileName(None, "另存为", f"{desktop}/{log_name}", "Log File(*.log.gz)")
+            if(toFile[0] != ""):
+                try:
+                    shutil.copy(consts.CACHE+log_name, toFile[0])
+                    self.showMessage({"message": "保存成功！", "type": 0})
+                except Exception as e:
+                    error = str(e)
+                    self.showMessage({"message": "保存失败：" + error, "type": 0})
+            else:
+                self.showMessage({"message": "取消操作！", "type": 0})
+        else:
+            self.showTextEdit(log_name, False)
 
     # 提交修改后刷新信息
     def reGetInfo(self, message):
@@ -879,8 +907,10 @@ class DeployDialog(QtWidgets.QDialog):
         if reply == QtWidgets.QMessageBox.Yes:
             # 清理临时文件
             try:
-                for profile in consts.SERVICE_PROFILE:
-                    os.remove(consts.CACHE + profile.split("/")[-1])
+                for root, dirs, files in os.walk(consts.CACHE):
+                    for file in files:
+                        if(file != "cache"):
+                            os.remove(consts.CACHE + file)
             except Exception as e:
                 pass
 
