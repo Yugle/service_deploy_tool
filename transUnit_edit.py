@@ -1,4 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtCore import Qt
 import consts
 import json
@@ -23,41 +24,37 @@ class Ui_edit_file(object):
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(f"{consts.IMG_PATH}../icon.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         edit_file.setWindowIcon(icon)
-        if(self.edit_file.editable):
-            self.save = QtWidgets.QPushButton(edit_file)
-            self.save.setGeometry(QtCore.QRect(160, 430, 111, 31))
-            font = QtGui.QFont()
-            font.setFamily("微软雅黑")
-            font.setPointSize(11)
-            self.save.setFont(font)
-            self.save.setStyleSheet("QPushButton{\n"
-    "        text-align:center;\n"
-    "        color:white;\n"
-    "        background-color:rgb(0, 91, 171);\n"
-    "}\n"
-    "QPushButton:hover{\n"
-    "        background-color:rgb(24, 91, 171);\n"
-    "}")
-            self.save.setObjectName("save")
-            self.cancel = QtWidgets.QPushButton(edit_file)
-            self.cancel.setGeometry(QtCore.QRect(330, 430, 111, 31))
-            font = QtGui.QFont()
-            font.setFamily("微软雅黑")
-            font.setPointSize(11)
-            self.cancel.setFont(font)
-            self.cancel.setStyleSheet("QPushButton{\n"
-    "        text-align:center;\n"
-    "        color:rgb(6,6,6);\n"
-    "}\n"
-    "QPushButton:hover{A\n"
-    "        background-color:rgb(24, 91, 171);\n"
-    "}")
-            self.cancel.setObjectName("cancel")
+        self.save = QtWidgets.QPushButton(edit_file)
+        self.save.setGeometry(QtCore.QRect(160, 430, 111, 31))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(11)
+        self.save.setFont(font)
+        self.save.setStyleSheet("QPushButton{\n"
+"        text-align:center;\n"
+"        color:white;\n"
+"        background-color:rgb(0, 91, 171);\n"
+"}\n"
+"QPushButton:hover{\n"
+"        background-color:rgb(24, 91, 171);\n"
+"}")
+        self.save.setObjectName("save")
+        self.cancel = QtWidgets.QPushButton(edit_file)
+        self.cancel.setGeometry(QtCore.QRect(330, 430, 111, 31))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(11)
+        self.cancel.setFont(font)
+        self.cancel.setStyleSheet("QPushButton{\n"
+"        text-align:center;\n"
+"        color:rgb(6,6,6);\n"
+"}\n"
+"QPushButton:hover{A\n"
+"        background-color:rgb(24, 91, 171);\n"
+"}")
+        self.cancel.setObjectName("cancel")
         self.json_edit = QtWidgets.QPlainTextEdit(edit_file)
-        if(self.edit_file.editable):
-            self.json_edit.setGeometry(QtCore.QRect(20, 20, 561, 381))
-        else:
-            self.json_edit.setGeometry(QtCore.QRect(20, 20, 561, 431))
+        self.json_edit.setGeometry(QtCore.QRect(20, 20, 561, 381))
         font = QtGui.QFont()
         font.setFamily("Courier")
         font.setPointSize(10)
@@ -78,6 +75,9 @@ class Ui_edit_file(object):
     def retranslateUi(self, edit_file):
         _translate = QtCore.QCoreApplication.translate
         edit_file.setWindowTitle(_translate("edit_file", self.file_path.split("/")[-1]))
+        self.save.setText(_translate("edit_file", "保存"))
+        self.cancel.setText(_translate("edit_file", "取消"))
+
         # self.error_message.setText(_translate("edit_file", "格式错误！"))
         self.json_edit.setReadOnly(True)
 
@@ -103,9 +103,10 @@ class Ui_edit_file(object):
         # 区分可编辑(profile)和不可编辑(log)窗口
         if(self.edit_file.editable):
             self.json_edit.setReadOnly(False)
-            self.save.setText(_translate("edit_file", "保存"))
-            self.cancel.setText(_translate("edit_file", "取消"))
             self.save.clicked.connect(self.saveFile)
+        else:
+            self.save.setText(_translate("edit_file", "保存到本地"))
+            self.save.clicked.connect(self.downloadFile)
             self.cancel.clicked.connect(self.backToParentDialog)
 
     # json格式不正确修改后刷新窗口属性
@@ -149,6 +150,11 @@ class Ui_edit_file(object):
     def backToParentDialog(self):
         self.edit_file.updateMember(self.json_edit.toPlainText(), result=[False, True])
         self.edit_file.close()
+
+    def downloadFile(self):
+        toDir = QFileDialog.getSaveFileUrl()
+        # toDir = QFileDialog.getSaveFileName()
+        print(toDir)
 
 class EditDialog(QtWidgets.QDialog):
     def __init__(self, editable=True):
