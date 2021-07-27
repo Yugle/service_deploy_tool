@@ -151,7 +151,7 @@ class ConnectTransUnitByADB(object):
 	def getLogPath(self, service):
 		shell = consts.SHELL["find"] + f"/log/{service}*"
 		stdout = subprocess.Popen(self.adb_shell + f'"{shell}"', stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
-		log_list = re.findall(f"{service}\\S*.log", stdout)
+		log_list = re.findall(f"{service}\\S*.log\\S*", stdout)
 		# log_list = re.findall(f"/log/{service}\\S+.log", stdout.read().decode("utf-8"))
 
 		return log_list
