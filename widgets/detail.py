@@ -5,7 +5,7 @@ from pathlib import Path
 from deploy.ssh import *
 from deploy.telnet import *
 from deploy.adb import *
-from transUnit_edit import *
+from widgets.edit import *
 from widgets.widgets import *
 from threads.threads import *
 import consts
@@ -23,6 +23,7 @@ class Ui_Deploy(object):
 
     def setupUi(self, Deploy):
         self.childDialog = Deploy
+        # QtCore.Qt.WindowStaysOnTopHint 窗口总在最前
         Deploy.setWindowFlags(Qt.WindowMinMaxButtonsHint | Qt.WindowCloseButtonHint)
         Deploy.setObjectName("Deploy")
         Deploy.resize(800, 660)
@@ -846,7 +847,7 @@ class Ui_Deploy(object):
             self.read_log.quit()
             self.reading_log = False
 
-        if(re.findall(r"\S*(log.gz)$", log_name) != []):
+        if(re.findall(r"\S*log\s*$", log_name) == []):
             desktop = os.path.join(os.path.expanduser('~'), "Desktop")
             toFile = QFileDialog.getSaveFileName(None, "另存为", f"{desktop}/{log_name}", "Log File(*.log.gz)")
             if(toFile[0] != ""):
@@ -897,23 +898,36 @@ class DeployDialog(QtWidgets.QDialog):
         if(event.key() == Qt.Key_Escape):
             pass
 
+    def clearFiles(self):
+        # 清理临时文件
+        try:
+            for root, dirs, files in os.walk(consts.CACHE):
+                for file in files:
+                    if(file != "cache"):
+                        os.remove(consts.CACHE + file)
+        except Exception as e:
+            pass
+
+        subprocess.Popen("taskkill /im adb.exe /f", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+
     def closeEvent(self, event):
-        reply = QtWidgets.QMessageBox.question(self,
-                                               '传输单元服务部署工具',
-                                               "是否要退出程序？",
-                                               QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
-                                               QtWidgets.QMessageBox.No)
+        # self.showNormal()
+        # 判断窗口是否为active，若不为active则可直接接收关闭事件，用于解决覆盖安装时若对话框在运行时安装程序进行关闭仍会跳出messgebox提示
+        if(self.isActiveWindow()):
+            self.showNormal()
+            reply = QtWidgets.QMessageBox.question(self,
+                                                   '传输单元服务部署工具',
+                                                   "是否要退出程序？",
+                                                   QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                                                   QtWidgets.QMessageBox.No)
 
-        if reply == QtWidgets.QMessageBox.Yes:
-            # 清理临时文件
-            try:
-                for root, dirs, files in os.walk(consts.CACHE):
-                    for file in files:
-                        if(file != "cache"):
-                            os.remove(consts.CACHE + file)
-            except Exception as e:
-                pass
-
-            event.accept()
+            if reply == QtWidgets.QMessageBox.Yes:
+                self.clearFiles()
+                event.accept()
+            else:
+                event.ignore()
         else:
-            event.ignore()
+            self.clearFiles()
+            event.accept()
+
+

@@ -5,11 +5,11 @@
 pip install -r requirements.txt
 ```
 ```
-python transUnit_login.py
+python main.py
 ```
 ## 打包
 ```
-pyi-makespec --uac-admin -w -i .\resource\icon.ico --clean .\transUnit_login.py
+pyi-makespec --uac-admin -w -i .\resource\icon.ico --clean .\main.py
 pyinstaller  --distpath .\out .\pack\transUnit.spec
 ```
 ## 封包
@@ -42,6 +42,9 @@ ISCC.exe xxx.iss
 ```
 
 ## 备注
-- 服务文件要求打包为tar包，且tar包与服务文件在文件名上包含所要部署的服务名
-- .log文件支持直接打开；.log.gz无法直接打开，需要下载后解压
-- 无线连接推荐SSH协议，ADB推荐有线连接（由于Telnet协议传输文件稳定性较低、传输单元ADB服务打开无线端口会导致ADB服务直接崩溃，因此两个连接方式暂时无法使用）
+- 服务文件要求打包为tar包，且tar包与服务文件在文件名上包含所要部署的服务名。
+- .log文件支持直接打开；.log.gz无法直接打开，需要下载后解压。
+- 无线连接推荐SSH协议，ADB推荐有线连接。由于Telnet协议传输文件稳定性较低，因此暂时只支持读取信息，并不支持读取log或执行部署动作；传输单元ADB服务打开无线端口会导致ADB服务直接崩溃，ADB无线连接暂时无法使用。
+
+## Release
+[DHMS传输单元部署工具.exe](http://192.168.1.100/download/DHMS_TransUnit/)

@@ -12,7 +12,7 @@ for i in range(2):
     current_path = pathex
 pathex = pathex + "\\"
 
-a = Analysis([pathex + 'transUnit_login.py'],
+a = Analysis([pathex + 'main.py'],
              pathex=[pathex],
              binaries=[],
              datas=[],

@@ -35,14 +35,6 @@ class ConnectTransUnitByADB(object):
 
 		if(type == 1):
 			subprocess.Popen(self.adb_shell + consts.SHELL["dos2unix"] + remoteFilePath + filename, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-
-		# if(type == 0):
-		# 	self.deploy()
-		# else:
-		# 	self.moveFile(filename, type)
-	
-	def deploy(self):
-		pass
 		
 	def disconnect(self):
 		pass

@@ -3,7 +3,7 @@ from PyQt5.QtCore import QTimer, QDateTime
 from deploy.ssh import *
 from deploy.telnet import *
 from deploy.adb import *
-from transUnit_detail import *
+from widgets.detail import *
 from widgets.widgets import *
 from threads.threads import ConnectTransUnitThread
 import re
@@ -29,6 +29,8 @@ class Ui_MainWindow(object):
         self.status = JumpToDialog()
         self.status.isTimeToJump.connect(self.showDialog)
         self.isRemoteDeviceThreadCreated = False
+        # 初始化立即启动adb，以提高adb初次连接速度
+        subprocess.Popen(consts.ADB_PATH + " devices", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
     def setupUi(self, MainWindow):
         self.MainWindow = MainWindow
@@ -746,11 +748,18 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             self.connectRemoteDevice_thread.result.connect(self.showMessage)
             self.connectRemoteDevice_thread.start()
             self.isRemoteDeviceThreadCreated = True
+
+class LoginWindow(QtWidgets.QMainWindow):
+    def closeEvent(self, event):
+        # 软件推出关闭adb进程，解决覆盖安装时adb进程关不掉问题
+        subprocess.Popen("taskkill /im adb.exe /f", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+
+        event.accept()
     
-if __name__ == '__main__':
-    dhms_transunit = QtWidgets.QApplication(sys.argv)
-    myWindow = QtWidgets.QMainWindow()
-    window = Ui_MainWindow()
-    window.setupUi(myWindow)
-    myWindow.show()
-    sys.exit(dhms_transunit.exec_())
+# if __name__ == '__main__':
+#     dhms_transunit = QtWidgets.QApplication(sys.argv)
+#     loginWindow = LoginWindow()
+#     window = Ui_MainWindow()
+#     window.setupUi(loginWindow)
+#     loginWindow.show()
+#     sys.exit(dhms_transunit.exec_())
