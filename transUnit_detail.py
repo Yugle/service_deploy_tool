@@ -846,7 +846,7 @@ class Ui_Deploy(object):
             self.read_log.quit()
             self.reading_log = False
 
-        if(re.findall(r"\S*(log.gz)$", log_name) != []):
+        if(re.findall(r"\S*log\s*$", log_name) == []):
             desktop = os.path.join(os.path.expanduser('~'), "Desktop")
             toFile = QFileDialog.getSaveFileName(None, "另存为", f"{desktop}/{log_name}", "Log File(*.log.gz)")
             if(toFile[0] != ""):
@@ -914,6 +914,7 @@ class DeployDialog(QtWidgets.QDialog):
             except Exception as e:
                 pass
 
+            subprocess.Popen("taskkill /im adb.exe /f", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
             event.accept()
         else:
             event.ignore()
