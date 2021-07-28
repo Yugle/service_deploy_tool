@@ -898,31 +898,36 @@ class DeployDialog(QtWidgets.QDialog):
         if(event.key() == Qt.Key_Escape):
             pass
 
+    def clearFiles(self):
+        # 清理临时文件
+        try:
+            for root, dirs, files in os.walk(consts.CACHE):
+                for file in files:
+                    if(file != "cache"):
+                        os.remove(consts.CACHE + file)
+        except Exception as e:
+            pass
+
+        subprocess.Popen("taskkill /im adb.exe /f", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+
     def closeEvent(self, event):
-        # 关闭窗口暂时置顶操作
-        normal_flags = self.windowFlags()
-        self.setWindowFlags(normal_flags | Qt.WindowStaysOnTopHint)
-        self.showNormal()
-        self.setWindowFlags(normal_flags)
-        self.show()
+        # self.showNormal()
+        # 判断窗口是否为active，若不为active则可直接接收关闭事件，用于解决覆盖安装时若对话框在运行时安装程序进行关闭仍会跳出messgebox提示
+        if(self.isActiveWindow()):
+            self.showNormal()
+            reply = QtWidgets.QMessageBox.question(self,
+                                                   '传输单元服务部署工具',
+                                                   "是否要退出程序？",
+                                                   QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                                                   QtWidgets.QMessageBox.No)
 
-        reply = QtWidgets.QMessageBox.question(self,
-                                               '传输单元服务部署工具',
-                                               "是否要退出程序？",
-                                               QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
-                                               QtWidgets.QMessageBox.No)
-
-        if reply == QtWidgets.QMessageBox.Yes:
-            # 清理临时文件
-            try:
-                for root, dirs, files in os.walk(consts.CACHE):
-                    for file in files:
-                        if(file != "cache"):
-                            os.remove(consts.CACHE + file)
-            except Exception as e:
-                pass
-
-            subprocess.Popen("taskkill /im adb.exe /f", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-            event.accept()
+            if reply == QtWidgets.QMessageBox.Yes:
+                self.clearFiles()
+                event.accept()
+            else:
+                event.ignore()
         else:
-            event.ignore()
+            self.clearFiles()
+            event.accept()
+
+
