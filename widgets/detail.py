@@ -5,7 +5,7 @@ from pathlib import Path
 from deploy.ssh import *
 from deploy.telnet import *
 from deploy.adb import *
-from transUnit_edit import *
+from widgets.edit import *
 from widgets.widgets import *
 from threads.threads import *
 import consts

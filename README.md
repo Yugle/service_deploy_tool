@@ -5,11 +5,11 @@
 pip install -r requirements.txt
 ```
 ```
-python transUnit_login.py
+python main.py
 ```
 ## 打包
 ```
-pyi-makespec --uac-admin -w -i .\resource\icon.ico --clean .\transUnit_login.py
+pyi-makespec --uac-admin -w -i .\resource\icon.ico --clean .\main.py
 pyinstaller  --distpath .\out .\pack\transUnit.spec
 ```
 ## 封包

@@ -3,7 +3,7 @@ from PyQt5.QtCore import QTimer, QDateTime
 from deploy.ssh import *
 from deploy.telnet import *
 from deploy.adb import *
-from transUnit_detail import *
+from widgets.detail import *
 from widgets.widgets import *
 from threads.threads import ConnectTransUnitThread
 import re
@@ -756,10 +756,10 @@ class LoginWindow(QtWidgets.QMainWindow):
 
         event.accept()
     
-if __name__ == '__main__':
-    dhms_transunit = QtWidgets.QApplication(sys.argv)
-    loginWindow = LoginWindow()
-    window = Ui_MainWindow()
-    window.setupUi(loginWindow)
-    loginWindow.show()
-    sys.exit(dhms_transunit.exec_())
+# if __name__ == '__main__':
+#     dhms_transunit = QtWidgets.QApplication(sys.argv)
+#     loginWindow = LoginWindow()
+#     window = Ui_MainWindow()
+#     window.setupUi(loginWindow)
+#     loginWindow.show()
+#     sys.exit(dhms_transunit.exec_())
