@@ -65,7 +65,7 @@ class Ui_Deploy(object):
         self.label_25.setText("")
         self.label_25.setObjectName("label_25")
         self.service_1 = QtWidgets.QPushButton(Deploy)
-        self.service_1.setGeometry(QtCore.QRect(0, 80, 181, 51))
+        self.service_1.setGeometry(QtCore.QRect(0, 80, 181, 50))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(10)
@@ -82,7 +82,7 @@ class Ui_Deploy(object):
 "}")
         self.service_1.setObjectName("service_1")
         self.service_2 = QtWidgets.QPushButton(Deploy)
-        self.service_2.setGeometry(QtCore.QRect(0, 130, 181, 51))
+        self.service_2.setGeometry(QtCore.QRect(0, 130, 181, 50))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(10)
@@ -94,12 +94,12 @@ class Ui_Deploy(object):
 "        border:0px solid white;\n"
 "}\n"
 "QPushButton:hover{\n"
-"        background-color:#87CEFA;\n"
-"        color:white;\n"
+"        background-color:#EAFAFE;\n"
+"        color:black;\n"
 "}")
         self.service_2.setObjectName("service_2")
         self.service_3 = QtWidgets.QPushButton(Deploy)
-        self.service_3.setGeometry(QtCore.QRect(0, 180, 181, 51))
+        self.service_3.setGeometry(QtCore.QRect(0, 180, 181, 50))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(10)
@@ -111,11 +111,11 @@ class Ui_Deploy(object):
 "        border:0px solid white;\n"
 "}\n"
 "QPushButton:hover{\n"
-"        background-color:#87CEFA;\n"
-"        color:white;\n"
+"        background-color:#EAFAFE;\n"
+"        color:black;\n"
 "}")
         self.service_4 = QtWidgets.QPushButton(Deploy)
-        self.service_4.setGeometry(QtCore.QRect(0, 230, 181, 51))
+        self.service_4.setGeometry(QtCore.QRect(0, 230, 181, 50))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(10)
@@ -127,8 +127,8 @@ class Ui_Deploy(object):
 "        border:0px solid white;\n"
 "}\n"
 "QPushButton:hover{\n"
-"        background-color:#87CEFA;\n"
-"        color:white;\n"
+"        background-color:#EAFAFE;\n"
+"        color:black;\n"
 "}")
         self.service_4.setObjectName("service_4")
         self.groupBox = QtWidgets.QGroupBox(Deploy)
@@ -591,8 +591,8 @@ class Ui_Deploy(object):
 "        border:0px solid white;\n"
 "}\n"
 "QPushButton:hover{\n"
-"        background-color:#87CEFA;\n"
-"        color:white;\n"
+"        background-color:#EAFAFE;\n"
+"        color:black;\n"
 "}")
 
         self.hideInfo()
@@ -757,6 +757,9 @@ class Ui_Deploy(object):
                 self.upload_thread.quit()
                 self.isThreadCreated = False
 
+            if("执行中" in self.submit.text()):
+                self.submit.setText("提交并重启服务")
+
         else:
             self.message.setText(" ⚠️ " + message)
             self.message.setStyleSheet("border-radius:2px;background-color:#FFCCC7;")
@@ -777,7 +780,8 @@ class Ui_Deploy(object):
         self.timer.timeout.connect(self.showPrompt)
         self.timer.start(self.timecount*1000)
 
-        self.submit.setText("提交并重启服务")
+        if("⚠️" not in self.label.text()):
+            self.submit.setText("提交并重启服务")
         self.submit.setEnabled(True)
 
         if(type == 0 and message != "文件上传中，请耐心等待！"):
@@ -849,7 +853,7 @@ class Ui_Deploy(object):
 
         if(re.findall(r"\S*log\s*$", log_name) == []):
             desktop = os.path.join(os.path.expanduser('~'), "Desktop")
-            toFile = QFileDialog.getSaveFileName(None, "另存为", f"{desktop}/{log_name}", "Log File(*.log.gz)")
+            toFile = QFileDialog.getSaveFileName(None, "另存为", f"{desktop}/{log_name}", "Log File(*.*)")
             if(toFile[0] != ""):
                 try:
                     shutil.copy(consts.CACHE+log_name, toFile[0])
