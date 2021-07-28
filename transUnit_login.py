@@ -751,6 +751,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
 
 class LoginWindow(QtWidgets.QMainWindow):
     def closeEvent(self, event):
+        # 软件推出关闭adb进程，解决覆盖安装时adb进程关不掉问题
         subprocess.Popen("taskkill /im adb.exe /f", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
         event.accept()
