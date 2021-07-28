@@ -23,6 +23,7 @@ class Ui_Deploy(object):
 
     def setupUi(self, Deploy):
         self.childDialog = Deploy
+        # QtCore.Qt.WindowStaysOnTopHint 窗口总在最前
         Deploy.setWindowFlags(Qt.WindowMinMaxButtonsHint | Qt.WindowCloseButtonHint)
         Deploy.setObjectName("Deploy")
         Deploy.resize(800, 660)
@@ -898,6 +899,13 @@ class DeployDialog(QtWidgets.QDialog):
             pass
 
     def closeEvent(self, event):
+        # 关闭窗口暂时置顶操作
+        normal_flags = self.windowFlags()
+        self.setWindowFlags(normal_flags | Qt.WindowStaysOnTopHint)
+        self.showNormal()
+        self.setWindowFlags(normal_flags)
+        self.show()
+
         reply = QtWidgets.QMessageBox.question(self,
                                                '传输单元服务部署工具',
                                                "是否要退出程序？",
