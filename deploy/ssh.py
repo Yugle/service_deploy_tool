@@ -44,11 +44,14 @@ class ConnectTransUnitBySSH(object):
 		sftp_client.put(localFilePath, remoteFilePath + filename, confirm=True)
 		sftp_client.close()
 
-		if(type == 1):
+		if(type != 0):
 			stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["dos2unix"] + remoteFilePath + filename)
 			error = stderr.read().decode()
 			if(error != ""):
 				raise Exception(error)
+
+			if(type == 2):
+				self.updateDaemon()
 
 	def deploy(self):
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["ls"])
@@ -101,13 +104,14 @@ class ConnectTransUnitBySSH(object):
 		# information["service_profile"] = self.getServiceProfile()
 		information["service_profile"] = consts.SERVICE_PROFILE[service]
 		# information["service_daemon"] = self.getServiceDaemon()
-		information["service_daemon"] = "/private/daemon.ini"
+		information["service_daemon"] = "/etc/dhms_conf.json"
 		# information["service_conf"] = self.getServiceConf()
 		information["service_conf"] = "--help"
 		information["service_runtime"] = self.getRuntime(self.service)
 		information["disk_available"] = self.getDiskAvailableSpace()
 		information["log_path"] = self.getLogPath(self.service)
 		self.readAndSaveFile(information["service_profile"])
+		self.readAndSaveFile(information["service_daemon"])
 
 		return information
 
@@ -201,6 +205,14 @@ class ConnectTransUnitBySSH(object):
 			if(error != ""):
 				raise Exception(error)
 
+	def updateDaemon(self):
+		self.moveFile("dhms_conf.json", 0, 2, False)
+		print("重启")
+		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["restart_dhms_daemon"])
+
+		if("error" in stdout):
+			raise Exception(stdout)
+			
 	def restartService(self, service):
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["chmod"] + consts.SERVICE_PATH + service)
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["kill"] + service + " )")

@@ -33,9 +33,11 @@ class ConnectTransUnitByADB(object):
 		if("error" in res):
 			raise Exception(res)
 
-		if(type == 1):
+		if(type != 0):
 			subprocess.Popen(self.adb_shell + consts.SHELL["dos2unix"] + remoteFilePath + filename, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-		
+			if(type == 2):
+				self.updateDaemon()
+
 	def disconnect(self):
 		pass
 
@@ -74,13 +76,14 @@ class ConnectTransUnitByADB(object):
 		# information["service_profile"] = self.getServiceProfile()
 		information["service_profile"] = consts.SERVICE_PROFILE[service]
 		# information["service_daemon"] = self.getServiceDaemon()
-		information["service_daemon"] = "/private/daemon.ini"
+		information["service_daemon"] = "/etc/dhms_conf.json"
 		# information["service_conf"] = self.getServiceConf()
 		information["service_conf"] = "--help"
 		information["service_runtime"] = self.getRuntime(self.service)
 		information["disk_available"] = self.getDiskAvailableSpace()
 		information["log_path"] = self.getLogPath(self.service)
 		self.readAndSaveFile(information["service_profile"])
+		self.readAndSaveFile(information["service_daemon"])
 
 		return information
 
@@ -177,6 +180,13 @@ class ConnectTransUnitByADB(object):
 			stdout = subprocess.Popen(self.adb_shell + consts.SHELL["mv"] + fromFile + " " + toFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 			if("error" in stdout):
 				raise Exception(stdout)
+
+	def updateDaemon(self):
+		self.moveFile("dhms_conf.json", 0, 2, False)
+		print("重启")
+		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["restart_dhms_daemon"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+		if("error" in stdout):
+			raise Exception(stdout)
 
 	def restartService(self, service):
 		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["chmod"] + consts.SERVICE_PATH + service, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")

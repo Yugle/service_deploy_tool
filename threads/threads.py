@@ -47,14 +47,16 @@ class UploadFileAndDeployThread(QtCore.QThread):
         self.type = type
 
     def run(self):
-        try:
-            # filename = re.split(r'[/|\\]', localFilePath)[-1]
-            self.client.uploadFile(self.localFilePath, self.type)
+        # try:
+        #     # filename = re.split(r'[/|\\]', localFilePath)[-1]
+        #     self.client.uploadFile(self.localFilePath, self.type)
 
-            message = {"message": "上传成功！", "type": 0}
-            self.result.emit(message)
-        except Exception as e:
-            self.result.emit({"message": str(e), "type": 0})
+        #     message = {"message": "上传成功！", "type": 0}
+        #     self.result.emit(message)
+        # except Exception as e:
+        #     self.result.emit({"message": str(e), "type": 0})
+
+        self.client.uploadFile(self.localFilePath, self.type)
 
 # 提交后执行动作线程
 class SubmitThread(QtCore.QThread):

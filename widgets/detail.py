@@ -222,6 +222,21 @@ class Ui_Deploy(object):
 "        background-color:rgb(24, 91, 171);\n"
 "}")
         self.alter_profile.setObjectName("alter_profile")
+        self.alter_daemon = QtWidgets.QPushButton(self.groupBox)
+        self.alter_daemon.setGeometry(QtCore.QRect(470, 323, 101, 31))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(10)
+        self.alter_daemon.setFont(font)
+        self.alter_daemon.setStyleSheet("QPushButton{\n"
+"        text-align:center;\n"
+"        color:white;\n"
+"        background-color:rgb(0, 91, 171);\n"
+"}\n"
+"QPushButton:hover{A\n"
+"        background-color:rgb(24, 91, 171);\n"
+"}")
+        self.alter_daemon.setObjectName("alter_daemon")
         self.label_10 = QtWidgets.QLabel(self.groupBox)
         self.label_10.setGeometry(QtCore.QRect(30, 220, 120, 21))
         font = QtGui.QFont()
@@ -503,6 +518,7 @@ class Ui_Deploy(object):
         self.label_17.setText(_translate("Deploy", "守护进程配置："))
         self.label_5.setText(_translate("Deploy", "程序版本："))
         self.alter_profile.setText(_translate("Deploy", "修改配置"))
+        self.alter_daemon.setText(_translate("Deploy", "修改自启动配置"))
         self.label_10.setText(_translate("Deploy", "部署时间："))
         self.label_22.setText(_translate("Deploy", "磁盘空间："))
         self.label_24.setText(_translate("Deploy", "log文件："))
@@ -554,6 +570,7 @@ class Ui_Deploy(object):
         # 未加载出信息前隐藏按钮
         self.alter_conf.hide()
         self.alter_profile.hide()
+        self.alter_daemon.hide()
 
     def showVersion(self):
         QtWidgets.QMessageBox.information(self.childDialog,
@@ -609,6 +626,7 @@ class Ui_Deploy(object):
         self.message.hide()
         self.alter_conf.hide()
         self.alter_profile.hide()
+        self.alter_daemon.hide()
 
         self.service_version.setText("")
         self.service_md5.setText("")
@@ -644,6 +662,11 @@ class Ui_Deploy(object):
         disk_available = "/log剩余"+information["disk_available"][0]+"，/usr/bin剩余"+information["disk_available"][1] 
         self.disk_available.setText(disk_available)
 
+        try:
+            self.alter_daemon.disconnect()
+        except Exception as e:
+            pass
+
         if(information["service_md5"] == ""):
             self.serviceNotExist()
             return
@@ -651,6 +674,7 @@ class Ui_Deploy(object):
         self.label.setText(consts.SERVICE_NAME[self.service])
         self.alter_conf.show()
         self.alter_profile.show()
+        self.alter_daemon.show()
 
         self.service_name.setText(information["service_name"])
         self.service_version.setText(information["service_version"])
@@ -679,12 +703,21 @@ class Ui_Deploy(object):
         self.get_info.quit()
 
         if(self.service_profile.text() != ""):
-            filename = re.split(r'[/|\\]', self.service_profile.text())[-1]
+            profile = re.split(r'[/|\\]', self.service_profile.text())[-1]
             # 连接多次后必须disconnect，否则会执行多次槽函数
-            self.alter_profile.clicked.connect(lambda :self.showTextEdit(filename))
+            self.alter_profile.clicked.connect(lambda :self.showTextEdit(profile, True, 1))
+
+        if(self.service_daemon.text() != ""):
+            daemon = re.split(r'[/|\\]', self.service_daemon.text())[-1]
+            # 连接多次后必须disconnect，否则会执行多次槽函数
+            self.alter_daemon.clicked.connect(lambda :self.showTextEdit(daemon, True, 2))
 
         if(information["showMessage"]):
             self.showMessage({"message":"加载成功！", "type":0})
+
+        if(information["service_runtime"] == ""):
+            self.showMessage({"message":"程序未在运行！", "type":0})
+            self.label.setText(consts.SERVICE_NAME[self.service] + " ⚠️")
 
     # 定义服务不存在时动作
     def serviceNotExist(self):
@@ -810,10 +843,10 @@ class Ui_Deploy(object):
         # WindowsControl.backToMainWindow(self.mainWindow)
 
     # 展示信息窗口，用于编辑profile或展示log
-    def showTextEdit(self, file_path, editadle=True):
+    def showTextEdit(self, file_path, editadle, type):
         if(Path(consts.CACHE + file_path).is_file()):
             # 子窗口要加self，否则一弹出就会被收回
-            self.editDialog = EditDialog(editadle)
+            self.editDialog = EditDialog(consts.CACHE + file_path, editadle)
             self.editPage = Ui_edit_file(consts.CACHE + file_path, self.service)
             self.editPage.setupUi(self.editDialog)
             # self.editDialog.show()
@@ -823,7 +856,7 @@ class Ui_Deploy(object):
                 result = self.editDialog.result
                 if(result[0] == True):
                     self.showMessage({"message": "修改成功！", "type": 1})
-                    self.uploadFile(consts.CACHE + file_path, type=1)
+                    self.uploadFile(consts.CACHE + file_path, type=type)
                 elif(result[1] == True):
                     self.showMessage({"message": "配置未执行任何修改！", "type": 1})
                 else:
@@ -864,7 +897,7 @@ class Ui_Deploy(object):
             else:
                 self.showMessage({"message": "取消操作！", "type": 0})
         else:
-            self.showTextEdit(log_name, False)
+            self.showTextEdit(log_name, False, 0)
 
     # 提交修改后刷新信息
     def reGetInfo(self, message):

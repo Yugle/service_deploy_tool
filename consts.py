@@ -31,7 +31,8 @@ SERVICE_PROFILE = ["/private/DHMSConf.json", "/private/conf/parser.json", "/priv
 TMP_PATH = "/root/temple/"
 SERVICE_PATH = "/system/bin/"
 CONF_PATH = ["/private/", "/private/conf/", "/private/conf/", "/private/conf/"]
-PATH_LIST = [SERVICE_PATH, CONF_PATH]
+DAEMON_PROFILE_PATH = "/etc/"
+PATH_LIST = [SERVICE_PATH, CONF_PATH, DAEMON_PROFILE_PATH]
 
 SHELL = {
     "test_login": "test_login",
@@ -52,7 +53,8 @@ SHELL = {
     "dos2unix": "dos2unix ",
     "tar xvf": "tar xvf ",
     "kill": "kill -9 $(pidof ",
-    "chmod": "chmod +x "
+    "chmod": "chmod +x ",
+    "restart_dhms_daemon": "/system/bin/restart_dhms_daemon"
 }
 
 VERSION = "V0.1"

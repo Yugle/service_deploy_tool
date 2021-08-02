@@ -139,9 +139,9 @@ class Ui_edit_file(QtWidgets.QDialog):
     def saveFile(self):
         if(self.isChanged):
             if(self.checkJson()):
-                with open(consts.CACHE + consts.SERVICE_PROFILE[self.service].split("/")[-1], "w") as f:
+                with open(consts.CACHE + self.file_path.split("/")[-1], "w") as f:
                     f.write(self.json_edit.toPlainText())
-                self.edit_file.setWindowTitle(consts.SERVICE_PROFILE[self.service].split("/")[-1])
+                self.edit_file.setWindowTitle(self.file_path.split("/")[-1])
 
                 self.edit_file.updateMember(self.json_edit.toPlainText(), result=[True, True])
 
@@ -177,12 +177,13 @@ class Ui_edit_file(QtWidgets.QDialog):
         self.timer.stop()
 
 class EditDialog(QtWidgets.QDialog):
-    def __init__(self, editable=True):
+    def __init__(self, file_path, editable=True):
         super().__init__()
 
         self.json = ""
         self.result = [False, True] #是否保存，是否取消
         self.editable = editable
+        self.file_path = file_path
 
         self.widgets = []
 
@@ -204,7 +205,7 @@ class EditDialog(QtWidgets.QDialog):
 
     # save file
     def saveFile(self):
-        with open(consts.CACHE + consts.SERVICE_PROFILE[self.service].split("/")[-1], "w") as f:
+        with open(consts.CACHE + self.file_path.split("/")[-1], "w") as f:
             f.write(self.json)
 
     def closeEvent(self, event):
