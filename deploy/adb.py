@@ -179,13 +179,23 @@ class ConnectTransUnitByADB(object):
 				raise Exception(stdout)
 
 	def restartService(self, service):
+		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["chmod"] + consts.SERVICE_PATH + service, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["kill"] + service + " )", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 
 		time.sleep(consts.TELNET_INTERVAL)
-		stdout = subprocess.Popen(self.adb_shell + consts.SERVICE_PATH + service, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 
-		if("error" in stdout):
-			raise Exception(stdout)
+		i = 0
+		for i in range(20):
+			if(self.getRuntime(self.service) != ""):
+				break
+			else:
+				time.sleep(consts.TELNET_INTERVAL)
+
+			if(i == 19):
+				stdout = subprocess.Popen(self.adb_shell + consts.SERVICE_PATH + service, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+
+				if("error" in stdout):
+					raise Exception(stdout)
 
 	def submit(self, service, actions):
 		for action, filename in actions.items():
