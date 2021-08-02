@@ -203,10 +203,11 @@ class ConnectTransUnitBySSH(object):
 
 	def restartService(self, service):
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["kill"] + service + " )")
+		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["chmod"] + consts.SERVICE_PATH + service)
 		
 		time.sleep(consts.TELNET_INTERVAL)
-		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SERVICE_PATH + service)
-		print(stdout.read().decode("utf-8"))
+		# stdin,stdout,stderr = self.ssh_client.exec_command(consts.SERVICE_PATH + service)
+		# print(stdout.read().decode("utf-8"))
 		error = stderr.read().decode("utf-8")
 		if("error" in error):
 			raise Exception(error)

@@ -23,7 +23,7 @@ PROFILE = CACHE + "DHMSConf.json"
 if(not os.path.exists(CACHE)):
     os.mkdir(CACHE)
 
-SERVICES = ["transportdiag", "sessiongo", "tum_producer", "tum_controller"]
+SERVICES = ["visualdiagnosis", "sessiongo", "tum_producer", "tum_controller"]
 SERVICE_NAME = ["可视化诊断服务", "振动文件上传服务", "数据采集服务", "tum_controller"]
 
 SERVICE_PROFILE = ["/private/DHMSConf.json", "/private/conf/parser.json", "/private/conf/parser.json", "/private/conf/parser.json"]
@@ -51,8 +51,8 @@ SHELL = {
     "cp": "cp ",
     "dos2unix": "dos2unix ",
     "tar xvf": "tar xvf ",
-    "kill": "kill -9 $(pidof "
-
+    "kill": "kill -9 $(pidof ",
+    "chmod": "chmod +x "
 }
 
 VERSION = "V0.1"
