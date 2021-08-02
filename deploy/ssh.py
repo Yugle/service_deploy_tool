@@ -202,15 +202,24 @@ class ConnectTransUnitBySSH(object):
 				raise Exception(error)
 
 	def restartService(self, service):
-		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["kill"] + service + " )")
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["chmod"] + consts.SERVICE_PATH + service)
+		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["kill"] + service + " )")
 		
 		time.sleep(consts.TELNET_INTERVAL)
-		# stdin,stdout,stderr = self.ssh_client.exec_command(consts.SERVICE_PATH + service)
-		# print(stdout.read().decode("utf-8"))
-		error = stderr.read().decode("utf-8")
-		if("error" in error):
-			raise Exception(error)
+
+		i = 0
+		for i in range(10):
+			if(self.getRuntime(self.service) != ""):
+				break
+			else:
+				time.sleep(consts.TELNET_INTERVAL)
+
+			if(i == 19):
+				stdin,stdout,stderr = self.ssh_client.exec_command(consts.SERVICE_PATH + service)
+				print(stdout.read().decode("utf-8"))
+				error = stderr.read().decode("utf-8")
+				if("error" in error):
+					raise Exception(error)
 
 	def submit(self, service, actions):
 		for action, filename in actions.items():
