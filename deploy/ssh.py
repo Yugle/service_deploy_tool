@@ -50,9 +50,6 @@ class ConnectTransUnitBySSH(object):
 			if(error != ""):
 				raise Exception(error)
 
-			if(type == 2):
-				self.updateDaemon()
-
 	def deploy(self):
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["ls"])
 		# print(stdout.read().decode())
@@ -103,15 +100,18 @@ class ConnectTransUnitBySSH(object):
 		information["service_version"] = self.getVersion(information["service_path"])
 		# information["service_profile"] = self.getServiceProfile()
 		information["service_profile"] = consts.SERVICE_PROFILE[service]
-		# information["service_daemon"] = self.getServiceDaemon()
-		information["service_daemon"] = "/etc/dhms_conf.json"
-		# information["service_conf"] = self.getServiceConf()
 		information["service_conf"] = "--help"
 		information["service_runtime"] = self.getRuntime(self.service)
 		information["disk_available"] = self.getDiskAvailableSpace()
 		information["log_path"] = self.getLogPath(self.service)
 		self.readAndSaveFile(information["service_profile"])
-		self.readAndSaveFile(information["service_daemon"])
+		try:
+			information["service_daemon"] = "/etc/dhms_conf.json"
+			self.readAndSaveFile(information["service_daemon"])
+		except Exception as e:
+			information["service_daemon"] = ""
+
+		self.information = information
 
 		return information
 
@@ -206,32 +206,49 @@ class ConnectTransUnitBySSH(object):
 				raise Exception(error)
 
 	def updateDaemon(self):
-		self.moveFile("dhms_conf.json", 0, 2, False)
-		print("重启")
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["restart_dhms_daemon"])
 
 		if("error" in stdout):
 			raise Exception(stdout)
+
+		if(not self.checkServiceAlive(self.service)):
+			self.restartServiceByShell(self.service)
 			
-	def restartService(self, service):
+	def restartService(self, service, actions):
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["chmod"] + consts.SERVICE_PATH + service)
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["kill"] + service + " )")
-		
-		time.sleep(consts.TELNET_INTERVAL)
 
+		if(2 in actions.keys()):
+			self.updateDaemon()
+			time.sleep(consts.TELNET_INTERVAL * 5)
+
+		else:
+			time.sleep(consts.TELNET_INTERVAL)
+
+			# 若有dhms_daemon, 则尝试使用daemon启动，否则手动启动
+			if(self.information["service_daemon"] != ""):
+				if(not self.checkServiceAlive(self.service)):
+					self.restartServiceByShell(service)
+			else:
+				self.restartServiceByShell(service)
+
+	def restartServiceByShell(self, service):
+		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SERVICE_PATH + service)
+		print(stdout.read().decode("utf-8"))
+		error = stderr.read().decode("utf-8")
+		if("error" in error):
+			raise Exception(error)
+
+	def checkServiceAlive(self, service):
 		i = 0
-		for i in range(10):
+		for i in range(consts.WAITING_INTERVAL):
+			print("check:", i)
 			if(self.getRuntime(self.service) != ""):
-				break
+				return True
 			else:
 				time.sleep(consts.TELNET_INTERVAL)
 
-			if(i == 19):
-				stdin,stdout,stderr = self.ssh_client.exec_command(consts.SERVICE_PATH + service)
-				print(stdout.read().decode("utf-8"))
-				error = stderr.read().decode("utf-8")
-				if("error" in error):
-					raise Exception(error)
+		return False
 
 	def submit(self, service, actions):
 		for action, filename in actions.items():
@@ -243,7 +260,7 @@ class ConnectTransUnitBySSH(object):
 			else:
 				self.moveFile(filename, service, action, False)
 
-		self.restartService(self.service)
+		self.restartService(self.service, actions)
 
 	def unCompressAndMove(self, service, filename):
 		fromFile = consts.TMP_PATH + filename

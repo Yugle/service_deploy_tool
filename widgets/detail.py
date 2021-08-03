@@ -659,6 +659,8 @@ class Ui_Deploy(object):
         if(information["showMessage"]):
             self.showMessage({"message":"加载中...", "type":1})
 
+        self.daemon_file = information["service_daemon"]
+
         disk_available = "/log剩余"+information["disk_available"][0]+"，/usr/bin剩余"+information["disk_available"][1] 
         self.disk_available.setText(disk_available)
 
@@ -674,7 +676,6 @@ class Ui_Deploy(object):
         self.label.setText(consts.SERVICE_NAME[self.service])
         self.alter_conf.show()
         self.alter_profile.show()
-        self.alter_daemon.show()
 
         self.service_name.setText(information["service_name"])
         self.service_version.setText(information["service_version"])
@@ -708,9 +709,12 @@ class Ui_Deploy(object):
             self.alter_profile.clicked.connect(lambda :self.showTextEdit(profile, True, 1))
 
         if(self.service_daemon.text() != ""):
+            self.alter_daemon.show()
+
             daemon = re.split(r'[/|\\]', self.service_daemon.text())[-1]
             # 连接多次后必须disconnect，否则会执行多次槽函数
             self.alter_daemon.clicked.connect(lambda :self.showTextEdit(daemon, True, 2))
+
 
         if(information["showMessage"]):
             self.showMessage({"message":"加载成功！", "type":0})
@@ -792,6 +796,14 @@ class Ui_Deploy(object):
 
             if("执行中" in self.submit.text()):
                 self.submit.setText("提交并重启服务")
+
+            if("部 署" in self.submit.text()):
+                if(self.daemon_file != ""):
+                    self.service_daemon.setText(self.daemon_file)
+                    self.alter_daemon.show()
+
+                    daemon = re.split(r'[/|\\]', self.service_daemon.text())[-1]
+                    self.alter_daemon.clicked.connect(lambda :self.showTextEdit(daemon, True, 2))
 
         else:
             self.message.setText(" ⚠️ " + message)
@@ -906,6 +918,7 @@ class Ui_Deploy(object):
 
     # 提交
     def submitAll(self):
+        print(self.actions)
         if(self.isThreadCreated):
             message = {"message": "文件还在上传中，请耐心等待！", "type": 2}
             self.showMessage(message)
