@@ -214,6 +214,9 @@ class ConnectTransUnitByADB(object):
 			if(error != ""):
 				raise Exception(error)
 
+			if(not self.checkServiceAlive(self.service)):
+				self.restartServiceByShell(service)
+
 	def restartServiceByShell(self, service):
 		stdout = subprocess.Popen(self.adb_shell + consts.SERVICE_PATH + service, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 
@@ -276,7 +279,7 @@ class ConnectTransUnitByADB(object):
 			return False
 
 	def checkDaemon(self):
-		if(self.service == consts.SERVICES[1]):
+		if(self.service == consts.SERVICES[0]):
 			stdout = subprocess.Popen(self.adb_shell + consts.SHELL["count_process"] + "daemon", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 
 			if("dhms_daemon" in stdout):
@@ -284,8 +287,8 @@ class ConnectTransUnitByADB(object):
 
 				return True
 			else:
-				self.checkDirAndFile(consts.CRON_PATH, "root", True):
-				stdout = subprocess.Popen(self.adb_shell + consts.SHELL["cp"] + consts.SERVICE_PATH + "etc/cron" + CRON_PATH + "root", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+				self.checkDirAndFile(consts.CRON_PATH, "root", True)
+				stdout = subprocess.Popen(self.adb_shell + consts.SHELL["cp"] + consts.SERVICE_PATH + "etc/cron " + consts.CRON_PATH + "root", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 				error = stdout.read().decode()
 				if(error != ""):
 					raise Exception(error)

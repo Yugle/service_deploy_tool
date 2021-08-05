@@ -4,6 +4,7 @@ from PyQt5.QtCore import Qt, QTimer
 import shutil
 import consts
 import json
+import yaml
 import re
 import os
 import time
@@ -85,8 +86,8 @@ class Ui_edit_file(QtWidgets.QDialog):
         self.json_edit.setReadOnly(True)
 
         with open(self.file_path, 'r', encoding = "utf-8") as file:
-            if(self.edit_file.editable):
-                content = json.dumps(json.load(file),indent=2)
+            if(self.edit_file.editable and self.file_path.split(".")[-1] == "json"):
+                    content = json.dumps(json.load(file),indent=2)
             else:
                 content = file.read()
 
@@ -121,15 +122,18 @@ class Ui_edit_file(QtWidgets.QDialog):
             self.json_edit.setStyleSheet("")
 
     # 检查json格式是否正确
-    def checkJson(self):
+    def checkFormat(self):
         try:
-            json.loads(self.json_edit.toPlainText())
+            if(self.file_path.split(".")[-1] == "json"):
+                json.loads(self.json_edit.toPlainText())
+            else:
+                yaml.load(self.json_edit.toPlainText())
 
             return True
         except Exception as e:
             error_line = re.findall(r"\d+", str(e))[0]
             self.error_message.setHidden(False)
-            self.error_message.setText("Json格式错误，请检查第%s行"%error_line)
+            self.error_message.setText("格式错误，请检查第%s行"%error_line)
             self.error_message.setStyleSheet("color:red;")
             self.json_edit.setStyleSheet("border:1px ridge red;")
 
@@ -138,7 +142,7 @@ class Ui_edit_file(QtWidgets.QDialog):
     # 保存文件
     def saveFile(self):
         if(self.isChanged):
-            if(self.checkJson()):
+            if(self.checkFormat()):
                 with open(consts.CACHE + self.file_path.split("/")[-1], "w") as f:
                     f.write(self.json_edit.toPlainText())
                 self.edit_file.setWindowTitle(self.file_path.split("/")[-1])
@@ -196,7 +200,7 @@ class EditDialog(QtWidgets.QDialog):
         self.result = result
 
     # check json
-    def checkJson(self):
+    def checkFormat(self):
         try:
             json.loads(self.json)
             return True
@@ -218,7 +222,7 @@ class EditDialog(QtWidgets.QDialog):
                                                        QtWidgets.QMessageBox.No)
 
                 if reply == QtWidgets.QMessageBox.Yes:
-                    if(self.checkJson()):
+                    if(self.checkFormat()):
                         self.saveFile()
                         self.result = [True, False]
                     else:
