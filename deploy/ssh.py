@@ -218,19 +218,25 @@ class ConnectTransUnitBySSH(object):
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["chmod"] + consts.SERVICE_PATH + service)
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["kill"] + service + " )")
 
-		if(2 in actions.keys()):
-			self.updateDaemon()
-			time.sleep(consts.TELNET_INTERVAL * 5)
+		if(self.checkDaemon):
+			if(2 in actions.keys()):
+				self.updateDaemon()
+				time.sleep(consts.TELNET_INTERVAL * 5)
 
-		else:
-			time.sleep(consts.TELNET_INTERVAL)
-
-			# 若有dhms_daemon, 则尝试使用daemon启动，否则手动启动
-			if(self.information["service_daemon"] != ""):
-				if(not self.checkServiceAlive(self.service)):
-					self.restartServiceByShell(service)
 			else:
-				self.restartServiceByShell(service)
+				time.sleep(consts.TELNET_INTERVAL)
+
+				# 若有dhms_daemon, 则尝试使用daemon启动，否则手动启动
+				if(self.information["service_daemon"] != ""):
+					if(not self.checkServiceAlive(self.service)):
+						self.restartServiceByShell(service)
+				else:
+					self.restartServiceByShell(service)
+		else:
+			stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["restart crond"])
+			error = stderr.read().decode()
+			if(error != ""):
+				raise Exception(error)
 
 	def restartServiceByShell(self, service):
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SERVICE_PATH + service)
@@ -293,3 +299,24 @@ class ConnectTransUnitBySSH(object):
 			return True
 		else:
 			return False
+
+	def checkDaemon(self):
+		if(self.service == consts.SERVICES[1]):
+			stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["count_process"] + "daemon")
+			stdout = stdout.read().decode("utf-8")
+
+			if("dhms_daemon" in stdout):
+				stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["rm -rf"] + "/var/spool/cron/crontabs")
+
+				return True
+			else:
+				self.checkDirAndFile(consts.CRON_PATH, "root", True):
+				stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["cp"] + consts.SERVICE_PATH + "etc/cron" + CRON_PATH + "root")
+				error = stderr.read().decode()
+				if(error != ""):
+					raise Exception(error)
+
+				return False
+		else:
+			return True
+

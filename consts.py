@@ -18,6 +18,9 @@ if("Windows" in platform.platform()):
 else:
     ADB_PATH = "adb "
 
+START_SHELL = WORK_NAMESPACE + "\\lib\\start.sh"
+CRON_FILE = WORK_NAMESPACE + "\\lib\\cron"
+
 CACHE = "./cache/"
 PROFILE = CACHE + "DHMSConf.json"
 if(not os.path.exists(CACHE)):
@@ -26,11 +29,12 @@ if(not os.path.exists(CACHE)):
 SERVICES = ["visualdiagnosis", "sessiongo", "tum_producer", "tum_controller"]
 SERVICE_NAME = ["可视化诊断服务", "振动文件上传服务", "数据采集服务", "tum_controller"]
 
-SERVICE_PROFILE = ["/private/DHMSConf.json", "/private/conf/parser.json", "/private/conf/parser.json", "/private/conf/parser.json"]
+SERVICE_PROFILE = ["/system/bin/etc/visualdiagnosis.yaml", "/private/conf/parser.json", "/private/conf/parser.json", "/private/conf/parser.json"]
 
 TMP_PATH = "/root/temple/"
 SERVICE_PATH = "/system/bin/"
-CONF_PATH = ["/private/", "/private/conf/", "/private/conf/", "/private/conf/"]
+CRON_PATH = "/var/spool/cron/crontabs/"
+CONF_PATH = ["/system/bin/etc/", "/private/conf/", "/private/conf/", "/private/conf/"]
 DAEMON_PROFILE_PATH = "/etc/"
 PATH_LIST = [SERVICE_PATH, CONF_PATH, DAEMON_PROFILE_PATH]
 
@@ -54,7 +58,9 @@ SHELL = {
     "tar xvf": "tar xvf ",
     "kill": "kill -9 $(pidof ",
     "chmod": "chmod +x ",
-    "restart_dhms_daemon": "/system/bin/restart_dhms_daemon"
+    "restart_dhms_daemon": "/system/bin/restart_dhms_daemon",
+    "count_process": "ps -ef | grep -c ",
+    "restart crond": "crond restart"
 }
 
 VERSION = "V0.1"
