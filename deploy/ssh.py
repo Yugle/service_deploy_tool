@@ -83,7 +83,6 @@ class ConnectTransUnitBySSH(object):
 						stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["find"] + toFile + ".bak")
 						error = stderr.read().decode()
 						if(error != ""):
-							print(error)
 							raise Exception("备份源配置文件失败！")
 					else:
 						stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["rm"] + toFile)
@@ -239,21 +238,24 @@ class ConnectTransUnitBySSH(object):
 			if(error != ""):
 				raise Exception(error)
 
-			if(not self.checkServiceAlive(self.service)):
+			if(not self.checkServiceAlive(self.service, 100)):
 				self.restartServiceByShell(service)
 		else:
 			self.restartServiceByShell(service)
 
 	def restartServiceByShell(self, service):
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SERVICE_PATH + service)
-		print(stdout.read().decode("utf-8"))
+
 		error = stderr.read().decode("utf-8")
 		if("error" in error):
-			raise Exception(error)
+			raise Exception("手动重启服务出现错误！请确认程序是否正常运行或检查log！")
 
-	def checkServiceAlive(self, service):
+	def checkServiceAlive(self, service, timeout=0):
 		i = 0
-		for i in range(consts.WAITING_INTERVAL):
+		if(timeout == 0):
+			timeout = consts.WAITING_INTERVAL
+
+		for i in range(timeout):
 			print("check:", i)
 			if(self.getRuntime(self.service) != ""):
 				return True
@@ -317,7 +319,7 @@ class ConnectTransUnitBySSH(object):
 				return 0
 			elif("tum_daemon" in stdout):
 				self.checkDirAndFile(consts.CRON_PATH, "root", True)
-				print(consts.SHELL["cp"] + consts.SERVICE_PATH + "etc/cron" + consts.CRON_PATH + "root")
+
 				stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["cp"] + consts.SERVICE_PATH + "etc/cron " + consts.CRON_PATH + "root")
 				error = stderr.read().decode()
 				if(error != ""):

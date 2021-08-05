@@ -195,7 +195,6 @@ class ConnectTransUnitByADB(object):
 		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["kill"] + service + " )", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		
 		daemon = self.checkDaemon()
-		print(daemon)
 		if(daemon == 0):
 			if(2 in actions.keys()):
 				self.updateDaemon()
@@ -216,7 +215,7 @@ class ConnectTransUnitByADB(object):
 			if("error" in stdout):
 				raise Exception(stdout)
 
-			if(not self.checkServiceAlive(self.service)):
+			if(not self.checkServiceAlive(self.service, 100)):
 				self.restartServiceByShell(service)
 
 		else:
@@ -226,10 +225,13 @@ class ConnectTransUnitByADB(object):
 		stdout = subprocess.Popen(self.adb_shell + consts.SERVICE_PATH + service, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 
 		if("error" in stdout):
-			raise Exception(stdout)
+			raise Exception("手动重启服务出现错误！请确认程序是否正常运行或检查log！")
 
-	def checkServiceAlive(self, service):
+	def checkServiceAlive(self, service, timeout=0):
 		i = 0
+		if(timeout == 0):
+			timeout = consts.WAITING_INTERVAL
+
 		for i in range(consts.WAITING_INTERVAL):
 			if(self.getRuntime(self.service) != ""):
 				return True
@@ -288,7 +290,6 @@ class ConnectTransUnitByADB(object):
 			shell = consts.SHELL["is_process"] + "daemon"
 			stdout = subprocess.Popen(self.adb_shell + f'"{shell}"', stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 
-			print(stdout)
 			if("dhms_daemon" in stdout):
 				stdout = subprocess.Popen(self.adb_shell + consts.SHELL["rm -rf"] + "/var/spool/cron/crontabs", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 
