@@ -59,7 +59,7 @@ SHELL = {
     "kill": "kill -9 $(pidof ",
     "chmod": "chmod +x ",
     "restart_dhms_daemon": "/system/bin/restart_dhms_daemon",
-    "count_process": "ps -ef | grep -c ",
+    "is_process": "ps -ef | grep ",
     "restart crond": "crond restart"
 }
 

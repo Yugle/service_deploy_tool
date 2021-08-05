@@ -194,7 +194,9 @@ class ConnectTransUnitByADB(object):
 		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["chmod"] + consts.SERVICE_PATH + service, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["kill"] + service + " )", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		
-		if(self.checkDaemon()):
+		daemon = self.checkDaemon()
+		print(daemon)
+		if(daemon == 0):
 			if(2 in actions.keys()):
 				self.updateDaemon()
 				time.sleep(consts.TELNET_INTERVAL * 5)
@@ -208,14 +210,17 @@ class ConnectTransUnitByADB(object):
 						self.restartServiceByShell(service)
 				else:
 					self.restartServiceByShell(service)
-		else:
+
+		elif(daemon == 1):
 			stdout = subprocess.Popen(self.adb_shell + consts.SHELL["restart crond"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
-			error = stdout.read().decode()
-			if(error != ""):
-				raise Exception(error)
+			if("error" in stdout):
+				raise Exception(stdout)
 
 			if(not self.checkServiceAlive(self.service)):
 				self.restartServiceByShell(service)
+
+		else:
+			self.restartServiceByShell(service)
 
 	def restartServiceByShell(self, service):
 		stdout = subprocess.Popen(self.adb_shell + consts.SERVICE_PATH + service, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
@@ -280,19 +285,22 @@ class ConnectTransUnitByADB(object):
 
 	def checkDaemon(self):
 		if(self.service == consts.SERVICES[0]):
-			stdout = subprocess.Popen(self.adb_shell + consts.SHELL["count_process"] + "daemon", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+			shell = consts.SHELL["is_process"] + "daemon"
+			stdout = subprocess.Popen(self.adb_shell + f'"{shell}"', stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 
+			print(stdout)
 			if("dhms_daemon" in stdout):
 				stdout = subprocess.Popen(self.adb_shell + consts.SHELL["rm -rf"] + "/var/spool/cron/crontabs", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 
-				return True
-			else:
+				return 0
+			elif("tum_daemon" in stdout):
 				self.checkDirAndFile(consts.CRON_PATH, "root", True)
 				stdout = subprocess.Popen(self.adb_shell + consts.SHELL["cp"] + consts.SERVICE_PATH + "etc/cron " + consts.CRON_PATH + "root", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
-				error = stdout.read().decode()
-				if(error != ""):
-					raise Exception(error)
+				if("error" in stdout):
+					raise Exception(stdout)
 
-				return False
+				return 1
+			else:
+				return 2
 		else:
-			return True
+			return 0

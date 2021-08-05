@@ -218,8 +218,8 @@ class ConnectTransUnitBySSH(object):
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["chmod"] + consts.SERVICE_PATH + service)
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["kill"] + service + " )")
 
-		print("重启")
-		if(self.checkDaemon()):
+		daemon = self.checkDaemon()
+		if(daemon == 0):
 			if(2 in actions.keys()):
 				self.updateDaemon()
 				time.sleep(consts.TELNET_INTERVAL * 5)
@@ -233,7 +233,7 @@ class ConnectTransUnitBySSH(object):
 						self.restartServiceByShell(service)
 				else:
 					self.restartServiceByShell(service)
-		else:
+		elif(daemon == 1):
 			stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["restart crond"])
 			error = stderr.read().decode()
 			if(error != ""):
@@ -241,6 +241,8 @@ class ConnectTransUnitBySSH(object):
 
 			if(not self.checkServiceAlive(self.service)):
 				self.restartServiceByShell(service)
+		else:
+			self.restartServiceByShell(service)
 
 	def restartServiceByShell(self, service):
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SERVICE_PATH + service)
@@ -306,14 +308,14 @@ class ConnectTransUnitBySSH(object):
 
 	def checkDaemon(self):
 		if(self.service == consts.SERVICES[0]):
-			stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["count_process"] + "daemon")
+			stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["is_process"] + "daemon")
 			stdout = stdout.read().decode("utf-8")
 
 			if("dhms_daemon" in stdout):
 				stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["rm -rf"] + "/var/spool/cron/crontabs")
 
-				return True
-			else:
+				return 0
+			elif("tum_daemon" in stdout):
 				self.checkDirAndFile(consts.CRON_PATH, "root", True)
 				print(consts.SHELL["cp"] + consts.SERVICE_PATH + "etc/cron" + consts.CRON_PATH + "root")
 				stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["cp"] + consts.SERVICE_PATH + "etc/cron " + consts.CRON_PATH + "root")
@@ -321,7 +323,9 @@ class ConnectTransUnitBySSH(object):
 				if(error != ""):
 					raise Exception(error)
 
-				return False
+				return 1
+			else:
+				return 2
 		else:
-			return True
+			return 0
 
