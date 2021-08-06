@@ -1,7 +1,7 @@
 from PyQt5 import QtCore
 import consts
 import re
-from executor.logger import logger
+from executors.logger import logger
 
 # 连接传输单元线程
 class ConnectTransUnitThread(QtCore.QThread):

@@ -3,7 +3,7 @@ import consts
 import time
 import re
 import json
-from executor.logger import logger
+from executors.logger import logger
 
 # class WindowsControl(object):
 #     def jumpToDialog(deployDialog):
@@ -165,7 +165,7 @@ class ConnectTransUnitBySSH(object):
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["df -h"] + "/log")
 		log_available = stdout.readlines()[-1].split(" ")[-4]
 
-		stdin,stdout,stderr = self.ssh_client.exec_command("df -h /usr/bin")
+		stdin,stdout,stderr = self.ssh_client.exec_command("df -h /root")
 		usr_bin_available = stdout.readlines()[-1].split(" ")[-4]
 
 		return [log_available, usr_bin_available]

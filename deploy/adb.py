@@ -3,7 +3,7 @@ import time
 import re
 import subprocess
 import json
-from executor.logger import logger
+from executors.logger import logger
 
 class ConnectTransUnitByADB(object):
 	def __init__(self, device_id, adb_port):
@@ -143,7 +143,7 @@ class ConnectTransUnitByADB(object):
 		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["df -h"] + "/log", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		log_available = stdout.split(" ")[-4]
 
-		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["df -h"] + "/usr/bin", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["df -h"] + "/root", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		usr_bin_available = stdout.split(" ")[-4]
 
 		return [log_available, usr_bin_available]
