@@ -11,6 +11,7 @@ def getResourcePath():
 
 WORK_NAMESPACE = getResourcePath()
 IMG_PATH = "./resource/img/"
+LOG_PATH = WORK_NAMESPACE + "/log/"
 
 if("Windows" in platform.platform()):
     ADB_PATH = WORK_NAMESPACE + "\\lib\\adb\\adb.exe"

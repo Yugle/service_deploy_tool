@@ -3,6 +3,7 @@ import consts
 import time
 import re
 import json
+from executor.logger import logger
 
 # class WindowsControl(object):
 #     def jumpToDialog(deployDialog):
@@ -46,9 +47,10 @@ class ConnectTransUnitBySSH(object):
 
 		if(type != 0):
 			stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["dos2unix"] + remoteFilePath + filename)
-			error = stderr.read().decode()
+			error = stderr.read().decode("utf-8")
 			if(error != ""):
-				raise Exception(error)
+				logger.error(error)
+				raise Exception("上传出现异常，请检查文件是否上传完成或重新上传！")
 
 	def deploy(self):
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["ls"])
@@ -60,12 +62,13 @@ class ConnectTransUnitBySSH(object):
 	def checkDirAndFile(self, dir, filename, bak=False, clear=False):
 		toFile = dir + filename
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["cd"] + dir)
-		error = stderr.read().decode()
+		error = stderr.read().decode("utf-8")
 
 		if(error != ''):
 			if("No such file or directory" in error):
 				stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["mkdir -p"] + dir)
 				if("No space left on device" in stderr.read().decode("utf-8")):
+					logger.error(stderr.read().decode("utf-8"))
 					raise Exception("该传输单元/root目录已满，请清理后再操作！")
 			else:
 				raise Exception(error)
@@ -81,8 +84,9 @@ class ConnectTransUnitBySSH(object):
 						stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["cp"] + toFile + " " + toFile + ".bak")
 						time.sleep(consts.TELNET_INTERVAL)
 						stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["find"] + toFile + ".bak")
-						error = stderr.read().decode()
+						error = stderr.read().decode("utf-8")
 						if(error != ""):
+							logger.error(error)
 							raise Exception("备份源配置文件失败！")
 					else:
 						stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["rm"] + toFile)
@@ -202,13 +206,15 @@ class ConnectTransUnitBySSH(object):
 			stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["mv"] + fromFile + " " + toFile)
 			error = stderr.read().decode("utf-8")
 			if(error != ""):
-				raise Exception(error)
+				logger.error(error)
+				raise Exception("出现错误，请确认是否部署或运行并检查Log文件！")
 
 	def updateDaemon(self):
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["restart_dhms_daemon"])
 
 		if("error" in stdout):
-			raise Exception(stdout)
+			logger.error(error)
+			raise Exception("出现错误，请确认是否部署或运行并检查Log文件！")
 
 		if(not self.checkServiceAlive(self.service)):
 			self.restartServiceByShell(self.service)
@@ -232,23 +238,32 @@ class ConnectTransUnitBySSH(object):
 						self.restartServiceByShell(service)
 				else:
 					self.restartServiceByShell(service)
+
 		elif(daemon == 1):
 			stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["restart crond"])
 			error = stderr.read().decode()
 			if(error != ""):
+				logger.error(error)
 				raise Exception(error)
 
 			if(not self.checkServiceAlive(self.service, 100)):
 				self.restartServiceByShell(service)
+
 		else:
 			self.restartServiceByShell(service)
 
 	def restartServiceByShell(self, service):
-		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SERVICE_PATH + service)
+		print("重启")
+		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SERVICE_PATH + service + " &")
 
 		error = stderr.read().decode("utf-8")
 		if("error" in error):
-			raise Exception("手动重启服务出现错误！请确认程序是否正常运行或检查log！")
+			if('"level":"error","content":"cpu_linux.go:29 open cpuacct.usage_percpu: no such file or directory"' not in error or len(re.findall(r"error", error)) >= 2):
+				logger.error(error)
+				raise Exception("手动重启服务出现错误！请确认程序是否正常运行或检查log！")
+
+		if(not self.checkServiceAlive(self.service)):
+			raise Exception("读取超时，请刷新页面或确认程序是否运行！")
 
 	def checkServiceAlive(self, service, timeout=0):
 		i = 0
@@ -323,7 +338,8 @@ class ConnectTransUnitBySSH(object):
 				stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["cp"] + consts.SERVICE_PATH + "etc/cron " + consts.CRON_PATH + "root")
 				error = stderr.read().decode()
 				if(error != ""):
-					raise Exception(error)
+					logger.error(error)
+					raise Exception("出现错误，请确认是否部署或运行并检查Log文件！")
 
 				return 1
 			else:

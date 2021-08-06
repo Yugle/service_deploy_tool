@@ -3,6 +3,7 @@ import time
 import re
 import subprocess
 import json
+from executor.logger import logger
 
 class ConnectTransUnitByADB(object):
 	def __init__(self, device_id, adb_port):
@@ -31,7 +32,8 @@ class ConnectTransUnitByADB(object):
 		pushFile = consts.ADB_PATH + "-s " + self.device_id + " push " + f'"{localFilePath}"' + " " + remoteFilePath + localFilePath.split("/")[-1]
 		res = subprocess.Popen(pushFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		if("error" in res):
-			raise Exception(res)
+			logger.error(str(res))
+			raise Exception("上传出现异常，请检查文件是否上传完成或重新上传！")
 
 		if(type != 0):
 			subprocess.Popen(self.adb_shell + consts.SHELL["dos2unix"] + remoteFilePath + filename, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
@@ -46,6 +48,7 @@ class ConnectTransUnitByADB(object):
 		if("No such file or directory" in res):
 			stdout = subprocess.Popen(self.adb_shell + consts.SHELL["mkdir -p"] + dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 			if("No space left on device" in stdout):
+				logger.error(stdout)
 				raise Exception("该传输单元/root目录已满，请清理后再操作！")
 		else:
 			if(clear):
@@ -57,6 +60,7 @@ class ConnectTransUnitByADB(object):
 						subprocess.Popen(self.adb_shell + consts.SHELL["cp"] + toFile + " " + toFile + ".bak", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 						stdout = subprocess.Popen(self.adb_shell + consts.SHELL["find"] + toFile + ".bak", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 						if("No such file or directory" in stdout):
+							logger.error(stdout)
 							raise Exception("备份源配置文件失败！")
 					else:
 						subprocess.Popen(self.adb_shell + consts.SHELL["rm"] + toFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
@@ -180,12 +184,14 @@ class ConnectTransUnitByADB(object):
 
 			stdout = subprocess.Popen(self.adb_shell + consts.SHELL["mv"] + fromFile + " " + toFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 			if("error" in stdout):
-				raise Exception(stdout)
+				logger.error(stdout)
+				raise Exception("出现错误，请确认是否部署或运行并检查Log文件！")
 
 	def updateDaemon(self):
 		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["restart_dhms_daemon"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		if("error" in stdout):
-			raise Exception(stdout)
+			logger.error(stdout)
+			raise Exception("重启daemon出现错误，请确认是否部署或运行并检查Log文件！")
 
 		if(not self.checkServiceAlive(self.service)):
 			self.restartServiceByShell(self.service)
@@ -213,6 +219,7 @@ class ConnectTransUnitByADB(object):
 		elif(daemon == 1):
 			stdout = subprocess.Popen(self.adb_shell + consts.SHELL["restart crond"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 			if("error" in stdout):
+				logger.error(stdout)
 				raise Exception(stdout)
 
 			if(not self.checkServiceAlive(self.service, 100)):
@@ -225,7 +232,12 @@ class ConnectTransUnitByADB(object):
 		stdout = subprocess.Popen(self.adb_shell + consts.SERVICE_PATH + service, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 
 		if("error" in stdout):
-			raise Exception("手动重启服务出现错误！请确认程序是否正常运行或检查log！")
+			if('"level":"error","content":"cpu_linux.go:29 open cpuacct.usage_percpu: no such file or directory"' not in stdout or len(re.findall(r"error", stdout)) >= 2):
+				logger.error(stdout)
+				raise Exception("手动重启服务出现错误！请确认程序是否正常运行或检查log！")
+
+		if(not self.checkServiceAlive(self.service)):
+			raise Exception("读取超时，请刷新页面或确认程序是否运行！")
 
 	def checkServiceAlive(self, service, timeout=0):
 		i = 0
@@ -298,7 +310,8 @@ class ConnectTransUnitByADB(object):
 				self.checkDirAndFile(consts.CRON_PATH, "root", True)
 				stdout = subprocess.Popen(self.adb_shell + consts.SHELL["cp"] + consts.SERVICE_PATH + "etc/cron " + consts.CRON_PATH + "root", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 				if("error" in stdout):
-					raise Exception(stdout)
+					logger.error(stdout)
+					raise Exception("出现错误，请确认是否部署或运行并检查Log文件！")
 
 				return 1
 			else:
