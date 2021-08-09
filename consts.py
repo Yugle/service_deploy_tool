@@ -20,7 +20,6 @@ else:
     ADB_PATH = "adb "
 
 START_SHELL = WORK_NAMESPACE + "\\lib\\start.sh"
-CRON_FILE = WORK_NAMESPACE + "\\lib\\cron"
 
 CACHE = "./cache/"
 PROFILE = CACHE + "DHMSConf.json"
@@ -34,7 +33,9 @@ SERVICE_PROFILE = ["/system/bin/etc/visualdiagnosis.yaml", "/private/conf/parser
 
 TMP_PATH = "/data/temple/"
 SERVICE_PATH = "/system/bin/"
-CRON_PATH = "/var/spool/cron/crontabs/"
+CRON_PATH = "/etc/crontabs"
+# CRON_FILE = "/etc/crontabs/root"
+
 CONF_PATH = ["/system/bin/etc/", "/private/conf/", "/private/conf/", "/private/conf/"]
 DAEMON_PROFILE_PATH = "/etc/"
 PATH_LIST = [SERVICE_PATH, CONF_PATH, DAEMON_PROFILE_PATH]

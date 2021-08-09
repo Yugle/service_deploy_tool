@@ -329,9 +329,8 @@ class ConnectTransUnitBySSH(object):
 			stdout = stdout.read().decode("utf-8")
 
 			if("dhms_daemon" in stdout):
-				stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["rm -rf"] + "/var/spool/cron/crontabs")
-
 				return 0
+
 			elif("tum_daemon" in stdout):
 				self.checkDirAndFile(consts.CRON_PATH, "root", True)
 
