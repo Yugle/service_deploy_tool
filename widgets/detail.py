@@ -661,7 +661,7 @@ class Ui_Deploy(object):
 
         self.daemon_file = information["service_daemon"]
 
-        disk_available = "/log剩余"+information["disk_available"][0]+"，/root剩余"+information["disk_available"][1] 
+        disk_available = "/log剩余"+information["disk_available"][0]+"，/system剩余"+information["disk_available"][1] 
         self.disk_available.setText(disk_available)
 
         try:

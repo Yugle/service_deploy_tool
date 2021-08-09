@@ -32,7 +32,7 @@ SERVICE_NAME = ["可视化诊断服务", "振动文件上传服务", "数据采�
 
 SERVICE_PROFILE = ["/system/bin/etc/visualdiagnosis.yaml", "/private/conf/parser.json", "/private/conf/parser.json", "/private/conf/parser.json"]
 
-TMP_PATH = "/root/temple/"
+TMP_PATH = "/data/temple/"
 SERVICE_PATH = "/system/bin/"
 CRON_PATH = "/var/spool/cron/crontabs/"
 CONF_PATH = ["/system/bin/etc/", "/private/conf/", "/private/conf/", "/private/conf/"]

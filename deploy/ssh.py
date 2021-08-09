@@ -69,7 +69,7 @@ class ConnectTransUnitBySSH(object):
 				stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["mkdir -p"] + dir)
 				if("No space left on device" in stderr.read().decode("utf-8")):
 					logger.error(stderr.read().decode("utf-8"))
-					raise Exception("该传输单元/root目录已满，请清理后再操作！")
+					raise Exception("该传输单元/data目录已满，请清理后再操作！")
 			else:
 				raise Exception(error)
 		else:
@@ -165,7 +165,7 @@ class ConnectTransUnitBySSH(object):
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["df -h"] + "/log")
 		log_available = stdout.readlines()[-1].split(" ")[-4]
 
-		stdin,stdout,stderr = self.ssh_client.exec_command("df -h /root")
+		stdin,stdout,stderr = self.ssh_client.exec_command("df -h /system")
 		usr_bin_available = stdout.readlines()[-1].split(" ")[-4]
 
 		return [log_available, usr_bin_available]

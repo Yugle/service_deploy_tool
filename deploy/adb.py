@@ -49,7 +49,7 @@ class ConnectTransUnitByADB(object):
 			stdout = subprocess.Popen(self.adb_shell + consts.SHELL["mkdir -p"] + dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 			if("No space left on device" in stdout):
 				logger.error(stdout)
-				raise Exception("该传输单元/root目录已满，请清理后再操作！")
+				raise Exception("该传输单元/data目录已满，请清理后再操作！")
 		else:
 			if(clear):
 				res = subprocess.Popen(self.adb_shell + consts.SHELL["rm -rf"] + dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
@@ -143,7 +143,7 @@ class ConnectTransUnitByADB(object):
 		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["df -h"] + "/log", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		log_available = stdout.split(" ")[-4]
 
-		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["df -h"] + "/root", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["df -h"] + "/system", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		usr_bin_available = stdout.split(" ")[-4]
 
 		return [log_available, usr_bin_available]
