@@ -1,6 +1,7 @@
 from PyQt5 import QtCore
 import consts
 import re
+from executors.logger import logger
 
 # 连接传输单元线程
 class ConnectTransUnitThread(QtCore.QThread):
@@ -27,6 +28,8 @@ class ConnectTransUnitThread(QtCore.QThread):
                 self.result.emit("登录成功！")
         except Exception as e:
             e = str(e)
+            logger.error(e)
+
             if(e == "Authentication failed."):
                 e = "账号或密码错误！"
             elif(re.findall("(Unable to connect to port)|(timed out)", e) != []):
@@ -54,7 +57,10 @@ class UploadFileAndDeployThread(QtCore.QThread):
             message = {"message": "上传成功！", "type": 0}
             self.result.emit(message)
         except Exception as e:
+            logger.error(str(e))
             self.result.emit({"message": str(e), "type": 0})
+
+        # self.client.uploadFile(self.localFilePath, self.type)
 
 # 提交后执行动作线程
 class SubmitThread(QtCore.QThread):
@@ -73,6 +79,7 @@ class SubmitThread(QtCore.QThread):
             message = {"message": "操作成功！", "type": 2}
             self.result.emit(message)
         except Exception as e:
+            logger.error(str(e))
             self.result.emit({"message": str(e), "type": 2})
 
         # self.client.submit(self.service, self.actions)
@@ -96,8 +103,8 @@ class GetInformationThread(QtCore.QThread):
             information["showMessage"] = self.showMessage
             self.result.emit(information)
         except Exception as e:
+            logger.error(str(e))
             self.result.emit({"error":"读取失败！"})
-            print(str(e))
 
 # 读log线程
 class ReadLogThread(QtCore.QThread):
@@ -115,4 +122,5 @@ class ReadLogThread(QtCore.QThread):
 
             self.result.emit(self.log_name)
         except Exception as e:
+            logger.error(str(e))
             self.result.emit("读取失败：" + str(e))

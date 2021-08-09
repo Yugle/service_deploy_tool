@@ -3,6 +3,7 @@ import time
 import re
 import subprocess
 import json
+from executors.logger import logger
 
 class ConnectTransUnitByADB(object):
 	def __init__(self, device_id, adb_port):
@@ -31,11 +32,12 @@ class ConnectTransUnitByADB(object):
 		pushFile = consts.ADB_PATH + "-s " + self.device_id + " push " + f'"{localFilePath}"' + " " + remoteFilePath + localFilePath.split("/")[-1]
 		res = subprocess.Popen(pushFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		if("error" in res):
-			raise Exception(res)
+			logger.error(str(res))
+			raise Exception("上传出现异常，请检查文件是否上传完成或重新上传！")
 
-		if(type == 1):
+		if(type != 0):
 			subprocess.Popen(self.adb_shell + consts.SHELL["dos2unix"] + remoteFilePath + filename, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-		
+
 	def disconnect(self):
 		pass
 
@@ -46,6 +48,7 @@ class ConnectTransUnitByADB(object):
 		if("No such file or directory" in res):
 			stdout = subprocess.Popen(self.adb_shell + consts.SHELL["mkdir -p"] + dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 			if("No space left on device" in stdout):
+				logger.error(stdout)
 				raise Exception("该传输单元/root目录已满，请清理后再操作！")
 		else:
 			if(clear):
@@ -57,6 +60,7 @@ class ConnectTransUnitByADB(object):
 						subprocess.Popen(self.adb_shell + consts.SHELL["cp"] + toFile + " " + toFile + ".bak", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 						stdout = subprocess.Popen(self.adb_shell + consts.SHELL["find"] + toFile + ".bak", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 						if("No such file or directory" in stdout):
+							logger.error(stdout)
 							raise Exception("备份源配置文件失败！")
 					else:
 						subprocess.Popen(self.adb_shell + consts.SHELL["rm"] + toFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
@@ -73,14 +77,18 @@ class ConnectTransUnitByADB(object):
 		information["service_version"] = self.getVersion(information["service_path"])
 		# information["service_profile"] = self.getServiceProfile()
 		information["service_profile"] = consts.SERVICE_PROFILE[service]
-		# information["service_daemon"] = self.getServiceDaemon()
-		information["service_daemon"] = "/private/daemon.ini"
-		# information["service_conf"] = self.getServiceConf()
 		information["service_conf"] = "--help"
 		information["service_runtime"] = self.getRuntime(self.service)
 		information["disk_available"] = self.getDiskAvailableSpace()
 		information["log_path"] = self.getLogPath(self.service)
 		self.readAndSaveFile(information["service_profile"])
+		try:
+			information["service_daemon"] = "/etc/dhms_conf.json"
+			self.readAndSaveFile(information["service_daemon"])
+		except Exception as e:
+			information["service_daemon"] = ""
+
+		self.information = information
 
 		return information
 
@@ -135,7 +143,7 @@ class ConnectTransUnitByADB(object):
 		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["df -h"] + "/log", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		log_available = stdout.split(" ")[-4]
 
-		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["df -h"] + "/usr/bin", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["df -h"] + "/root", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		usr_bin_available = stdout.split(" ")[-4]
 
 		return [log_available, usr_bin_available]
@@ -176,26 +184,73 @@ class ConnectTransUnitByADB(object):
 
 			stdout = subprocess.Popen(self.adb_shell + consts.SHELL["mv"] + fromFile + " " + toFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 			if("error" in stdout):
-				raise Exception(stdout)
+				logger.error(stdout)
+				raise Exception("出现错误，请确认是否部署或运行并检查Log文件！")
 
-	def restartService(self, service):
+	def updateDaemon(self):
+		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["restart_dhms_daemon"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+		if("error" in stdout):
+			logger.error(stdout)
+			raise Exception("重启daemon出现错误，请确认是否部署或运行并检查Log文件！")
+
+		if(not self.checkServiceAlive(self.service)):
+			self.restartServiceByShell(self.service)
+
+	def restartService(self, service, actions):
 		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["chmod"] + consts.SERVICE_PATH + service, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["kill"] + service + " )", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+		
+		daemon = self.checkDaemon()
+		if(daemon == 0):
+			if(2 in actions.keys()):
+				self.updateDaemon()
+				time.sleep(consts.TELNET_INTERVAL * 5)
 
-		time.sleep(consts.TELNET_INTERVAL)
+			else:			
+				time.sleep(consts.TELNET_INTERVAL)
 
+				# 若有dhms_daemon, 则尝试使用daemon启动，否则手动启动
+				if(self.information["service_daemon"] != ""):
+					if(not self.checkServiceAlive(self.service)):
+						self.restartServiceByShell(service)
+				else:
+					self.restartServiceByShell(service)
+
+		elif(daemon == 1):
+			stdout = subprocess.Popen(self.adb_shell + consts.SHELL["restart crond"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+			if("error" in stdout):
+				logger.error(stdout)
+				raise Exception(stdout)
+
+			if(not self.checkServiceAlive(self.service, 100)):
+				self.restartServiceByShell(service)
+
+		else:
+			self.restartServiceByShell(service)
+
+	def restartServiceByShell(self, service):
+		stdout = subprocess.Popen(self.adb_shell + consts.SERVICE_PATH + service, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+
+		if("error" in stdout):
+			if('"level":"error","content":"cpu_linux.go:29 open cpuacct.usage_percpu: no such file or directory"' not in stdout or len(re.findall(r"error", stdout)) >= 2):
+				logger.error(stdout)
+				raise Exception("手动重启服务出现错误！请确认程序是否正常运行或检查log！")
+
+		if(not self.checkServiceAlive(self.service)):
+			raise Exception("读取超时，请刷新页面或确认程序是否运行！")
+
+	def checkServiceAlive(self, service, timeout=0):
 		i = 0
-		for i in range(20):
+		if(timeout == 0):
+			timeout = consts.WAITING_INTERVAL
+
+		for i in range(consts.WAITING_INTERVAL):
 			if(self.getRuntime(self.service) != ""):
-				break
+				return True
 			else:
 				time.sleep(consts.TELNET_INTERVAL)
 
-			if(i == 19):
-				stdout = subprocess.Popen(self.adb_shell + consts.SERVICE_PATH + service, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
-
-				if("error" in stdout):
-					raise Exception(stdout)
+		return False
 
 	def submit(self, service, actions):
 		for action, filename in actions.items():
@@ -207,7 +262,7 @@ class ConnectTransUnitByADB(object):
 			else:
 				self.moveFile(filename, service, action, False)
 
-		self.restartService(self.service)
+		self.restartService(self.service, actions)
 
 	def unCompressAndMove(self, service, filename):
 		fromFile = consts.TMP_PATH + filename
@@ -241,3 +296,25 @@ class ConnectTransUnitByADB(object):
 			return True
 		else:
 			return False
+
+	def checkDaemon(self):
+		if(self.service == consts.SERVICES[0]):
+			shell = consts.SHELL["is_process"] + "daemon"
+			stdout = subprocess.Popen(self.adb_shell + f'"{shell}"', stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+
+			if("dhms_daemon" in stdout):
+				stdout = subprocess.Popen(self.adb_shell + consts.SHELL["rm -rf"] + "/var/spool/cron/crontabs", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+
+				return 0
+			elif("tum_daemon" in stdout):
+				self.checkDirAndFile(consts.CRON_PATH, "root", True)
+				stdout = subprocess.Popen(self.adb_shell + consts.SHELL["cp"] + consts.SERVICE_PATH + "etc/cron " + consts.CRON_PATH + "root", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+				if("error" in stdout):
+					logger.error(stdout)
+					raise Exception("出现错误，请确认是否部署或运行并检查Log文件！")
+
+				return 1
+			else:
+				return 2
+		else:
+			return 0

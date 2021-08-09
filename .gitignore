@@ -6,3 +6,4 @@ build
 dist
 todo.py
 pack/*.py
+log
