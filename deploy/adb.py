@@ -166,7 +166,7 @@ class ConnectTransUnitByADB(object):
 	def moveFile(self, filename, service, action, toUncompres=False):
 		fromFile = consts.TMP_PATH + filename
 
-		if(toUncompres):
+		if(toUncompress):
 			self.unCompressAndMove(service, filename)
 		else:
 			if(action == 1):
@@ -177,10 +177,16 @@ class ConnectTransUnitByADB(object):
 				toFile = consts.PATH_LIST[action] + filename
 
 			filename = filename.split("/")
+			if(action == 0 and re.findall(f"^{self.service}", filename[0]) != []):
+				toFile = consts.PATH_LIST[action] + self.service
+
 			if(len(filename) > 1):
 				self.checkDirAndFile(toDir + "/".join(filename[0:-1]), filename[1], True)
 			else:
-				self.checkDirAndFile(toDir, filename[0], True)
+				if(re.findall(f"^{self.service}", filename[0]) != []):
+					self.checkDirAndFile(toDir, self.service, True)
+				else:
+					self.checkDirAndFile(toDir, filename[0], True)
 
 			stdout = subprocess.Popen(self.adb_shell + consts.SHELL["mv"] + fromFile + " " + toFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 			if("error" in stdout):
