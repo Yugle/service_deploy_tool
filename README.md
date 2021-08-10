@@ -45,8 +45,8 @@ ISCC.exe xxx.iss
 - 服务文件要求打包为tar包，且tar包与服务文件在文件名上包含所要部署的服务名。
 - .log文件支持直接打开；.gz或.tar等压缩文件无法直接打开，需要下载后解压。
 - 无线连接推荐SSH协议，ADB推荐有线连接。由于Telnet协议传输文件稳定性较低，因此暂时只支持读取信息，并不支持读取log或执行部署动作；传输单元ADB服务打开无线端口会导致ADB服务直接崩溃，ADB无线连接暂时无法使用。
-- 快速诊断dhms_conf.json需在末尾加入
-```json
+- 快速诊断dhms_conf.json需加入
+```
 {
   "path": "/data/trans/visual-linux-arm-51",
   "arg": [
