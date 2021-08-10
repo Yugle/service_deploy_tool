@@ -45,6 +45,33 @@ ISCC.exe xxx.iss
 - 服务文件要求打包为tar包，且tar包与服务文件在文件名上包含所要部署的服务名。
 - .log文件支持直接打开；.gz或.tar等压缩文件无法直接打开，需要下载后解压。
 - 无线连接推荐SSH协议，ADB推荐有线连接。由于Telnet协议传输文件稳定性较低，因此暂时只支持读取信息，并不支持读取log或执行部署动作；传输单元ADB服务打开无线端口会导致ADB服务直接崩溃，ADB无线连接暂时无法使用。
+- 快速诊断dhms_conf.json需在末尾加入
+```json
+{
+  "path": "/data/trans/visual-linux-arm-51",
+  "arg": [
+    "visual-linux-arm-51"
+  ],
+  "env": [],
+  "version_cmd": "redis-server -v | awk '{print $3}' | tr '\n' '.'"
+},
+{
+  "path": "/system/bin/redis-server",
+  "arg": [
+    "redis-server"
+  ],
+  "env": [],
+  "version_cmd": "redis-server -v | awk '{print $3}' | tr '\n' '.'"
+},
+{
+  "path": "/system/bin/visualdiagnosis",
+  "arg": [
+    "visualdiagnosis"
+  ],
+  "env": [],
+  "version_cmd": "visualdiagnosis -v | awk '{print $3}' | tr '\n' '.'"
+}
+```
 
 ## Release
 [DHMS传输单元部署工具.exe](http://192.168.1.100/download/DHMS_TransUnit/)
