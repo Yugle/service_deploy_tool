@@ -105,6 +105,11 @@ class GetInformationThread(QtCore.QThread):
         except Exception as e:
             logger.error(str(e))
             self.result.emit({"error":"读取失败！"})
+            
+        # information = self.client.getInfo(self.service)
+
+        # information["showMessage"] = self.showMessage
+        # self.result.emit(information)
 
 # 读log线程
 class ReadLogThread(QtCore.QThread):

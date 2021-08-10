@@ -77,16 +77,16 @@ class ConnectTransUnitByADB(object):
 		information["service_version"] = self.getVersion(information["service_path"])
 		# information["service_profile"] = self.getServiceProfile()
 		information["service_profile"] = consts.SERVICE_PROFILE[service]
+		information["service_daemon"] = f"{consts.DAEMON_PROFILE_PATH}dhms_conf.json"
 		information["service_conf"] = "--help"
 		information["service_runtime"] = self.getRuntime(self.service)
 		information["disk_available"] = self.getDiskAvailableSpace()
 		information["log_path"] = self.getLogPath(self.service)
-		self.readAndSaveFile(information["service_profile"])
-		try:
-			information["service_daemon"] = "/etc/dhms_conf.json"
-			self.readAndSaveFile(information["service_daemon"])
-		except Exception as e:
-			information["service_daemon"] = ""
+
+		information["service_profile"] = self.readAndSaveFile(information["service_profile"])
+		information["service_daemon"] = self.readAndSaveFile(information["service_daemon"])
+		if(information["service_daemon"] == ""):
+			information["service_daemon"] = self.readAndSaveFile(f"{consts.BASE_DAEMON_PROFILE_PATH}dhms_conf.json")
 
 		self.information = information
 
@@ -159,11 +159,12 @@ class ConnectTransUnitByADB(object):
 	def readAndSaveFile(self, file_path):
 		stdout = subprocess.Popen(self.adb + "pull " + file_path + " " + consts.CACHE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		if("1 file pulled" in stdout):
-			return True
+			return file_path
 		else:
-			raise Exception("文件读取失败！")
+			logger.debug(file_path, "文件下载失败！")
+			return ""
 
-	def moveFile(self, filename, service, action, toUncompres=False):
+	def moveFile(self, filename, service, action, toUncompress=False):
 		fromFile = consts.TMP_PATH + filename
 
 		if(toUncompress):

@@ -660,6 +660,7 @@ class Ui_Deploy(object):
             self.showMessage({"message":"加载中...", "type":1})
 
         self.daemon_file = information["service_daemon"]
+        print(self.daemon_file)
 
         disk_available = "/log剩余"+information["disk_available"][0]+"，/system剩余"+information["disk_available"][1] 
         self.disk_available.setText(disk_available)
@@ -856,6 +857,7 @@ class Ui_Deploy(object):
 
     # 展示信息窗口，用于编辑profile或展示log
     def showTextEdit(self, file_path, editadle, type):
+        file_path = file_path.split("/")[-1]
         if(Path(consts.CACHE + file_path).is_file()):
             # 子窗口要加self，否则一弹出就会被收回
             self.editDialog = EditDialog(consts.CACHE + file_path, editadle)

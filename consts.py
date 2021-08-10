@@ -37,7 +37,9 @@ CRON_PATH = "/etc/crontabs"
 # CRON_FILE = "/etc/crontabs/root"
 
 CONF_PATH = ["/system/bin/etc/", "/private/conf/", "/private/conf/", "/private/conf/"]
-DAEMON_PROFILE_PATH = "/etc/"
+# DAEMON_PROFILE_PATH = ["/private/", "etc"]
+DAEMON_PROFILE_PATH = "/private/"
+BASE_DAEMON_PROFILE_PATH = "/etc/"
 PATH_LIST = [SERVICE_PATH, CONF_PATH, DAEMON_PROFILE_PATH]
 
 SHELL = {

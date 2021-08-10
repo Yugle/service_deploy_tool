@@ -103,16 +103,16 @@ class ConnectTransUnitBySSH(object):
 		information["service_version"] = self.getVersion(information["service_path"])
 		# information["service_profile"] = self.getServiceProfile()
 		information["service_profile"] = consts.SERVICE_PROFILE[service]
+		information["service_daemon"] = f"{consts.DAEMON_PROFILE_PATH}dhms_conf.json"
 		information["service_conf"] = "--help"
 		information["service_runtime"] = self.getRuntime(self.service)
 		information["disk_available"] = self.getDiskAvailableSpace()
 		information["log_path"] = self.getLogPath(self.service)
-		self.readAndSaveFile(information["service_profile"])
-		try:
-			information["service_daemon"] = "/etc/dhms_conf.json"
-			self.readAndSaveFile(information["service_daemon"])
-		except Exception as e:
-			information["service_daemon"] = ""
+
+		information["service_profile"] = self.readAndSaveFile(information["service_profile"])
+		information["service_daemon"] = self.readAndSaveFile(information["service_daemon"])
+		if(information["service_daemon"] == ""):
+			information["service_daemon"] = self.readAndSaveFile(f"{consts.BASE_DAEMON_PROFILE_PATH}dhms_conf.json")
 
 		self.information = information
 
@@ -179,10 +179,17 @@ class ConnectTransUnitBySSH(object):
 	def readAndSaveFile(self, file_path):
 		filename = file_path.split("/")[-1]
 		sftp_client = paramiko.SFTPClient.from_transport(self.ssh_client.get_transport())
-		sftp_client.get(file_path, consts.CACHE+filename)
-		sftp_client.close()
 
-		return True
+		try:
+			sftp_client.get(file_path, consts.CACHE+filename)
+
+			sftp_client.close()
+			return file_path
+		except Exception as e:
+			logger.debug(file_path, str(e))
+
+			sftp_client.close()
+			return ""
 
 	def moveFile(self, filename, service, action, toUncompress=False):
 		fromFile = consts.TMP_PATH + filename
@@ -260,8 +267,8 @@ class ConnectTransUnitBySSH(object):
 
 	def restartServiceByShell(self, service):
 		print("重启")
-		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SERVICE_PATH + service + " &")
 
+		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SERVICE_PATH + service + " &")
 		error = stderr.read().decode("utf-8")
 		if("error" in error):
 			if('"level":"error","content":"cpu_linux.go:29 open cpuacct.usage_percpu: no such file or directory"' not in error or len(re.findall(r"error", error)) >= 2):
