@@ -198,10 +198,16 @@ class ConnectTransUnitBySSH(object):
 				toFile = consts.PATH_LIST[action] + filename
 
 			filename = filename.split("/")
+			if(action == 0 and re.findall(f"^{self.service}", filename[0]) != []):
+				toFile = consts.PATH_LIST[action] + self.service
+
 			if(len(filename) > 1):
-				self.checkDirAndFile(toDir + "/".join(filename[0:-1]), filename[-1], True)
+				self.checkDirAndFile(toDir + "/".join(filename[0:-1]), filename[1], True)
 			else:
-				self.checkDirAndFile(toDir, filename[0], True)
+				if(re.findall(f"^{self.service}", filename[0]) != []):
+					self.checkDirAndFile(toDir, self.service, True)
+				else:
+					self.checkDirAndFile(toDir, filename[0], True)
 
 			stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["mv"] + fromFile + " " + toFile)
 			error = stderr.read().decode("utf-8")
