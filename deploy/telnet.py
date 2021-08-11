@@ -222,7 +222,8 @@ class ConnectTransUnitByTelnet(object):
 			with open(f"{consts.CACHE}profile.json","w") as profile:
 				json.dump(profile_json, profile)
 		except Exception as e:
-			print(str(e))
+			raise Exception(str(e))
+			# print(str(e))
 
 	def readFile(self, file_path):
 		shell = consts.SHELL["cat"] + file_path
@@ -249,7 +250,8 @@ class ConnectTransUnitByTelnet(object):
 
 	def restartService(self):
 		# stdout = subprocess.Popen(self.adb_shell + consts.SHELL["mv"] + fromFile + " " + toFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
-		print("重启服务")
+		# print("重启服务")
+		pass
 
 	def submit(self, actions):
 		for action, filename in actions.items():

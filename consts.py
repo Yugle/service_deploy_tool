@@ -1,27 +1,32 @@
 import os
+import sys
 import platform
 
 def getResourcePath():
     try:
         base_path = sys._MEIPASS
     except Exception:
-        base_path = os.path.abspath(".")
+        base_path = os.path.abspath(os.path.dirname(sys.argv[0]))
     
     return base_path
 
 WORK_NAMESPACE = getResourcePath()
-IMG_PATH = "./resource/img/"
+IMG_PATH = WORK_NAMESPACE + "/resource/img/"
 LOG_PATH = WORK_NAMESPACE + "/log/"
 
 if("Windows" in platform.platform()):
     ADB_PATH = WORK_NAMESPACE + "\\lib\\adb\\adb.exe"
     ADB_PATH = f"\"{ADB_PATH}\" "
+    ADB_RUNTIME_OFFSET = -4
+    FONT = "微软雅黑"
 else:
     ADB_PATH = "adb "
+    ADB_RUNTIME_OFFSET = -3
+    FONT = "Arial"
 
 START_SHELL = WORK_NAMESPACE + "\\lib\\start.sh"
 
-CACHE = "./cache/"
+CACHE = WORK_NAMESPACE + "/cache/"
 PROFILE = CACHE + "DHMSConf.json"
 if(not os.path.exists(CACHE)):
     os.mkdir(CACHE)
