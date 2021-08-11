@@ -2,35 +2,44 @@ import os
 import sys
 import platform
 
+# 本地路径相关变量
+if("Windows" in platform.platform()):
+    ADB_RUNTIME_OFFSET = -4
+    FONT = "微软雅黑"
+    WORK_DIR = "."
+else:
+    ADB_RUNTIME_OFFSET = -3
+    FONT = "Arial"
+    WORK_DIR = os.path.dirname(sys.argv[0])
+
 def getResourcePath():
     try:
         base_path = sys._MEIPASS
     except Exception:
-        base_path = os.path.abspath(os.path.dirname(sys.argv[0]))
+        base_path = os.path.abspath(WORK_DIR)
     
     return base_path
 
 WORK_NAMESPACE = getResourcePath()
 IMG_PATH = WORK_NAMESPACE + "/resource/img/"
 LOG_PATH = WORK_NAMESPACE + "/log/"
+CACHE = WORK_NAMESPACE + "/cache/"
+ADB_PATH = "adb "
 
 if("Windows" in platform.platform()):
     ADB_PATH = WORK_NAMESPACE + "\\lib\\adb\\adb.exe"
     ADB_PATH = f"\"{ADB_PATH}\" "
-    ADB_RUNTIME_OFFSET = -4
-    FONT = "微软雅黑"
-else:
-    ADB_PATH = "adb "
-    ADB_RUNTIME_OFFSET = -3
-    FONT = "Arial"
+    IMG_PATH = "./resource/img/"
+    LOG_PATH = "./log/"
+    CACHE ="./cache/"
 
-START_SHELL = WORK_NAMESPACE + "\\lib\\start.sh"
-
-CACHE = WORK_NAMESPACE + "/cache/"
 PROFILE = CACHE + "DHMSConf.json"
 if(not os.path.exists(CACHE)):
     os.mkdir(CACHE)
 
+START_SHELL = WORK_NAMESPACE + "\\lib\\start.sh"
+
+# 远程路径相关变量
 SERVICES = ["visualdiagnosis", "sessiongo", "tum_producer", "tum_controller"]
 SERVICE_NAME = ["可视化诊断服务", "振动文件上传服务", "数据采集服务", "tum_controller"]
 
@@ -72,6 +81,7 @@ SHELL = {
     "restart crond": "crond restart"
 }
 
+# 其他
 VERSION = "V0.1"
 TELNET_INTERVAL = 0.5
 WAITING_INTERVAL = 50
