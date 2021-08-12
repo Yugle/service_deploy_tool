@@ -132,7 +132,7 @@ class ConnectTransUnitByADB(object):
 		res = re.split(r"\s", stdout)
 		etime = res
 		if(len(res) >= 2):
-			etime = res[-4]
+			etime = res[consts.ADB_RUNTIME_OFFSET]
 
 		if(isinstance(etime, list)):
 			return ""

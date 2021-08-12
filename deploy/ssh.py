@@ -266,7 +266,7 @@ class ConnectTransUnitBySSH(object):
 			self.restartServiceByShell(service)
 
 	def restartServiceByShell(self, service):
-		print("重启")
+		# print("重启")
 
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SERVICE_PATH + service + " &")
 		error = stderr.read().decode("utf-8")
@@ -284,7 +284,7 @@ class ConnectTransUnitBySSH(object):
 			timeout = consts.WAITING_INTERVAL
 
 		for i in range(timeout):
-			print("check:", i)
+			# print("check:", i)
 			if(self.getRuntime(self.service) != ""):
 				return True
 			else:

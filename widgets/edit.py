@@ -30,7 +30,7 @@ class Ui_edit_file(QtWidgets.QDialog):
         self.save = QtWidgets.QPushButton(edit_file)
         self.save.setGeometry(QtCore.QRect(160, 430, 111, 31))
         font = QtGui.QFont()
-        font.setFamily("微软雅黑")
+        font.setFamily(consts.FONT)
         font.setPointSize(11)
         self.save.setFont(font)
         self.save.setStyleSheet("QPushButton{\n"
@@ -45,7 +45,7 @@ class Ui_edit_file(QtWidgets.QDialog):
         self.cancel = QtWidgets.QPushButton(edit_file)
         self.cancel.setGeometry(QtCore.QRect(330, 430, 111, 31))
         font = QtGui.QFont()
-        font.setFamily("微软雅黑")
+        font.setFamily(consts.FONT)
         font.setPointSize(11)
         self.cancel.setFont(font)
         self.cancel.setStyleSheet("QPushButton{\n"
@@ -67,7 +67,7 @@ class Ui_edit_file(QtWidgets.QDialog):
         self.error_message = QtWidgets.QLabel(edit_file)
         self.error_message.setGeometry(QtCore.QRect(20, 404, 561, 21))
         font = QtGui.QFont()
-        font.setFamily("微软雅黑")
+        font.setFamily(consts.FONT)
         self.error_message.setFont(font)
         self.error_message.setObjectName("error_message")
 
