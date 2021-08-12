@@ -8,11 +8,22 @@ pip install -r requirements.txt
 python main.py
 ```
 ## 打包
+生成打包脚本
 ```
 pyi-makespec --uac-admin -w -i .\resource\icon.ico --clean .\main.py
 pyinstaller  --distpath .\out .\pack\transUnit.spec
 ```
+打包为Windows .exe可执行文件
+```
+pyinstaller  --distpath .\out .\pack\transUnit.spec
+```
+打包成Mac .app文件(基于Windows调试，Mac暂时只支持SSH方式)
+```
+pyinstaller  --distpath out pack/transUnitForMac.spec
+```
 ## 封包
+
+### Windows
 
 使用[Inno Setup Compiler](https://jrsoftware.org/isdl.php)进行封包，[封包脚本](/pack/封包.iss)
 
@@ -40,6 +51,10 @@ pyinstaller  --distpath .\out .\pack\transUnit.spec
 ```
 ISCC.exe xxx.iss
 ```
+
+### Mac
+
+可直接运行.app文件，发布请使用DMG创建映像
 
 ## 备注
 - 服务文件要求打包为tar包，且tar包与服务文件在文件名上包含所要部署的服务名。
