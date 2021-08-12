@@ -11,7 +11,6 @@ python main.py
 生成打包脚本
 ```
 pyi-makespec --uac-admin -w -i .\resource\icon.ico --clean .\main.py
-pyinstaller  --distpath .\out .\pack\transUnit.spec
 ```
 打包为Windows .exe可执行文件
 ```
