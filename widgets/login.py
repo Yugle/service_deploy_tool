@@ -89,44 +89,24 @@ class Ui_MainWindow(object):
         self.SSH = QtWidgets.QWidget()
         self.SSH.setObjectName("SSH")
         self.ssh_host = QtWidgets.QLineEdit(self.SSH)
-        self.ssh_host.setGeometry(QtCore.QRect(180, 20, 221, 40))
+        self.ssh_host.setGeometry(QtCore.QRect(150, 20, 251, 40))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
         font.setPointSize(10)
         self.ssh_host.setFont(font)
-        self.ssh_host.setStyleSheet("border:1px solid black;\n"
-"border-left:0px solid white;")
+        self.ssh_host.setStyleSheet("border:1px solid black;padding:32px;")
         self.ssh_host.setText("")
         self.ssh_host.setObjectName("ssh_host")
         self.ssh_username = QtWidgets.QLineEdit(self.SSH)
-        self.ssh_username.setGeometry(QtCore.QRect(180, 85, 221, 40))
+        self.ssh_username.setGeometry(QtCore.QRect(150, 85, 251, 40))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
         font.setPointSize(10)
         self.ssh_username.setFont(font)
-        self.ssh_username.setStyleSheet("border:1px solid black;\n"
-"border-left:0px solid white;")
+        self.ssh_username.setStyleSheet("border:1px solid black;padding:32px;")
         self.ssh_username.setObjectName("ssh_username")
-        self.label_4 = QtWidgets.QLabel(self.SSH)
-        self.label_4.setGeometry(QtCore.QRect(150, 20, 32, 40))
-        self.label_4.setStyleSheet("border:1px solid black;\n"
-"border-right:0px solid white;")
-        self.label_4.setText("")
-        self.label_4.setObjectName("label_4")
-        self.label_5 = QtWidgets.QLabel(self.SSH)
-        self.label_5.setGeometry(QtCore.QRect(150, 85, 32, 40))
-        self.label_5.setStyleSheet("border:1px solid black;\n"
-"border-right:0px solid white;")
-        self.label_5.setText("")
-        self.label_5.setObjectName("label_5")
-        self.label_6 = QtWidgets.QLabel(self.SSH)
-        self.label_6.setGeometry(QtCore.QRect(150, 150, 32, 40))
-        self.label_6.setStyleSheet("border:1px solid black;\n"
-"border-right:0px solid white;")
-        self.label_6.setText("")
-        self.label_6.setObjectName("label_6")
         self.label_7 = QtWidgets.QLabel(self.SSH)
-        self.label_7.setGeometry(QtCore.QRect(160, 30, 14, 18))
+        self.label_7.setGeometry(QtCore.QRect(162, 30, 14, 18))
         self.label_7.setStyleSheet(f"background:url({consts.IMG_PATH}ip.png);")
         self.label_7.setText("")
         self.label_7.setObjectName("label_7")
@@ -141,13 +121,12 @@ class Ui_MainWindow(object):
         self.label_10.setText("")
         self.label_10.setObjectName("label_10")
         self.ssh_password = QtWidgets.QLineEdit(self.SSH)
-        self.ssh_password.setGeometry(QtCore.QRect(180, 150, 221, 40))
+        self.ssh_password.setGeometry(QtCore.QRect(150, 150, 251, 40))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
         font.setPointSize(10)
         self.ssh_password.setFont(font)
-        self.ssh_password.setStyleSheet("border:1px solid black;\n"
-"border-left:0px solid white;")
+        self.ssh_password.setStyleSheet("border:1px solid black;padding:32px;")
         self.ssh_password.setText("")
         self.ssh_password.setEchoMode(QtWidgets.QLineEdit.Password)
         self.ssh_password.setObjectName("ssh_password")
@@ -175,26 +154,8 @@ class Ui_MainWindow(object):
         self.connectMethod.addTab(self.SSH, "")
         self.Telnet = QtWidgets.QWidget()
         self.Telnet.setObjectName("Telnet")
-        self.label_23 = QtWidgets.QLabel(self.Telnet)
-        self.label_23.setGeometry(QtCore.QRect(150, 20, 32, 40))
-        self.label_23.setStyleSheet("border:1px solid black;\n"
-"border-right:0px solid white;")
-        self.label_23.setText("")
-        self.label_23.setObjectName("label_23")
-        self.label_24 = QtWidgets.QLabel(self.Telnet)
-        self.label_24.setGeometry(QtCore.QRect(150, 85, 32, 40))
-        self.label_24.setStyleSheet("border:1px solid black;\n"
-"border-right:0px solid white;")
-        self.label_24.setText("")
-        self.label_24.setObjectName("label_24")
-        self.label_25 = QtWidgets.QLabel(self.Telnet)
-        self.label_25.setGeometry(QtCore.QRect(150, 150, 32, 40))
-        self.label_25.setStyleSheet("border:1px solid black;\n"
-"border-right:0px solid white;")
-        self.label_25.setText("")
-        self.label_25.setObjectName("label_25")
         self.label_38 = QtWidgets.QLabel(self.Telnet)
-        self.label_38.setGeometry(QtCore.QRect(160, 30, 14, 18))
+        self.label_38.setGeometry(QtCore.QRect(162, 30, 14, 18))
         self.label_38.setStyleSheet(f"background:url({consts.IMG_PATH}ip.png);")
         self.label_38.setText("")
         self.label_38.setObjectName("label_38")
@@ -209,32 +170,29 @@ class Ui_MainWindow(object):
         self.label_40.setText("")
         self.label_40.setObjectName("label_40")
         self.telnet_host = QtWidgets.QLineEdit(self.Telnet)
-        self.telnet_host.setGeometry(QtCore.QRect(180, 20, 221, 40))
+        self.telnet_host.setGeometry(QtCore.QRect(150, 20, 251, 40))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
         font.setPointSize(10)
         self.telnet_host.setFont(font)
-        self.telnet_host.setStyleSheet("border:1px solid black;\n"
-"border-left:0px solid white;")
+        self.telnet_host.setStyleSheet("border:1px solid black;padding:32px;")
         self.telnet_host.setText("")
         self.telnet_host.setObjectName("telnet_host")
         self.telnet_username = QtWidgets.QLineEdit(self.Telnet)
-        self.telnet_username.setGeometry(QtCore.QRect(180, 85, 221, 40))
+        self.telnet_username.setGeometry(QtCore.QRect(150, 85, 251, 40))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
         font.setPointSize(10)
         self.telnet_username.setFont(font)
-        self.telnet_username.setStyleSheet("border:1px solid black;\n"
-"border-left:0px solid white;")
+        self.telnet_username.setStyleSheet("border:1px solid black;padding:32px;")
         self.telnet_username.setObjectName("telnet_username")
         self.telnet_password = QtWidgets.QLineEdit(self.Telnet)
-        self.telnet_password.setGeometry(QtCore.QRect(180, 150, 221, 40))
+        self.telnet_password.setGeometry(QtCore.QRect(150, 150, 251, 40))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
         font.setPointSize(10)
         self.telnet_password.setFont(font)
-        self.telnet_password.setStyleSheet("border:1px solid black;\n"
-"border-left:0px solid white;")
+        self.telnet_password.setStyleSheet("border:1px solid black;padding:32px;")
         self.telnet_password.setText("")
         self.telnet_password.setEchoMode(QtWidgets.QLineEdit.Password)
         self.telnet_password.setObjectName("telnet_password")
@@ -492,7 +450,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.currentTab = getattr(self, self.tabs[self.currentTabIndex])
         self.inputList = self.currentTab.findChildren(QtWidgets.QLineEdit)[::-1]
         self.labelList = self.currentTab.findChildren(QtWidgets.QLabel)
-        self.labelOffset = 6
+        self.labelOffset = 3
 
         self.loginBtn.clicked.connect(self.connectTransUnit)
 
@@ -530,9 +488,8 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
                                                f"版本：{consts.VERSION}\n\n苏州德姆斯信息技术有限公司出品",
                                                QtWidgets.QMessageBox.Yes)
 
-    def resetStyle(self, lineEdit, label, tip):
-        lineEdit.setStyleSheet("border:1px solid black;border-left:0px solid white;")
-        label.setStyleSheet("border:1px solid rgb(122, 122, 122);border-right:0px solid white;")
+    def resetStyle(self, lineEdit, tip):
+        lineEdit.setStyleSheet("border:1px solid black;padding:32px;")
         tip.setText("")
 
     # 定义tab切换时执行的动作
@@ -544,13 +501,13 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
             self.inputList = [self.device_ip]
             self.labelList = [self.label_26, self.adb_ip_label]
         else:
-            self.labelOffset = 6
+            self.labelOffset = 3
             self.inputList = self.currentTab.findChildren(QtWidgets.QLineEdit)[::-1]
             self.labelList = self.currentTab.findChildren(QtWidgets.QLabel)
 
         for i in range(len(self.inputList)):
             self.inputList[i].setText("")
-            self.resetStyle(self.inputList[i], self.labelList[i], self.labelList[i+self.labelOffset])
+            self.resetStyle(self.inputList[i], self.labelList[i+self.labelOffset])
 
     # 执行连接之前检查输入是否合法
     def checkInput(self, toCheckEmpty=True):
@@ -559,16 +516,15 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         # for i in range(len(self.inputList)):
         #     self.inputList[i].textChanged.connect(lambda :self.resetStyle(self.inputList[i], self.labelList[i], self.labelList[i+6]))
         if(self.currentTabIndex == 2):
-            self.inputList[0].textChanged.connect(lambda :self.resetStyle(self.inputList[0], self.labelList[0], self.labelList[self.labelOffset]))
+            self.inputList[0].textChanged.connect(lambda :self.resetStyle(self.inputList[0], self.labelList[self.labelOffset]))
         else:
-            self.inputList[0].textChanged.connect(lambda :self.resetStyle(self.inputList[0], self.labelList[0], self.labelList[self.labelOffset+0]))
-            self.inputList[1].textChanged.connect(lambda :self.resetStyle(self.inputList[1], self.labelList[1], self.labelList[self.labelOffset+1]))
-            self.inputList[2].textChanged.connect(lambda :self.resetStyle(self.inputList[2], self.labelList[2], self.labelList[self.labelOffset+2]))
+            self.inputList[0].textChanged.connect(lambda :self.resetStyle(self.inputList[0], self.labelList[self.labelOffset+0]))
+            self.inputList[1].textChanged.connect(lambda :self.resetStyle(self.inputList[1], self.labelList[self.labelOffset+1]))
+            self.inputList[2].textChanged.connect(lambda :self.resetStyle(self.inputList[2], self.labelList[self.labelOffset+2]))
         
         if(toCheckEmpty):
             if(re.findall(r"^((2((5[0-5])|([0-4]\d)))|([0-1]?\d{1,2}))(\.((2((5[0-5])|([0-4]\d)))|([0-1]?\d{1,2}))){3}$", self.inputList[0].text()) == []):
-                    self.inputList[0].setStyleSheet("QLineEdit{border:1px ridge red;border-left:0px solid white;}")
-                    self.labelList[0].setStyleSheet("border:1px ridge red;border-right:0px solid white;")
+                    self.inputList[0].setStyleSheet("QLineEdit{border:1px solid red;padding:32px;}")
                     self.labelList[self.labelOffset].setText(self.tips[0] + "格式错误！")
 
                     flag = False
@@ -578,9 +534,9 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
 
             for i in range(len(self.inputList)):
                 if(self.inputList[i].text() == ""):
-                    self.inputList[i].setStyleSheet("QLineEdit{border:1px ridge red;border-left:0px solid white;}")
-                    self.labelList[i].setStyleSheet("border:1px ridge red;border-right:0px solid white;")
+                    self.inputList[i].setStyleSheet("QLineEdit{border:1px solid red;padding:32px;}")
                     self.labelList[i+self.labelOffset].setText(self.tips[i] + "不能为空！")
+
                     flag = False
         else:
             device_id = self.device_id.currentText()
