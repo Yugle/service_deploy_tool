@@ -297,23 +297,16 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.label_2.setFont(font)
         self.label_2.setObjectName("label_2")
         self.device_ip = QtWidgets.QLineEdit(self.ADB)
-        self.device_ip.setGeometry(QtCore.QRect(150, 150, 171, 40))
+        self.device_ip.setGeometry(QtCore.QRect(120, 150, 201, 40))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
         font.setPointSize(10)
         self.device_ip.setFont(font)
-        self.device_ip.setStyleSheet("border:1px solid black;\n"
-"border-left:0px solid white;")
+        self.device_ip.setStyleSheet("QLineEdit{border:1px solid red;padding:32px;}")
         self.device_ip.setText("")
         self.device_ip.setObjectName("device_ip")
-        self.label_26 = QtWidgets.QLabel(self.ADB)
-        self.label_26.setGeometry(QtCore.QRect(120, 150, 32, 40))
-        self.label_26.setStyleSheet("border:1px solid black;\n"
-"border-right:0px solid white;")
-        self.label_26.setText("")
-        self.label_26.setObjectName("label_26")
         self.label_41 = QtWidgets.QLabel(self.ADB)
-        self.label_41.setGeometry(QtCore.QRect(130, 160, 14, 18))
+        self.label_41.setGeometry(QtCore.QRect(132, 160, 14, 18))
         self.label_41.setStyleSheet(f"background:url({consts.IMG_PATH}/ip.png);")
         self.label_41.setText("")
         self.label_41.setObjectName("label_41")
@@ -497,9 +490,10 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.currentTabIndex = self.connectMethod.currentIndex()
         self.currentTab = getattr(self, self.tabs[self.currentTabIndex])
         if(self.currentTabIndex == 2):
-            self.labelOffset = 1
+            self.labelOffset = 0
             self.inputList = [self.device_ip]
-            self.labelList = [self.label_26, self.adb_ip_label]
+            # self.labelList = [self.label_26, self.adb_ip_label]
+            self.labelList = [self.adb_ip_label]
         else:
             self.labelOffset = 3
             self.inputList = self.currentTab.findChildren(QtWidgets.QLineEdit)[::-1]
