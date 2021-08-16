@@ -119,7 +119,8 @@ class ConnectTransUnitBySSH(object):
 		return information
 
 	def getVersion(self, service_path):
-		params = [" -v", " --version"]
+		# params = [" -v", " --version"]
+		params = [" --version", " -v"]
 
 		for param in params:
 			# 使用service_path加参数，因为paramiko使用非交互式shell，不能拿环境变量
