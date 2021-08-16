@@ -24,7 +24,7 @@ if("Windows" in platform.platform()):
 
     FONT = "微软雅黑"
 else:
-    ADB_PATH = "adb "
+    ADB_PATH = WORK_NAMESPACE + "/lib/adb_mac/adb "
     ADB_RUNTIME_OFFSET = -3
 
     IMG_PATH = WORK_NAMESPACE + "/resource/img/"

@@ -16,7 +16,7 @@ pyi-makespec --uac-admin -w -i .\resource\icon.ico --clean .\main.py
 ```
 pyinstaller  --distpath .\out .\pack\transUnit.spec
 ```
-打包成Mac .app文件(由于程序基于Windows编写调试，Mac暂时只支持SSH方式)
+打包成Mac .app文件(由于程序基于Windows编写调试，在Mac平台未经过测试，所以在UI和功能上可能存在问题)
 ```
 pyinstaller  --distpath out pack/transUnitForMac.spec
 ```
