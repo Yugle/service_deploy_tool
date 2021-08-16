@@ -170,9 +170,9 @@ class ConnectTransUnitByADB(object):
 		if(toUncompress):
 			self.unCompressAndMove(service, filename)
 		else:
-			if(action == 1):
-				toDir = consts.PATH_LIST[action][service]
-				toFile = consts.PATH_LIST[action][service] + filename
+			if(action == 1 or "/" in filename):
+				toDir = consts.PATH_LIST[1][service]
+				toFile = consts.PATH_LIST[1][service] + filename.split("/")[-1]
 			else:
 				toDir = consts.PATH_LIST[action]
 				toFile = consts.PATH_LIST[action] + filename

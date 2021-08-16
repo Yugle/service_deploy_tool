@@ -41,14 +41,14 @@ if(not os.path.exists(CACHE)):
 SERVICES = ["visualdiagnosis", "sessiongo", "tum_producer", "tum_controller"]
 SERVICE_NAME = ["可视化诊断服务", "振动文件上传服务", "数据采集服务", "tum_controller"]
 
-SERVICE_PROFILE = ["/system/bin/etc/visualdiagnosis.yaml", "/private/conf/parser.json", "/private/conf/parser.json", "/private/conf/parser.json"]
+SERVICE_PROFILE = ["/etc/visualdiagnosis.yaml", "/private/conf/parser.json", "/private/conf/parser.json", "/private/conf/parser.json"]
 
 TMP_PATH = "/data/temple/"
 SERVICE_PATH = "/system/bin/"
 CRON_PATH = "/etc/crontabs"
 # CRON_FILE = "/etc/crontabs/root"
 
-CONF_PATH = ["/system/bin/etc/", "/private/conf/", "/private/conf/", "/private/conf/"]
+CONF_PATH = ["/etc/", "/private/conf/", "/private/conf/", "/private/conf/"]
 # DAEMON_PROFILE_PATH = ["/private/", "etc"]
 DAEMON_PROFILE_PATH = "/private/"
 BASE_DAEMON_PROFILE_PATH = "/etc/"
