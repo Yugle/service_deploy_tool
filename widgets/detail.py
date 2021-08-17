@@ -750,7 +750,7 @@ class Ui_Deploy(object):
 
     # 调用选择文件对话框
     def chooseFile(self):
-        self.filePath = QFileDialog.getOpenFileName(None, "选择服务部署文件", "c:\\", "Service File(*.tar)")[0]
+        self.filePath = QFileDialog.getOpenFileName(None, "选择服务部署文件", "c:\\", "Service Binary File(*);;Service Tar File(*.tar)")[0]
         if(self.protocol == 1):
             message = {"message": "使用Telnet部署方式较慢，请耐心等待！", "type": 1}
             self.showMessage(message)

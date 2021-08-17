@@ -120,7 +120,7 @@ class ConnectTransUnitBySSH(object):
 
 	def getVersion(self, service_path):
 		# params = [" -v", " --version"]
-		params = [" --version", " -v"]
+		params = [" --version", " -v", " -version"]
 
 		for param in params:
 			# 使用service_path加参数，因为paramiko使用非交互式shell，不能拿环境变量
@@ -129,7 +129,7 @@ class ConnectTransUnitBySSH(object):
 			version = re.findall(r"[version|v]+\s*\d.*", stdout)
 			if(version != []):
 				break
-
+				
 		try:
 			version = version[0]
 		except Exception as e:
@@ -297,7 +297,10 @@ class ConnectTransUnitBySSH(object):
 		for action, filename in actions.items():
 			if(action == 0):
 				if(self.checkServiceFile(filename)):
-					self.moveFile(filename, service, action, True)
+					if(filename.split(".")[-1] == "tar"):
+						self.moveFile(filename, service, action, True)
+					else:
+						self.moveFile(filename, service, action, False)
 				else:
 					raise Exception("服务部署文件有误，请检查！")
 			else:
