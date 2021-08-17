@@ -40,7 +40,7 @@ if(not os.path.exists(CACHE)):
     os.mkdir(CACHE)
 
 # 远程路径相关变量
-SERVICES = ["visualdiagnosis", "sessiongo", "tum_producer", "tum_controller", "Python"]
+SERVICES = ["visualdiagnosis", "sessiongo", "tum_producer", "tum_controller", "python"]
 SERVICE_NAME = ["可视化诊断服务", "振动文件上传服务", "数据采集服务", "tum_controller", "Python"]
 
 SERVICE_PROFILE = ["/etc/visualdiagnosis.yaml", "/private/conf/parser.json", "/private/conf/parser.json", "/private/conf/parser.json", ""]
@@ -74,7 +74,9 @@ SHELL = {
     "cp": "cp ",
     "dos2unix": "dos2unix ",
     "tar xvf": "tar xvf ",
-    "kill": "kill -9 $(pidof ",
+    "get_pid": "pidof ",
+    "kill_service": "kill -9 $(pidof ",
+    "kill": "kill -9 ",
     "chmod": "chmod +x ",
     "restart_dhms_daemon": "/system/bin/restart_dhms_daemon",
     "is_process": "ps -ef | grep ",

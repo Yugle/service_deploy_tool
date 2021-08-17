@@ -126,7 +126,7 @@ class ConnectTransUnitBySSH(object):
 			# 使用service_path加参数，因为paramiko使用非交互式shell，不能拿环境变量
 			stdin,stdout,stderr = self.ssh_client.exec_command(service_path + " " + param)
 			stdout = stdout.read().decode("utf-8")
-			version = re.findall(r"[version|v]+\s*\d.*", stdout)
+			version = re.findall(r"[Python|version|v]+[ ]*\d.+$", stdout)
 			if(version != []):
 				break
 				
@@ -235,7 +235,7 @@ class ConnectTransUnitBySSH(object):
 			
 	def restartService(self, service, actions):
 		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["chmod"] + consts.SERVICE_PATH + service)
-		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["kill"] + service + " )")
+		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["kill_service"] + service + " )")
 
 		daemon = self.checkDaemon()
 		if(daemon == 0):

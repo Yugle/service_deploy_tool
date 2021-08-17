@@ -94,14 +94,14 @@ class ConnectTransUnitByADB(object):
 
 	def getVersion(self, service_path):
 		params = [" --version", " -v", " -version"]
-
 		for param in params:
 			# 使用service_path加参数，因为paramiko使用非交互式shell，不能拿环境变量
 			stdout = subprocess.Popen(self.adb_shell + service_path + " " + param, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
-			version = re.findall(r"[version|v]+\s*\d.+", stdout)
+			version = re.findall(r"[Python|version|v]+[ ]*\d.+$", stdout)
 			# [version|v]+\s*(\d+.)+\w\d*
 			if(version != []):
 				break
+
 		try:
 			version = version[0]
 		except Exception as e:
@@ -205,8 +205,10 @@ class ConnectTransUnitByADB(object):
 
 	def restartService(self, service, actions):
 		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["chmod"] + consts.SERVICE_PATH + service, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
-		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["kill"] + service + " )", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
-		
+		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["get_pid"] + service, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+		service_pid = re.findall(r"\d+", stdout)[0]
+		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["kill"] + service_pid, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+
 		daemon = self.checkDaemon()
 		if(daemon == 0):
 			if(2 in actions.keys()):

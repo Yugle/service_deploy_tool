@@ -127,11 +127,12 @@ class ConnectTransUnitByTelnet(object):
 			time.sleep(1)
 			
 			stdout = self.telnet.read_very_eager().decode('ascii')
-			version = re.findall(r"\s[version|v]+\s*\d.+", stdout)
+			print(stdout)
+			version = re.findall(r"[Python|version|v]+[ ]*\d.+", stdout)
 			if(version != []):
 				break
 		try:
-			version = version[0]
+			version = version[-1]
 		except Exception as e:
 			version = ""
 
