@@ -40,7 +40,7 @@ class Ui_Deploy(object):
         self.back.setGeometry(QtCore.QRect(27, 613, 71, 21))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(11)
+        font.setPointSize(11+consts.FONT_SIZE_OFFSET)
         self.back.setFont(font)
         self.back.setStyleSheet("QPushButton{\n"
 "        text-align:center;\n"
@@ -68,7 +68,7 @@ class Ui_Deploy(object):
         self.service_1.setGeometry(QtCore.QRect(0, 80, 181, 50))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(10)
+        font.setPointSize(10+consts.FONT_SIZE_OFFSET)
         self.service_1.setFont(font)
         self.service_1.setStyleSheet("QPushButton{\n"
 "        background-color:rgb(0, 91, 171);\n"
@@ -85,7 +85,7 @@ class Ui_Deploy(object):
         self.service_2.setGeometry(QtCore.QRect(0, 130, 181, 50))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(10)
+        font.setPointSize(10+consts.FONT_SIZE_OFFSET)
         self.service_2.setFont(font)
         self.service_2.setStyleSheet("QPushButton{\n"
 "        background-color:transparent;\n"
@@ -102,7 +102,7 @@ class Ui_Deploy(object):
         self.service_3.setGeometry(QtCore.QRect(0, 180, 181, 50))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(10)
+        font.setPointSize(10+consts.FONT_SIZE_OFFSET)
         self.service_3.setFont(font)
         self.service_3.setStyleSheet("QPushButton{\n"
 "        background-color:transparent;\n"
@@ -118,7 +118,7 @@ class Ui_Deploy(object):
         self.service_4.setGeometry(QtCore.QRect(0, 230, 181, 50))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(10)
+        font.setPointSize(10+consts.FONT_SIZE_OFFSET)
         self.service_4.setFont(font)
         self.service_4.setStyleSheet("QPushButton{\n"
 "        background-color:transparent;\n"
@@ -135,7 +135,7 @@ class Ui_Deploy(object):
         self.service_5.setGeometry(QtCore.QRect(0, 280, 181, 50))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(10)
+        font.setPointSize(10+consts.FONT_SIZE_OFFSET)
         self.service_5.setFont(font)
         self.service_5.setStyleSheet("QPushButton{\n"
 "        background-color:transparent;\n"
@@ -157,7 +157,7 @@ class Ui_Deploy(object):
         self.label_19.setGeometry(QtCore.QRect(30, 364, 120, 21))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(11)
+        font.setPointSize(11+consts.FONT_SIZE_OFFSET)
         self.label_19.setFont(font)
         self.label_19.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.label_19.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
@@ -166,7 +166,7 @@ class Ui_Deploy(object):
         self.disk_available.setGeometry(QtCore.QRect(160, 436, 401, 21))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(11)
+        font.setPointSize(11+consts.FONT_SIZE_OFFSET)
         self.disk_available.setFont(font)
         self.disk_available.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.disk_available.setText("")
@@ -176,7 +176,7 @@ class Ui_Deploy(object):
         self.label_13.setGeometry(QtCore.QRect(30, 292, 120, 21))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(11)
+        font.setPointSize(11+consts.FONT_SIZE_OFFSET)
         self.label_13.setFont(font)
         self.label_13.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.label_13.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
@@ -185,7 +185,7 @@ class Ui_Deploy(object):
         self.service_name.setGeometry(QtCore.QRect(160, 112, 280, 21))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(11)
+        font.setPointSize(11+consts.FONT_SIZE_OFFSET)
         self.service_name.setFont(font)
         self.service_name.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.service_name.setText("")
@@ -195,7 +195,7 @@ class Ui_Deploy(object):
         self.alter_conf.setGeometry(QtCore.QRect(470, 359, 101, 31))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(10)
+        font.setPointSize(10+consts.FONT_SIZE_OFFSET)
         self.alter_conf.setFont(font)
         self.alter_conf.setStyleSheet("QPushButton{\n"
 "        text-align:center;\n"
@@ -210,7 +210,7 @@ class Ui_Deploy(object):
         self.label_17.setGeometry(QtCore.QRect(30, 328, 120, 21))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(11)
+        font.setPointSize(11+consts.FONT_SIZE_OFFSET)
         self.label_17.setFont(font)
         self.label_17.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.label_17.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
@@ -219,7 +219,7 @@ class Ui_Deploy(object):
         self.label_5.setGeometry(QtCore.QRect(30, 148, 120, 21))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(11)
+        font.setPointSize(11+consts.FONT_SIZE_OFFSET)
         self.label_5.setFont(font)
         self.label_5.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.label_5.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
@@ -228,7 +228,7 @@ class Ui_Deploy(object):
         self.alter_profile.setGeometry(QtCore.QRect(470, 287, 101, 31))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(10)
+        font.setPointSize(10+consts.FONT_SIZE_OFFSET)
         self.alter_profile.setFont(font)
         self.alter_profile.setStyleSheet("QPushButton{\n"
 "        text-align:center;\n"
@@ -243,7 +243,7 @@ class Ui_Deploy(object):
         self.alter_daemon.setGeometry(QtCore.QRect(470, 323, 101, 31))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(10)
+        font.setPointSize(10+consts.FONT_SIZE_OFFSET)
         self.alter_daemon.setFont(font)
         self.alter_daemon.setStyleSheet("QPushButton{\n"
 "        text-align:center;\n"
@@ -258,7 +258,7 @@ class Ui_Deploy(object):
         self.label_10.setGeometry(QtCore.QRect(30, 220, 120, 21))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(11)
+        font.setPointSize(11+consts.FONT_SIZE_OFFSET)
         self.label_10.setFont(font)
         self.label_10.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.label_10.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
@@ -267,7 +267,7 @@ class Ui_Deploy(object):
         self.label_22.setGeometry(QtCore.QRect(30, 436, 120, 21))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(11)
+        font.setPointSize(11+consts.FONT_SIZE_OFFSET)
         self.label_22.setFont(font)
         self.label_22.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.label_22.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
@@ -276,7 +276,7 @@ class Ui_Deploy(object):
         self.service_daemon.setGeometry(QtCore.QRect(160, 328, 280, 21))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(11)
+        font.setPointSize(11+consts.FONT_SIZE_OFFSET)
         self.service_daemon.setFont(font)
         self.service_daemon.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.service_daemon.setText("")
@@ -286,7 +286,7 @@ class Ui_Deploy(object):
         self.label_24.setGeometry(QtCore.QRect(30, 472, 120, 21))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(11)
+        font.setPointSize(11+consts.FONT_SIZE_OFFSET)
         self.label_24.setFont(font)
         self.label_24.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.label_24.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
@@ -295,7 +295,7 @@ class Ui_Deploy(object):
         self.service_version.setGeometry(QtCore.QRect(160, 148, 300, 21))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(11)
+        font.setPointSize(11+consts.FONT_SIZE_OFFSET)
         self.service_version.setFont(font)
         self.service_version.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.service_version.setText("")
@@ -305,7 +305,7 @@ class Ui_Deploy(object):
         self.label_3.setGeometry(QtCore.QRect(30, 112, 120, 21))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(11)
+        font.setPointSize(11+consts.FONT_SIZE_OFFSET)
         self.label_3.setFont(font)
         self.label_3.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.label_3.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
@@ -314,7 +314,7 @@ class Ui_Deploy(object):
         self.label_20.setGeometry(QtCore.QRect(30, 400, 120, 21))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(11)
+        font.setPointSize(11+consts.FONT_SIZE_OFFSET)
         self.label_20.setFont(font)
         self.label_20.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.label_20.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
@@ -323,7 +323,7 @@ class Ui_Deploy(object):
         self.label_15.setGeometry(QtCore.QRect(30, 256, 120, 21))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(11)
+        font.setPointSize(11+consts.FONT_SIZE_OFFSET)
         self.label_15.setFont(font)
         self.label_15.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.label_15.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
@@ -332,7 +332,7 @@ class Ui_Deploy(object):
         self.label_7.setGeometry(QtCore.QRect(30, 184, 120, 21))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(11)
+        font.setPointSize(11+consts.FONT_SIZE_OFFSET)
         self.label_7.setFont(font)
         self.label_7.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.label_7.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
@@ -341,7 +341,7 @@ class Ui_Deploy(object):
         self.service_md5.setGeometry(QtCore.QRect(160, 184, 401, 21))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(11)
+        font.setPointSize(11+consts.FONT_SIZE_OFFSET)
         self.service_md5.setFont(font)
         self.service_md5.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.service_md5.setText("")
@@ -351,7 +351,7 @@ class Ui_Deploy(object):
         self.service_deploy_time.setGeometry(QtCore.QRect(160, 220, 280, 21))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(11)
+        font.setPointSize(11+consts.FONT_SIZE_OFFSET)
         self.service_deploy_time.setFont(font)
         self.service_deploy_time.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.service_deploy_time.setText("")
@@ -361,7 +361,7 @@ class Ui_Deploy(object):
         self.service_runtime.setGeometry(QtCore.QRect(160, 400, 280, 21))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(11)
+        font.setPointSize(11+consts.FONT_SIZE_OFFSET)
         self.service_runtime.setFont(font)
         self.service_runtime.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.service_runtime.setText("")
@@ -371,7 +371,7 @@ class Ui_Deploy(object):
         self.service_profile.setGeometry(QtCore.QRect(160, 292, 280, 21))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(11)
+        font.setPointSize(11+consts.FONT_SIZE_OFFSET)
         self.service_profile.setFont(font)
         self.service_profile.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.service_profile.setStyleSheet("")
@@ -383,7 +383,7 @@ class Ui_Deploy(object):
         self.service_conf.setGeometry(QtCore.QRect(160, 363, 280, 25))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(11)
+        font.setPointSize(11+consts.FONT_SIZE_OFFSET)
         self.service_conf.setFont(font)
         self.service_conf.setStyleSheet("border:transparent;")
         self.service_conf.setText("")
@@ -393,7 +393,7 @@ class Ui_Deploy(object):
         self.service_path.setGeometry(QtCore.QRect(160, 256, 280, 21))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(11)
+        font.setPointSize(11+consts.FONT_SIZE_OFFSET)
         self.service_path.setFont(font)
         self.service_path.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.service_path.setText("")
@@ -403,7 +403,7 @@ class Ui_Deploy(object):
         self.deploy.setGeometry(QtCore.QRect(467, 110, 101, 31))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(10)
+        font.setPointSize(10+consts.FONT_SIZE_OFFSET)
         self.deploy.setFont(font)
         self.deploy.setStyleSheet("QPushButton{\n"
 "        text-align:center;\n"
@@ -414,25 +414,25 @@ class Ui_Deploy(object):
 "        background-color:rgb(24, 91, 171);\n"
 "}")
         self.deploy.setObjectName("deploy")
-        self.label_9 = QtWidgets.QLabel(self.groupBox)
-        self.label_9.setGeometry(QtCore.QRect(150, 618, 311, 21))
+        self.footer = QtWidgets.QLabel(self.groupBox)
+        self.footer.setGeometry(QtCore.QRect(150, 618, 311, 21))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_9.sizePolicy().hasHeightForWidth())
-        self.label_9.setSizePolicy(sizePolicy)
+        sizePolicy.setHeightForWidth(self.footer.sizePolicy().hasHeightForWidth())
+        self.footer.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(8)
-        self.label_9.setFont(font)
-        self.label_9.setStyleSheet("color:rgb(140, 140, 140);")
-        self.label_9.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_9.setObjectName("label_9")
+        font.setPointSize(8+consts.FONT_SIZE_OFFSET)
+        self.footer.setFont(font)
+        self.footer.setStyleSheet("color:rgb(140, 140, 140);")
+        self.footer.setAlignment(QtCore.Qt.AlignCenter)
+        self.footer.setObjectName("footer")
         self.connect_status = QtWidgets.QLabel(self.groupBox)
         self.connect_status.setGeometry(QtCore.QRect(500, 52, 81, 21))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(10)
+        font.setPointSize(10+consts.FONT_SIZE_OFFSET)
         self.connect_status.setFont(font)
         self.connect_status.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.connect_status.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
@@ -442,21 +442,21 @@ class Ui_Deploy(object):
         self.line.setFrameShape(QtWidgets.QFrame.HLine)
         self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line.setObjectName("line")
-        self.label = QtWidgets.QLabel(self.groupBox)
-        self.label.setGeometry(QtCore.QRect(40, 42, 311, 31))
+        self.title = QtWidgets.QLabel(self.groupBox)
+        self.title.setGeometry(QtCore.QRect(40, 42, 311, 31))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(12)
+        font.setPointSize(12+consts.FONT_SIZE_OFFSET)
         font.setBold(True)
         font.setWeight(75)
-        self.label.setFont(font)
-        self.label.setStyleSheet("color:rgb(0, 91, 171);")
-        self.label.setObjectName("label")
+        self.title.setFont(font)
+        self.title.setStyleSheet("color:rgb(0, 91, 171);")
+        self.title.setObjectName("title")
         self.log_path = QtWidgets.QListView(self.groupBox)
         self.log_path.setGeometry(QtCore.QRect(160, 472, 401, 70))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(11)
+        font.setPointSize(11+consts.FONT_SIZE_OFFSET)
         self.log_path.setFont(font)
         self.log_path.setStyleSheet("QListView{\n"
 "   background-color:transparent;\n"
@@ -506,7 +506,7 @@ class Ui_Deploy(object):
         self.submit.setGeometry(QtCore.QRect(230, 560, 151, 41))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(10)
+        font.setPointSize(10+consts.FONT_SIZE_OFFSET)
         self.submit.setFont(font)
         self.submit.setStyleSheet("QPushButton{\n"
 "        text-align:center;\n"
@@ -545,9 +545,9 @@ class Ui_Deploy(object):
         self.label_15.setText(_translate("Deploy", "程序路径："))
         self.label_7.setText(_translate("Deploy", "MD5："))
         self.deploy.setText(_translate("Deploy", "上传部署文件"))
-        self.label_9.setText(_translate("Deploy", "Copyright © 2021 苏州德姆斯信息技术有限公司出品"))
+        self.footer.setText(_translate("Deploy", "Copyright © 2021 苏州德姆斯信息技术有限公司出品"))
         self.connect_status.setText(_translate("Deploy", f"{self.protocol_name[self.protocol]}已连接"))
-        self.label.setText(_translate("Deploy", consts.SERVICE_NAME[self.service]))
+        self.title.setText(_translate("Deploy", consts.SERVICE_NAME[self.service]))
         self.submit.setText(_translate("Deploy", "提交并重启服务"))
 
         # 初始化服务名称，链接服务切换动作
@@ -574,7 +574,8 @@ class Ui_Deploy(object):
         # self.service_conf.focus_out.connect(self.focusOut)
         # self.responseToAlterConf = True
 
-        self.log_path.clicked.connect(self.readLog)
+        if(self.protocol != 1):
+            self.log_path.clicked.connect(self.readLog)
         self.log_path.setMaximumWidth(401)
 
         self.logo_label.double_clicked.connect(self.showVersion)
@@ -591,6 +592,11 @@ class Ui_Deploy(object):
         self.alter_profile.hide()
         self.alter_daemon.hide()
 
+        if(self.protocol == 1):
+            self.deploy_button_list = self.groupBox.findChildren(QtWidgets.QPushButton)
+            for button in self.deploy_button_list:
+                button.hide()
+
     def showVersion(self):
         QtWidgets.QMessageBox.information(self.childDialog,
                                                '传输单元服务部署工具',
@@ -601,7 +607,7 @@ class Ui_Deploy(object):
     def changeService(self, service):
         self.service = service
         self.actions = {}
-        self.label.setText(consts.SERVICE_NAME[self.service])
+        self.title.setText(consts.SERVICE_NAME[self.service])
         self.service_name.setText(consts.SERVICES[self.service])
 
         service_list = [i for i in self.childDialog.findChildren(QtWidgets.QPushButton) if i not in self.groupBox.findChildren(QtWidgets.QPushButton)]
@@ -692,9 +698,10 @@ class Ui_Deploy(object):
             self.serviceNotExist()
             return
 
-        self.label.setText(consts.SERVICE_NAME[self.service])
-        self.alter_conf.show()
-        self.alter_profile.show()
+        self.title.setText(consts.SERVICE_NAME[self.service])
+        if(self.protocol != 1):
+            self.alter_conf.show()
+            self.alter_profile.show()
 
         self.service_name.setText(information["service_name"])
         self.service_version.setText(information["service_version"])
@@ -727,7 +734,7 @@ class Ui_Deploy(object):
             # 连接多次后必须disconnect，否则会执行多次槽函数
             self.alter_profile.clicked.connect(lambda :self.showTextEdit(profile, True, 1))
 
-        if(self.service_daemon.text() != ""):
+        if(self.service_daemon.text() != "" and self.protocol != 1):
             self.alter_daemon.show()
 
             daemon = re.split(r'[/|\\]', self.service_daemon.text())[-1]
@@ -740,11 +747,11 @@ class Ui_Deploy(object):
 
         if(information["service_runtime"] == ""):
             self.showMessage({"message":"程序未在运行！", "type":0})
-            self.label.setText(consts.SERVICE_NAME[self.service] + " ⚠️")
+            self.title.setText(consts.SERVICE_NAME[self.service] + " ⚠️")
 
     # 定义服务不存在时动作
     def serviceNotExist(self):
-        self.label.setText(consts.SERVICE_NAME[self.service] + " ⚠️")
+        self.title.setText(consts.SERVICE_NAME[self.service] + " ⚠️")
         self.showMessage({"message":"服务未部署", "type":0})
         self.submit.setText("部 署")
 
@@ -844,7 +851,7 @@ class Ui_Deploy(object):
         self.timer.timeout.connect(self.showPrompt)
         self.timer.start(self.timecount*1000)
 
-        if("⚠️" not in self.label.text()):
+        if("⚠️" not in self.title.text()):
             self.submit.setText("提交并重启服务")
         self.submit.setEnabled(True)
 
@@ -862,6 +869,11 @@ class Ui_Deploy(object):
             self.upload_thread.quit()
             self.isThreadCreated = False
         self.client.disconnect()
+
+        if(self.protocol == 1):
+            for button in self.deploy_button_list:
+                button.show()
+
         self.childDialog.hide()
         self.mainWindow.show()
         try:

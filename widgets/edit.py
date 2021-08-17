@@ -31,7 +31,7 @@ class Ui_edit_file(QtWidgets.QDialog):
         self.save.setGeometry(QtCore.QRect(160, 430, 111, 31))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(11)
+        font.setPointSize(11+consts.FONT_SIZE_OFFSET)
         self.save.setFont(font)
         self.save.setStyleSheet("QPushButton{\n"
 "        text-align:center;\n"
@@ -46,11 +46,12 @@ class Ui_edit_file(QtWidgets.QDialog):
         self.cancel.setGeometry(QtCore.QRect(330, 430, 111, 31))
         font = QtGui.QFont()
         font.setFamily(consts.FONT)
-        font.setPointSize(11)
+        font.setPointSize(11+consts.FONT_SIZE_OFFSET)
         self.cancel.setFont(font)
         self.cancel.setStyleSheet("QPushButton{\n"
 "        text-align:center;\n"
-"        color:rgb(6,6,6);\n"
+"        color:black;\n"
+"        background-color:white;\n"
 "}\n"
 "QPushButton:hover{A\n"
 "        background-color:rgb(24, 91, 171);\n"
@@ -60,7 +61,7 @@ class Ui_edit_file(QtWidgets.QDialog):
         self.json_edit.setGeometry(QtCore.QRect(20, 20, 561, 381))
         font = QtGui.QFont()
         font.setFamily("Courier")
-        font.setPointSize(10)
+        font.setPointSize(10+consts.FONT_SIZE_OFFSET)
         self.json_edit.setFont(font)
         self.json_edit.setPlainText("")
         self.json_edit.setObjectName("json_edit")
@@ -110,7 +111,6 @@ class Ui_edit_file(QtWidgets.QDialog):
             self.save.clicked.connect(self.downloadFile)
 
         self.cancel.clicked.connect(self.backToParentDialog)
-
 
     # json格式不正确修改后刷新窗口属性
     def resetStyle(self):

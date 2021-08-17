@@ -72,14 +72,6 @@ class ConnectTransUnitByTelnet(object):
 		time.sleep(1)
 		self.telnet.write(b"rm uploaded\n")
 		time.sleep(1)
-		# if(type == 0):
-		# 	self.deploy()
-
-	def deploy(self):
-		# self.telnet.write(b"chmod +x toDeploy\n")
-		# time.sleep(1)
-		# command_result = self.telnet.read_some().decode('ascii')
-		pass
 
 	def disconnect(self):
 		self.telnet.close()
@@ -104,7 +96,6 @@ class ConnectTransUnitByTelnet(object):
 					self.telnet.write(consts.SHELL["rm"].encode('ascii') + dir.encode('ascii') + filename.encode("ascii")+ b'\n')
 
 	def getInfo(self, service):
-
 		self.service = consts.SERVICES[service]
 		information = {"error": ""}
 
@@ -115,28 +106,28 @@ class ConnectTransUnitByTelnet(object):
 		information["service_path"] = consts.SERVICE_PATH + self.service
 		information["service_version"] = self.getVersion(information["service_path"])
 		# information["service_profile"] = self.getServiceProfile()
-		information["service_profile"] = "/private/conf/test_conf.json"
+		information["service_profile"] = consts.SERVICE_PROFILE[service]
 		# information["service_daemon"] = self.getServiceDaemon()
-		information["service_daemon"] = "/private/daemon.ini"
+		information["service_daemon"] = f"{consts.DAEMON_PROFILE_PATH}dhms_conf.json"
 		# information["service_conf"] = self.getServiceConf()
 		information["service_conf"] = "--help"
 		information["service_runtime"] = self.getRuntime(self.service)
 		information["disk_available"] = self.getDiskAvailableSpace()
 		information["log_path"] = self.getLogPath(self.service)
-		self.saveProfile("/private/conf/test_conf.json")
+		# self.saveProfile("/private/conf/test_conf.json")
 
 		return information
 
 	def getVersion(self, service_path):
-		params = [" -v", " --version"]
+		params = [" --version", " -v", " -version"]
 
 		for param in params:
 			shell = service_path + " " + param
 			self.telnet.write(shell.encode("ascii") + b"\n")
 			time.sleep(1)
 			
-			stdout = self.telnet.read_some().decode('ascii')
-			version = re.findall(r"v\d.*", stdout)
+			stdout = self.telnet.read_very_eager().decode('ascii')
+			version = re.findall(r"\s[version|v]+\s*\d.+", stdout)
 			if(version != []):
 				break
 		try:

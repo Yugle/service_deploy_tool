@@ -23,6 +23,7 @@ if("Windows" in platform.platform()):
     CACHE ="./cache/"
 
     FONT = "微软雅黑"
+    FONT_SIZE_OFFSET = 0
 else:
     ADB_PATH = WORK_NAMESPACE + "/lib/adb_mac/adb "
     ADB_RUNTIME_OFFSET = -3
@@ -32,6 +33,7 @@ else:
     CACHE = WORK_NAMESPACE + "/cache/"
 
     FONT = "Arial"
+    FONT_SIZE_OFFSET = 2
 
 PROFILE = CACHE + "DHMSConf.json"
 if(not os.path.exists(CACHE)):
