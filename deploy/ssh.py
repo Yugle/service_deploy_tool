@@ -192,7 +192,7 @@ class ConnectTransUnitBySSH(object):
 			sftp_client.close()
 			return ""
 
-	def moveFile(self, filename, service, action, toUncompress=False):
+	def moveFile(self, filename, service, action, toUncompress=False, toDeploy=True):
 		fromFile = consts.TMP_PATH + filename
 
 		if(toUncompress):
@@ -297,10 +297,15 @@ class ConnectTransUnitBySSH(object):
 		for action, filename in actions.items():
 			if(action == 0):
 				if(self.checkServiceFile(filename)):
-					if(filename.split(".")[-1] == "tar"):
-						self.moveFile(filename, service, action, True)
+					if(self.service == "python"):
+						self.moveFile(filename, service, action, True, toDeploy=False)
+						return
 					else:
-						self.moveFile(filename, service, action, False)
+						if(filename.split(".")[-1] == "tar"):
+							self.moveFile(filename, service, action, True)
+						# elif(filename.split(".")[-2:] == ["tar", "gz"]):
+						else:
+							self.moveFile(filename, service, action, False)
 				else:
 					raise Exception("服务部署文件有误，请检查！")
 			else:
@@ -318,6 +323,25 @@ class ConnectTransUnitBySSH(object):
 			files = stdout.readlines()
 
 			stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["rm"] + fromFile)
+
+		elif(self.service == "python" and re.findall(r"tar.gz\s*$", filename) != []):
+			stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["tar -xvzf"] + fromFile + " -C " + consts.TMP_PATH)
+			files = stdout.readlines()
+
+			for file in files:
+				if(re.findall(r"^install\S*.sh", file) != []):
+					file = re.split(r"\s", file)[0]
+					stdin,stdout,stderr = self.ssh_client.exec_command(consts.TMP_PATH + file + " " + consts.TMP_PATH[:-1])
+
+					error = stderr.read().decode("utf-8")
+					if(error != "" and "done!" not in error):
+						logger.error(error)
+						raise Exception("出现错误，请确认是否部署完成并检查Log文件！")
+
+					stdin,stdout,stderr = self.ssh_client.exec_command(consts.SHELL["rm"] + fromFile)
+
+					break
+			return
 
 		isRightFile = False
 		for file in files:
