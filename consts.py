@@ -74,6 +74,7 @@ SHELL = {
     "cp": "cp ",
     "dos2unix": "dos2unix ",
     "tar xvf": "tar xvf ",
+    "tar -xvzf": "tar -xvzf ",
     "get_pid": "pidof ",
     "kill_service": "kill -9 $(pidof ",
     "kill": "kill -9 ",

@@ -746,8 +746,9 @@ class Ui_Deploy(object):
             self.showMessage({"message":"加载成功！", "type":0})
 
         if(information["service_runtime"] == ""):
-            self.showMessage({"message":"程序未在运行！", "type":0})
-            self.title.setText(consts.SERVICE_NAME[self.service] + " ⚠️")
+            if(self.service != 4):
+                self.showMessage({"message":"程序未在运行！", "type":0})
+                self.title.setText(consts.SERVICE_NAME[self.service] + " ⚠️")
 
     # 定义服务不存在时动作
     def serviceNotExist(self):
@@ -757,7 +758,7 @@ class Ui_Deploy(object):
 
     # 调用选择文件对话框
     def chooseFile(self):
-        self.filePath = QFileDialog.getOpenFileName(None, "选择服务部署文件", "c:\\", "Service Binary File(*);;Service Tar File(*.tar)")[0]
+        self.filePath = QFileDialog.getOpenFileName(None, "选择服务部署文件", "c:\\", "Service Binary File(*);;Service Tar File(*.tar);;Python File(*.tar.gz)")[0]
         if(self.protocol == 1):
             message = {"message": "使用Telnet部署方式较慢，请耐心等待！", "type": 1}
             self.showMessage(message)

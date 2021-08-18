@@ -164,7 +164,7 @@ class ConnectTransUnitByADB(object):
 			logger.debug(file_path, "文件下载失败！")
 			return ""
 
-	def moveFile(self, filename, service, action, toUncompress=False):
+	def moveFile(self, filename, service, action, toUncompress=False, toDeploy=True):
 		fromFile = consts.TMP_PATH + filename
 
 		if(toUncompress):
@@ -265,10 +265,15 @@ class ConnectTransUnitByADB(object):
 		for action, filename in actions.items():
 			if(action == 0):
 				if(self.checkServiceFile(filename)):
-					if(filename.split(".")[-1] == "tar"):
-						self.moveFile(filename, service, action, True)
+					if(self.service == "python"):
+						self.moveFile(filename, service, action, True, toDeploy=False)
+						return
 					else:
-						self.moveFile(filename, service, action, False)
+						if(filename.split(".")[-1] == "tar"):
+							self.moveFile(filename, service, action, True)
+						# elif(filename.split(".")[-2:] == ["tar", "gz"]):
+						else:
+							self.moveFile(filename, service, action, False)
 				else:
 					raise Exception("服务部署文件有误，请检查！")
 			else:
@@ -286,6 +291,19 @@ class ConnectTransUnitByADB(object):
 			files = re.split(r"\s", stdout)
 
 			stdout = subprocess.Popen(self.adb_shell + consts.SHELL["rm"] + fromFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+		elif(self.service == "python" and re.findall(r"tar.gz\s*$", filename) != []):
+			stdout = subprocess.Popen(self.adb_shell + consts.SHELL["tar -xvzf"] + fromFile + " -C " + consts.TMP_PATH, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+			files = re.split(r"\s", stdout)
+
+			for file in files:
+				if(re.findall(r"^install\S*.sh", file) != []):
+					stdout = subprocess.Popen(self.adb_shell + consts.TMP_PATH + file + " " + consts.TMP_PATH[:-1], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+					if("done!" not in stdout):
+						raise Exception(stdout)
+					stdout = subprocess.Popen(self.adb_shell + consts.SHELL["rm"] + fromFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+
+					break
+			return
 
 		isRightFile = False
 		for file in files:
