@@ -7,8 +7,9 @@ import subprocess
 import consts
 
 class Ui_Info(object):
-    def __init__(self, download_thread):
+    def __init__(self, download_thread, parent):
         self.download_thread = download_thread
+        self.parent = parent
 
     def setupUi(self, Dialog):
         self.dialog = Dialog
@@ -107,9 +108,11 @@ class Ui_Info(object):
 
     def install(self):
         try:
-            subprocess.Popen("taskkill /im adb.exe /f", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-            
             res = subprocess.Popen(consts.OPEN_SHELL + consts.CACHE + consts.UPDATE_FILE_NAME, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+
+            subprocess.Popen("taskkill /im adb.exe /f", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+            self.dialog.close()
+            self.parent.close()
         except Exception as e:
             logger.error(str(e))
 
