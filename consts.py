@@ -24,6 +24,11 @@ if("Windows" in platform.platform()):
 
     FONT = "微软雅黑"
     FONT_SIZE_OFFSET = 0
+
+    UPDATE_URL = "http://lan100.dhms.net/download/DHMS_TransUnit/DHMS%E4%BC%A0%E8%BE%93%E5%8D%95%E5%85%83%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2%E5%B7%A5%E5%85%B7.exe"
+    UPDATE_FILE_NAME = "latest.exe"
+
+    OPEN_SHELL = "start "
 else:
     ADB_PATH = WORK_NAMESPACE + "/lib/adb_mac/adb "
     ADB_RUNTIME_OFFSET = -3
@@ -34,6 +39,11 @@ else:
 
     FONT = "Arial"
     FONT_SIZE_OFFSET = 2
+
+    UPDATE_URL = "http://lan100.dhms.net/download/DHMS_TransUnit/DHMS%E4%BC%A0%E8%BE%93%E5%8D%95%E5%85%83%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2%E5%B7%A5%E5%85%B7.dmg"
+    UPDATE_FILE_NAME = "latest.dmg"
+
+    OPEN_SHELL = "open "
 
 PROFILE = CACHE + "DHMSConf.json"
 if(not os.path.exists(CACHE)):

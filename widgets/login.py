@@ -693,15 +693,16 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
 
 class LoginWindow(QtWidgets.QMainWindow):
     def closeEvent(self, event):
+        # 清理临时文件
+        try:
+            for root, dirs, files in os.walk(consts.CACHE):
+                for file in files:
+                    if(file != "cache"):
+                        os.remove(consts.CACHE + file)
+        except Exception as e:
+            pass
+
         # 软件推出关闭adb进程，解决覆盖安装时adb进程关不掉问题
         subprocess.Popen("taskkill /im adb.exe /f", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
         event.accept()
-    
-# if __name__ == '__main__':
-#     dhms_transunit = QtWidgets.QApplication(sys.argv)
-#     loginWindow = LoginWindow()
-#     window = Ui_MainWindow()
-#     window.setupUi(loginWindow)
-#     loginWindow.show()
-#     sys.exit(dhms_transunit.exec_())

@@ -1,7 +1,9 @@
 from PyQt5 import QtCore
+from executors.logger import logger
 import consts
 import re
-from executors.logger import logger
+import time
+import requests
 
 # 连接传输单元线程
 class ConnectTransUnitThread(QtCore.QThread):
@@ -129,3 +131,32 @@ class ReadLogThread(QtCore.QThread):
         except Exception as e:
             logger.error(str(e))
             self.result.emit("读取失败：" + str(e))
+
+class DownloadLatestFileThread(QtCore.QThread):
+    result = QtCore.pyqtSignal(float)
+
+    def __init__(self, url):
+        super().__init__()
+        self.url = url
+
+    def run(self):
+        try:
+            with requests.get(self.url, stream=True) as r, open(consts.CACHE + consts.UPDATE_FILE_NAME, 'wb') as file:
+                total_size = int(r.headers['content-length'])
+                content_size = 0
+                process = 0
+                start_time = time.time()
+                temp_size = 0
+
+                for content in r.iter_content(chunk_size=1024):
+                    file.write(content)
+                    content_size += len(content)
+                    process = (content_size / total_size) * 100
+                    self.result.emit(process)
+
+        except Exception as e:
+            logger.error(str(e))
+            self.result.emit(-1)
+
+        finally:
+            self.exit(0)
