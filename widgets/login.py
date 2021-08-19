@@ -459,7 +459,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         # self.ssh_password.setText("123456")
         # self.ssh_host.setFocus()
 
-        self.logo_label.double_clicked.connect(self.showVersion)
+        self.logo_label.double_clicked.connect(lambda: self.logo_label.showVersion(self.MainWindow))
 
         # ip自动补全
         self.ip_list = ["192.168.", "172.0.", "0.0.0."]
@@ -472,14 +472,6 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.ssh_host.setCompleter(completer)
         self.telnet_host.setCompleter(completer)
         self.device_ip.setCompleter(completer)
-
-    # 展示软件版本信息
-    # todo：检测更新功能
-    def showVersion(self):
-        QtWidgets.QMessageBox.information(self.MainWindow,
-                                               '传输单元服务部署工具',
-                                               f"版本：{consts.VERSION}\n\n苏州德姆斯信息技术有限公司出品",
-                                               QtWidgets.QMessageBox.Yes)
 
     def resetStyle(self, lineEdit, tip):
         lineEdit.setStyleSheet("border:1px solid black;padding:32px;")
