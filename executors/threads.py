@@ -68,25 +68,33 @@ class UploadFileAndDeployThread(QtCore.QThread):
 class SubmitThread(QtCore.QThread):
     result = QtCore.pyqtSignal(dict)
 
-    def __init__(self, client, service, actions):
+    def __init__(self, client, service, actions, toDeploy):
         super().__init__()
         self.client = client
         self.actions = actions
         self.service = service
+        self.toDeploy = toDeploy
 
     def run(self):
-        # try:
+        try:
+            if(self.toDeploy):
+                self.client.submit(self.service, self.actions)
+            else:
+                self.client.restartService(consts.SERVICES[self.service], {})
+
+            message = {"message": "操作成功！", "type": 2}
+            self.result.emit(message)
+        except Exception as e:
+            logger.error(str(e))
+            self.result.emit({"message": str(e), "type": 2})
+
+        # if(self.toDeploy):
         #     self.client.submit(self.service, self.actions)
+        # else:
+        #     self.client.restartService(consts.SERVICES[self.service], {})
 
-        #     message = {"message": "操作成功！", "type": 2}
-        #     self.result.emit(message)
-        # except Exception as e:
-        #     logger.error(str(e))
-        #     self.result.emit({"message": str(e), "type": 2})
-
-        self.client.submit(self.service, self.actions)
-        message = {"message": "部署成功！", "type": 0}
-        self.result.emit(message)
+        # message = {"message": "操作成功！", "type": 2}
+        # self.result.emit(message)
 
 # 读服务信息线程
 class GetInformationThread(QtCore.QThread):

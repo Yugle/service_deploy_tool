@@ -20,6 +20,7 @@ class Ui_Deploy(object):
         self.actions = {} # 记录修改动作
         self.service = 0
         self.reading_log = False
+        self.isDeploying = False
 
     def setupUi(self, Deploy):
         self.childDialog = Deploy
@@ -517,6 +518,11 @@ class Ui_Deploy(object):
 "        background-color:rgb(24, 91, 171);\n"
 "}")
         self.submit.setObjectName("submit")
+        self.restart = QtWidgets.QPushButton(self.groupBox)
+        self.restart.setGeometry(QtCore.QRect(400, 570, 21, 20))
+        self.restart.setStyleSheet(f"border-image:url({consts.IMG_PATH}restart.png);")
+        self.restart.setText("")
+        self.restart.setObjectName("restart")
 
         self.retranslateUi(Deploy)
         QtCore.QMetaObject.connectSlotsByName(Deploy)
@@ -578,9 +584,10 @@ class Ui_Deploy(object):
             self.log_path.clicked.connect(self.readLog)
         self.log_path.setMaximumWidth(401)
 
-        self.logo_label.double_clicked.connect(lambda: self.logo_label.showVersion(self.childDialog))
+        self.logo_label.double_clicked.connect(lambda :self.logo_label.showVersion(self.childDialog))
 
         self.submit.clicked.connect(self.submitAll)
+        self.restart.clicked.connect(lambda :self.submitAll(False))
         
         # self.upload_thread = UploadFileAndDeployThread(self.client)
         # self.upload_thread.result.connect(self.showMessage)
@@ -664,6 +671,7 @@ class Ui_Deploy(object):
 
     # 展示服务信息
     def showInfo(self, information):
+        self.isDeploying = False
         # 断开button的所有信号连接，否则当多次showInfo导致多次连接槽函数时，点击一次会执行多次槽函数
         try:
             self.alter_profile.disconnect()
@@ -848,7 +856,6 @@ class Ui_Deploy(object):
 
         if("⚠️" not in self.title.text()):
             self.submit.setText("提交并重启服务")
-        self.submit.setEnabled(True)
 
         if(type == 0 and message != "文件上传中，请耐心等待！"):
             self.deploy.setText("上传部署文件")
@@ -944,20 +951,27 @@ class Ui_Deploy(object):
         self.getInfo(False)
 
     # 提交
-    def submitAll(self):
+    def submitAll(self, toDeploy=True):
+        if(self.isDeploying):
+            self.showMessage({"message": "正在执行部署或重启操作，请稍后再试！", "type": 0})
+            return
         # print(self.actions)
         if(self.isThreadCreated):
             message = {"message": "文件还在上传中，请耐心等待！", "type": 2}
             self.showMessage(message)
         else:
-            if(len(self.actions) > 0):
-                self.submit_thread = SubmitThread(self.client, self.service, self.actions)
+            if(len(self.actions) > 0 or toDeploy == False):
+                self.submit_thread = SubmitThread(self.client, self.service, self.actions, toDeploy)
                 self.submit_thread.result.connect(self.reGetInfo)
                 self.submit_thread.start()
                 self.actions = {}
+                self.showMessage({"message": "执行中...", "type": 0})
 
-                self.submit.setText("执行中...")
-                self.submit.setEnabled(False)
+                if(toDeploy):
+                    self.submit.setText("执行中...")
+
+                self.isDeploying = True
+                self.service_runtime.setText("")
 
             else:
                 self.showMessage({"message": "未执行任何修改！", "type": 2})
