@@ -226,7 +226,7 @@ class ConnectTransUnitByADB(object):
 						self.restartServiceByShell(service)
 				else:
 					self.restartServiceByShell(service)
-
+					
 		elif(daemon == 1):
 			stdout = subprocess.Popen(self.adb_shell + consts.SHELL["restart crond"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 			if("error" in stdout):
@@ -240,7 +240,9 @@ class ConnectTransUnitByADB(object):
 			self.restartServiceByShell(service)
 
 	def restartServiceByShell(self, service):
-		stdout = subprocess.Popen(self.adb_shell + consts.SERVICE_PATH + service + " &", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+		# stdout = subprocess.Popen(self.adb_shell + consts.SERVICE_PATH + service + " &", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+		shell = consts.SHELL["nohup_start"] + consts.SERVICE_PATH + service + consts.SHELL["nohup_end"]
+		stdout = subprocess.Popen(self.adb_shell + shell, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 
 		if("error" in stdout):
 			if('"level":"error","content":"cpu_linux.go:29 open cpuacct.usage_percpu: no such file or directory"' not in stdout or len(re.findall(r"error", stdout)) >= 2):

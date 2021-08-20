@@ -92,7 +92,9 @@ SHELL = {
     "chmod": "chmod +x ",
     "restart_dhms_daemon": "/system/bin/restart_dhms_daemon",
     "is_process": "ps -ef | grep ",
-    "restart crond": "crond restart"
+    "restart crond": "crond restart",
+    "nohup_start": "nohup ",
+    "nohup_end": " >/dev/null 2>&1 &"
 }
 
 # 其他
