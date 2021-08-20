@@ -586,7 +586,7 @@ class Ui_Deploy(object):
 
         self.logo_label.double_clicked.connect(lambda :self.logo_label.showVersion(self.childDialog))
 
-        self.submit.clicked.connect(self.submitAll)
+        self.submit.clicked.connect(lambda :self.submitAll(True))
         self.restart.clicked.connect(lambda :self.submitAll(False))
         
         # self.upload_thread = UploadFileAndDeployThread(self.client)
@@ -640,6 +640,10 @@ class Ui_Deploy(object):
 
         self.hideInfo()
         self.getInfo()
+        if(self.service == 4):
+            self.restart.hide()
+        else:
+            self.restart.show()
 
     # 获取服务信息
     def getInfo(self, showMessage=True):
@@ -951,7 +955,7 @@ class Ui_Deploy(object):
         self.getInfo(False)
 
     # 提交
-    def submitAll(self, toDeploy=True):
+    def submitAll(self, toDeploy):
         if(self.isDeploying):
             self.showMessage({"message": "正在执行部署或重启操作，请稍后再试！", "type": 0})
             return
