@@ -54,7 +54,7 @@ PROFILE = CACHE + "DHMSConf.json"
 SERVICES = ["visualdiagnosis", "sessiongo", "tum_producer", "tum_controller", "python"]
 SERVICE_NAME = ["可视化诊断服务", "振动文件上传服务", "数据采集服务", "tum_controller", "Python"]
 
-SERVICE_PROFILE = ["/etc/visualdiagnosis.yaml", "/private/conf/parser.json", "/private/conf/parser.json", "/private/conf/parser.json", ""]
+SERVICE_PROFILE = ["/etc/visualdiagnosis.yaml", "/private/DHMSConf.json", "/private/DHMSConf.json", "/private/DHMSConf.json", ""]
 
 TMP_PATH = "/data/temple/"
 SERVICE_PATH = "/system/bin/"
