@@ -44,7 +44,6 @@ def extra_datas(mydir):
 # append the 'config' dir
 a.datas += extra_datas('lib')
 a.datas += extra_datas('resource')
-# a.datas += extra_datas('cache')
 
 pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
