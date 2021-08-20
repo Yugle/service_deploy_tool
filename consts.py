@@ -24,6 +24,11 @@ if("Windows" in platform.platform()):
 
     FONT = "微软雅黑"
     FONT_SIZE_OFFSET = 0
+
+    UPDATE_URL = "http://lan100.dhms.net/download/DHMS_TransUnit/DHMS传输单元服务部署工具.exe"
+    UPDATE_FILE_NAME = "latest.exe"
+
+    OPEN_SHELL = "start "
 else:
     ADB_PATH = WORK_NAMESPACE + "/lib/adb_mac/adb "
     ADB_RUNTIME_OFFSET = -3
@@ -35,9 +40,15 @@ else:
     FONT = "Arial"
     FONT_SIZE_OFFSET = 2
 
-PROFILE = CACHE + "DHMSConf.json"
-if(not os.path.exists(CACHE)):
+    UPDATE_URL = "http://lan100.dhms.net/download/DHMS_TransUnit/DHMS传输单元服务部署工具.dmg"
+    UPDATE_FILE_NAME = "latest.dmg"
+
+    OPEN_SHELL = "open "
+
+if(not os.path.isdir(CACHE)):
     os.mkdir(CACHE)
+
+PROFILE = CACHE + "DHMSConf.json"
 
 # 远程路径相关变量
 SERVICES = ["visualdiagnosis", "sessiongo", "tum_producer", "tum_controller", "python"]
@@ -81,10 +92,12 @@ SHELL = {
     "chmod": "chmod +x ",
     "restart_dhms_daemon": "/system/bin/restart_dhms_daemon",
     "is_process": "ps -ef | grep ",
-    "restart crond": "crond restart"
+    "restart crond": "crond restart",
+    "nohup_start": "nohup ",
+    "nohup_end": " >/dev/null 2>&1 &"
 }
 
 # 其他
-VERSION = "V0.1"
+VERSION = "V1.0"
 TELNET_INTERVAL = 0.5
 WAITING_INTERVAL = 50

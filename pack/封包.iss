@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "DHMS传输单元服务部署工具"
-#define MyAppVersion "0.1"
+#define MyAppVersion "1.0"
 #define MyAppPublisher "苏州德姆斯信息技术有限公司"
 #define MyAppURL "https://www.dhms.com.cn/"
 #define MyAppExeName "DHMS传输单元服务部署工具.exe"

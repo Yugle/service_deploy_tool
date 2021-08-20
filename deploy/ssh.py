@@ -268,8 +268,8 @@ class ConnectTransUnitBySSH(object):
 
 	def restartServiceByShell(self, service):
 		# print("重启")
-
-		stdin,stdout,stderr = self.ssh_client.exec_command(consts.SERVICE_PATH + service + " &")
+		shell = consts.SHELL["nohup_start"] + consts.SERVICE_PATH + service + consts.SHELL["nohup_end"]
+		stdin,stdout,stderr = self.ssh_client.exec_command(shell)
 		error = stderr.read().decode("utf-8")
 		if("error" in error):
 			if('"level":"error","content":"cpu_linux.go:29 open cpuacct.usage_percpu: no such file or directory"' not in error or len(re.findall(r"error", error)) >= 2):

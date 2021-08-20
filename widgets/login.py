@@ -30,7 +30,7 @@ class Ui_MainWindow(object):
         self.status.isTimeToJump.connect(self.showDialog)
         self.isRemoteDeviceThreadCreated = False
         # 初始化立即启动adb，以提高adb初次连接速度
-        subprocess.Popen(consts.ADB_PATH + " devices", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        subprocess.Popen(consts.ADB_PATH + " start-server", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
     def setupUi(self, MainWindow):
         self.MainWindow = MainWindow
@@ -381,7 +381,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.footer.setStyleSheet("color:rgb(140, 140, 140);")
         self.footer.setAlignment(QtCore.Qt.AlignCenter)
         self.footer.setObjectName("footer")
-        self.logo_label = LogoLabel(self.centralwidget)
+        self.logo_label = LogoLabel(self.MainWindow)
         self.logo_label.setGeometry(QtCore.QRect(20, 20, 104, 28))
         self.logo_label.setStyleSheet(f"background:url({consts.IMG_PATH}logo.png);")
         self.logo_label.setText("")
@@ -459,7 +459,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         # self.ssh_password.setText("123456")
         # self.ssh_host.setFocus()
 
-        self.logo_label.double_clicked.connect(self.showVersion)
+        self.logo_label.double_clicked.connect(lambda: self.logo_label.showVersion(self.MainWindow))
 
         # ip自动补全
         self.ip_list = ["192.168.", "172.0.", "0.0.0."]
@@ -472,14 +472,6 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.ssh_host.setCompleter(completer)
         self.telnet_host.setCompleter(completer)
         self.device_ip.setCompleter(completer)
-
-    # 展示软件版本信息
-    # todo：检测更新功能
-    def showVersion(self):
-        QtWidgets.QMessageBox.information(self.MainWindow,
-                                               '传输单元服务部署工具',
-                                               f"版本：{consts.VERSION}\n\n苏州德姆斯信息技术有限公司出品",
-                                               QtWidgets.QMessageBox.Yes)
 
     def resetStyle(self, lineEdit, tip):
         lineEdit.setStyleSheet("border:1px solid black;padding:32px;")
@@ -701,15 +693,16 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
 
 class LoginWindow(QtWidgets.QMainWindow):
     def closeEvent(self, event):
+        # 清理临时文件
+        try:
+            for root, dirs, files in os.walk(consts.CACHE):
+                for file in files:
+                    if(file != "cache"):
+                        os.remove(consts.CACHE + file)
+        except Exception as e:
+            pass
+
         # 软件推出关闭adb进程，解决覆盖安装时adb进程关不掉问题
         subprocess.Popen("taskkill /im adb.exe /f", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
         event.accept()
-    
-# if __name__ == '__main__':
-#     dhms_transunit = QtWidgets.QApplication(sys.argv)
-#     loginWindow = LoginWindow()
-#     window = Ui_MainWindow()
-#     window.setupUi(loginWindow)
-#     loginWindow.show()
-#     sys.exit(dhms_transunit.exec_())

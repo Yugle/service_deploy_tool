@@ -1,7 +1,9 @@
 from PyQt5 import QtCore
+from executors.logger import logger
 import consts
 import re
-from executors.logger import logger
+import time
+import requests
 
 # 连接传输单元线程
 class ConnectTransUnitThread(QtCore.QThread):
@@ -73,18 +75,18 @@ class SubmitThread(QtCore.QThread):
         self.service = service
 
     def run(self):
-        try:
-            self.client.submit(self.service, self.actions)
+        # try:
+        #     self.client.submit(self.service, self.actions)
 
-            message = {"message": "操作成功！", "type": 2}
-            self.result.emit(message)
-        except Exception as e:
-            logger.error(str(e))
-            self.result.emit({"message": str(e), "type": 2})
+        #     message = {"message": "操作成功！", "type": 2}
+        #     self.result.emit(message)
+        # except Exception as e:
+        #     logger.error(str(e))
+        #     self.result.emit({"message": str(e), "type": 2})
 
-        # self.client.submit(self.service, self.actions)
-        # message = {"message": "部署成功！", "type": 0}
-        # self.result.emit(message)
+        self.client.submit(self.service, self.actions)
+        message = {"message": "部署成功！", "type": 0}
+        self.result.emit(message)
 
 # 读服务信息线程
 class GetInformationThread(QtCore.QThread):
@@ -129,3 +131,34 @@ class ReadLogThread(QtCore.QThread):
         except Exception as e:
             logger.error(str(e))
             self.result.emit("读取失败：" + str(e))
+
+class DownloadLatestFileThread(QtCore.QThread):
+    result = QtCore.pyqtSignal(dict)
+
+    def __init__(self, url):
+        super().__init__()
+        self.url = url
+
+    def run(self):
+        try:
+            if(requests.head(self.url).status_code != 200):
+                raise Exception("更新地址错误或文件不存在！")
+
+            with requests.get(self.url, stream=True) as r, open(consts.CACHE + consts.UPDATE_FILE_NAME, 'wb') as file:
+                total_size = int(r.headers['content-length'])
+                content_size = 0
+                process = 0
+
+                for content in r.iter_content(chunk_size=1024):
+                    file.write(content)
+                    content_size += len(content)
+                    process = (content_size / total_size) * 100
+                    self.result.emit({"value":process, "error": ""})
+
+        except Exception as e:
+            error = str(e)
+            logger.error(error)
+            self.result.emit({"value": -1, "error": error})
+
+        finally:
+            self.exit(0)

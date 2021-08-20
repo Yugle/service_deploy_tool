@@ -578,7 +578,7 @@ class Ui_Deploy(object):
             self.log_path.clicked.connect(self.readLog)
         self.log_path.setMaximumWidth(401)
 
-        self.logo_label.double_clicked.connect(self.showVersion)
+        self.logo_label.double_clicked.connect(lambda: self.logo_label.showVersion(self.childDialog))
 
         self.submit.clicked.connect(self.submitAll)
         
@@ -596,12 +596,6 @@ class Ui_Deploy(object):
             self.deploy_button_list = self.groupBox.findChildren(QtWidgets.QPushButton)
             for button in self.deploy_button_list:
                 button.hide()
-
-    def showVersion(self):
-        QtWidgets.QMessageBox.information(self.childDialog,
-                                               '传输单元服务部署工具',
-                                               f"版本：{consts.VERSION}\n\n苏州德姆斯信息技术有限公司出品",
-                                               QtWidgets.QMessageBox.Yes)
 
     # 定义服务切换时动作
     def changeService(self, service):
