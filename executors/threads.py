@@ -133,7 +133,7 @@ class ReadLogThread(QtCore.QThread):
             self.result.emit("读取失败：" + str(e))
 
 class DownloadLatestFileThread(QtCore.QThread):
-    result = QtCore.pyqtSignal(float)
+    result = QtCore.pyqtSignal(dict)
 
     def __init__(self, url):
         super().__init__()
@@ -141,22 +141,24 @@ class DownloadLatestFileThread(QtCore.QThread):
 
     def run(self):
         try:
+            if(requests.head(self.url).status_code != 200):
+                raise Exception("更新地址错误或文件不存在！")
+
             with requests.get(self.url, stream=True) as r, open(consts.CACHE + consts.UPDATE_FILE_NAME, 'wb') as file:
                 total_size = int(r.headers['content-length'])
                 content_size = 0
                 process = 0
-                start_time = time.time()
-                temp_size = 0
 
                 for content in r.iter_content(chunk_size=1024):
                     file.write(content)
                     content_size += len(content)
                     process = (content_size / total_size) * 100
-                    self.result.emit(process)
+                    self.result.emit({"value":process, "error": ""})
 
         except Exception as e:
-            logger.error(str(e))
-            self.result.emit(-1)
+            error = str(e)
+            logger.error(error)
+            self.result.emit({"value": -1, "error": error})
 
         finally:
             self.exit(0)

@@ -30,7 +30,7 @@ class Ui_MainWindow(object):
         self.status.isTimeToJump.connect(self.showDialog)
         self.isRemoteDeviceThreadCreated = False
         # 初始化立即启动adb，以提高adb初次连接速度
-        subprocess.Popen(consts.ADB_PATH + " devices", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        subprocess.Popen(consts.ADB_PATH + " start-server", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
     def setupUi(self, MainWindow):
         self.MainWindow = MainWindow
@@ -381,7 +381,7 @@ f"image:url({consts.IMG_PATH}arrow.png);\n"
         self.footer.setStyleSheet("color:rgb(140, 140, 140);")
         self.footer.setAlignment(QtCore.Qt.AlignCenter)
         self.footer.setObjectName("footer")
-        self.logo_label = LogoLabel(self.centralwidget)
+        self.logo_label = LogoLabel(self.MainWindow)
         self.logo_label.setGeometry(QtCore.QRect(20, 20, 104, 28))
         self.logo_label.setStyleSheet(f"background:url({consts.IMG_PATH}logo.png);")
         self.logo_label.setText("")

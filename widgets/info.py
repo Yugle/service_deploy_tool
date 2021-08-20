@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QTimer
 from executors.threads import DownloadLatestFileThread
 from executors.logger import logger
 import os
@@ -97,9 +97,13 @@ class Ui_Info(object):
         self.download_thread.result.connect(self.changeProgressBarValue)
         self.download_thread.start()
 
-    def changeProgressBarValue(self, value):
-        self.progressBar.setValue(value)
-        if(int(value) == 100):
+    def changeProgressBarValue(self, message):
+        if(message["value"] == -1):
+            self.showError(message["error"])
+            return
+
+        self.progressBar.setValue(message["value"])
+        if(int(message["value"]) == 100):
             self.progressBar.setStyleSheet("QProgressBar{border-radius:2px;background-color:rgb(230,230,230)} QProgressBar::chunk{background:rgab(6,176,37);}")
 
             self.update.setText("安装")
@@ -108,17 +112,26 @@ class Ui_Info(object):
 
     def install(self):
         try:
-            res = subprocess.Popen(consts.OPEN_SHELL + consts.CACHE + consts.UPDATE_FILE_NAME, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
-
             subprocess.Popen("taskkill /im adb.exe /f", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-            self.dialog.close()
-            self.parent.close()
+
+            subprocess.Popen(consts.OPEN_SHELL + consts.CACHE + consts.UPDATE_FILE_NAME, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         except Exception as e:
             logger.error(str(e))
 
-            self.progressBar.hide()
-            self.message.show()
-            self.message.setText(str(e))
+            self.showError(str(e))
 
+    def showError(self, error):
+        self.progressBar.hide()
+        self.message.show()
+        self.message.setText(error)
+
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.hideMessage)
+        self.timer.start(3000)
+
+    def hideMessage(self):
+        self.message.hide()
+        self.timer.stop()
+        
     def quit(self):
         self.dialog.close()

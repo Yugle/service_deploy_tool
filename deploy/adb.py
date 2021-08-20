@@ -206,8 +206,10 @@ class ConnectTransUnitByADB(object):
 	def restartService(self, service, actions):
 		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["chmod"] + consts.SERVICE_PATH + service, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["get_pid"] + service, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
-		service_pid = re.findall(r"\d+", stdout)[0]
-		stdout = subprocess.Popen(self.adb_shell + consts.SHELL["kill"] + service_pid, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
+		pids = re.findall(r"\d+", stdout)
+		if(pids != []):
+			service_pid = pids[0]
+			stdout = subprocess.Popen(self.adb_shell + consts.SHELL["kill"] + service_pid, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read().decode("utf-8")
 
 		daemon = self.checkDaemon()
 		if(daemon == 0):

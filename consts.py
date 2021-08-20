@@ -25,7 +25,7 @@ if("Windows" in platform.platform()):
     FONT = "微软雅黑"
     FONT_SIZE_OFFSET = 0
 
-    UPDATE_URL = "http://lan100.dhms.net/download/DHMS_TransUnit/DHMS%E4%BC%A0%E8%BE%93%E5%8D%95%E5%85%83%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2%E5%B7%A5%E5%85%B7.exe"
+    UPDATE_URL = "http://lan100.dhms.net/download/DHMS_TransUnit/DHMS传输单元服务部署工具.exe"
     UPDATE_FILE_NAME = "latest.exe"
 
     OPEN_SHELL = "start "
@@ -40,14 +40,15 @@ else:
     FONT = "Arial"
     FONT_SIZE_OFFSET = 2
 
-    UPDATE_URL = "http://lan100.dhms.net/download/DHMS_TransUnit/DHMS%E4%BC%A0%E8%BE%93%E5%8D%95%E5%85%83%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2%E5%B7%A5%E5%85%B7.dmg"
+    UPDATE_URL = "http://lan100.dhms.net/download/DHMS_TransUnit/DHMS传输单元服务部署工具.exe"
     UPDATE_FILE_NAME = "latest.dmg"
 
     OPEN_SHELL = "open "
 
-PROFILE = CACHE + "DHMSConf.json"
-if(not os.path.exists(CACHE)):
+if(not os.path.isdir(CACHE)):
     os.mkdir(CACHE)
+
+PROFILE = CACHE + "DHMSConf.json"
 
 # 远程路径相关变量
 SERVICES = ["visualdiagnosis", "sessiongo", "tum_producer", "tum_controller", "python"]
@@ -95,6 +96,6 @@ SHELL = {
 }
 
 # 其他
-VERSION = "V0.1"
+VERSION = "V1.0"
 TELNET_INTERVAL = 0.5
 WAITING_INTERVAL = 50

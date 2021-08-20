@@ -9,6 +9,10 @@ from executors.threads import DownloadLatestFileThread
 class LogoLabel(QtWidgets.QLabel):
 	double_clicked = QtCore.pyqtSignal()
 
+	def __init__(self, parent):
+		super().__init__(parent)
+		self.parent = parent
+
 	def mouseDoubleClickEvent(self, QMouseEvent):
 	    self.double_clicked.emit()
 
@@ -16,6 +20,6 @@ class LogoLabel(QtWidgets.QLabel):
 		download_thread = DownloadLatestFileThread(consts.UPDATE_URL)
 		
 		self.infoDialog = QtWidgets.QDialog()
-		self.infoPage = Ui_Info(download_thread)
+		self.infoPage = Ui_Info(download_thread, self.parent)
 		self.infoPage.setupUi(self.infoDialog)
 		self.infoDialog.exec_()
