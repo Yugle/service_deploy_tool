@@ -104,7 +104,7 @@ class Ui_Info(object):
 
         self.progressBar.setValue(message["value"])
         if(int(message["value"]) == 100):
-            self.progressBar.setStyleSheet("QProgressBar{border-radius:2px;background-color:rgb(230,230,230)} QProgressBar::chunk{background:rgab(6,176,37);}")
+            self.progressBar.setStyleSheet("QProgressBar{border-radius:2px;background-color:rgb(230,230,230)} QProgressBar::chunk{background:rgb(6,176,37);}")
 
             self.update.setText("安装")
             self.update.disconnect()
