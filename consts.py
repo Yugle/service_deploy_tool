@@ -40,7 +40,7 @@ else:
     FONT = "Arial"
     FONT_SIZE_OFFSET = 2
 
-    UPDATE_URL = "http://lan100.dhms.net/download/DHMS_TransUnit/DHMS传输单元服务部署工具.exe"
+    UPDATE_URL = "http://lan100.dhms.net/download/DHMS_TransUnit/DHMS传输单元服务部署工具.dmg"
     UPDATE_FILE_NAME = "latest.dmg"
 
     OPEN_SHELL = "open "
