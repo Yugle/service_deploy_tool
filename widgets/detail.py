@@ -956,6 +956,10 @@ class Ui_Deploy(object):
 
     # 提交
     def submitAll(self, toDeploy):
+        if(self.submit.text() == '部 署' and toDeploy == False):
+            self.showMessage({"message": "无法重启服务，请先部署！", "type": 0})
+            return
+
         if(self.isDeploying):
             self.showMessage({"message": "正在执行部署或重启操作，请稍后再试！", "type": 0})
             return

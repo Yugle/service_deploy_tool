@@ -78,7 +78,7 @@ class SubmitThread(QtCore.QThread):
     def run(self):
         try:
             if(self.toDeploy):
-                print(self.service, self.actions)
+                # print(self.service, self.actions)
                 self.client.submit(self.service, self.actions)
             else:
                 self.client.restartService(consts.SERVICES[self.service], {})
