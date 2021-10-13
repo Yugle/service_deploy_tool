@@ -20,6 +20,7 @@ pyinstaller  --distpath .\out .\pack\transUnit.spec
 ```
 pyinstaller  --distpath out pack/transUnitForMac.spec
 ```
+其他打包细节参照[MQTT_Client](https://github.com/Yugle/MQTT_Client)
 ## 封包
 
 ### Windows
