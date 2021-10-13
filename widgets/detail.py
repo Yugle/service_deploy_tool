@@ -7,7 +7,7 @@ from deploy.telnet import *
 from deploy.adb import *
 from widgets.edit import *
 from widgets.widgets import *
-from executors.threads import *
+from worker.threads import *
 import consts
 
 class Ui_Deploy(object):

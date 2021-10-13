@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt, QTimer
-from executors.threads import DownloadLatestFileThread
-from executors.logger import logger
+from worker.threads import DownloadLatestFileThread
+from worker.logger import logger
 import os
 import subprocess
 import consts

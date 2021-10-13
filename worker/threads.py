@@ -1,5 +1,5 @@
 from PyQt5 import QtCore
-from executors.logger import logger
+from worker.logger import logger
 import consts
 import re
 import time

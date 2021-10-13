@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from widgets.info import *
 import consts
-from executors.threads import DownloadLatestFileThread
+from worker.threads import DownloadLatestFileThread
 
 """
 自定义logo label，重写鼠标双击动作

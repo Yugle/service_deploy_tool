@@ -3,7 +3,7 @@ import time
 import re
 import subprocess
 import json
-from executors.logger import logger
+from worker.logger import logger
 
 class ConnectTransUnitByADB(object):
 	def __init__(self, device_id, adb_port):

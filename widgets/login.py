@@ -5,7 +5,7 @@ from deploy.telnet import *
 from deploy.adb import *
 from widgets.detail import *
 from widgets.widgets import *
-from executors.threads import ConnectTransUnitThread
+from worker.threads import ConnectTransUnitThread
 import re
 import sys
 import consts

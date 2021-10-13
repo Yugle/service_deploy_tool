@@ -3,7 +3,7 @@ import consts
 import time
 import re
 import json
-from executors.logger import logger
+from worker.logger import logger
 
 # class WindowsControl(object):
 #     def jumpToDialog(deployDialog):
