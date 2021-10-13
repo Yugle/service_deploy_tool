@@ -529,7 +529,7 @@ class Ui_Deploy(object):
 
     def retranslateUi(self, Deploy):
         _translate = QtCore.QCoreApplication.translate
-        Deploy.setWindowTitle(_translate("Deploy", "传输单元服务部署工具"))
+        Deploy.setWindowTitle(_translate("Deploy", "TransUnit服务部署工具"))
         self.back.setText(_translate("Deploy", " 返回"))
         self.service_1.setText(_translate("Deploy", f"        {consts.SERVICE_NAME[0]}"))
         self.service_2.setText(_translate("Deploy", f"        {consts.SERVICE_NAME[1]}"))
@@ -551,7 +551,7 @@ class Ui_Deploy(object):
         self.label_15.setText(_translate("Deploy", "程序路径："))
         self.label_7.setText(_translate("Deploy", "MD5："))
         self.deploy.setText(_translate("Deploy", "上传部署文件"))
-        self.footer.setText(_translate("Deploy", "Copyright © 2021 苏州德姆斯信息技术有限公司出品"))
+        self.footer.setText(_translate("Deploy", f"Copyright © 2021 {consts.COMPANY_NAME}"))
         self.connect_status.setText(_translate("Deploy", f"{self.protocol_name[self.protocol]}已连接"))
         self.title.setText(_translate("Deploy", consts.SERVICE_NAME[self.service]))
         self.submit.setText(_translate("Deploy", "提交并重启服务"))
@@ -1015,7 +1015,7 @@ class DeployDialog(QtWidgets.QDialog):
         if(self.isActiveWindow()):
             self.showNormal()
             reply = QtWidgets.QMessageBox.question(self,
-                                                   '传输单元服务部署工具',
+                                                   'TransUnit服务部署工具',
                                                    "是否要退出程序？",
                                                    QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
                                                    QtWidgets.QMessageBox.No)

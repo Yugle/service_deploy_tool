@@ -83,7 +83,7 @@ class Ui_Info(object):
         self.yes.setText(_translate("Dialog", "确定"))
         self.update.setText(_translate("Dialog", "更新"))
         self.label_2.setText(_translate("Dialog", "版本:"))
-        self.label_3.setText(_translate("Dialog", "苏州德姆斯信息技术有限公司"))
+        self.label_3.setText(_translate("Dialog", f"{consts.COMPANY_NAME}"))
         self.dialog.setWindowTitle("关于")
         self.version.setText(consts.VERSION)
 
